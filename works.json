@@ -12,7 +12,8 @@
       "三维互动",
       "原创牌阵",
       "本地收藏"
-    ]
+    ],
+    "award": null
   },
   {
     "id": "solar-terms",
@@ -27,7 +28,8 @@
       "二十四节气",
       "节气罗盘",
       "SVG / Canvas"
-    ]
+    ],
+    "award": null
   },
   {
     "id": "food-plan",
@@ -42,7 +44,8 @@
       "健康饮食",
       "均衡餐盘",
       "互动自测"
-    ]
+    ],
+    "award": null
   },
   {
     "id": "green-future",
@@ -57,7 +60,8 @@
       "新能源汽车",
       "绿色出行",
       "知识介绍"
-    ]
+    ],
+    "award": null
   },
   {
     "id": "chinese-food",
@@ -72,7 +76,8 @@
       "中国美食",
       "图文展示",
       "饮食文化"
-    ]
+    ],
+    "award": null
   },
   {
     "id": "inspiration",
@@ -87,7 +92,8 @@
       "纸墨风格",
       "灵感记录",
       "单页设计"
-    ]
+    ],
+    "award": null
   },
   {
     "id": "delta-anniversary",
@@ -101,6 +107,7 @@
     "tags": [
       "游戏专题",
       "单页设计"
-    ]
+    ],
+    "award": null
   }
 ]
