@@ -1,0 +1,620 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Microsoft YaHei', 'PingFang SC', 'SimHei', sans-serif;
+}
+li {
+    list-style: none;
+}
+:root {
+    --primary-color: #8b4513;
+    --secondary-color: #d2691e;
+    --accent-color: #f4a460;
+    --light-color: #f9f5f0;
+    --dark-color: #333;
+    --gray-color: #666;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background-color: #fff;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+a {
+    color: #333;
+    text-decoration: none;
+}
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 导航栏样式 */
+header {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-subtitle {
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--gray-color);
+    margin-top: 2px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin-left: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--dark-color);
+    font-weight: 500;
+    transition: var(--transition);
+    padding: 8px 0;
+    position: relative;
+    font-size: 16px;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    bottom: 0;
+    left: 0;
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.mobile-menu-btn {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+/*版心的样式*/
+
+.wrapper {
+    margin: 0 auto;
+    width: 1200px;
+}
+
+body {
+    background-color: #f3f5f7;
+}
+/*banner*/
+
+.banner {
+    height: 600px;
+    background-color: #fff;
+}
+
+.banner .wrapper {
+    display: flex;
+    justify-content: space-between;
+    height: 600px;
+    background-image: url(../images/quyangmeili.jpg);
+}
+
+
+/*left部分的样式*/
+
+.banner .left {
+    width: 220px;
+    height: 600px;
+    padding: 3px 20px;
+    background-color: rgba(0, 0, 0, 0.42);
+}
+
+.banner .left a {
+    display: block;
+    height: 70px;
+    background: url(../images/right.png) no-repeat right center;
+    line-height: 70px;
+    color: #fff;
+}
+
+.banner .left a:hover {
+    color: #8b4513;
+
+}
+/* 推荐区域 */
+
+.recommend {
+    display: flex;
+    margin-top: 11px;
+    padding: 0 20px;
+    height: 60px;
+    background-color: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(211, 211, 211, 0.5);
+    line-height: 60px;
+}
+
+.recommend h3 {
+    font-size: 18px;
+    color: #8b4513;
+    font-weight: normal;
+}
+
+.recommend ul {
+    flex: 1;
+    display: flex;
+}
+
+.recommend ul li a {
+    padding: 0 42px;
+    border-right: 1px solid #e0e0e0;
+    font-size: 18px;
+}
+
+.recommend ul li:last-child a {
+    border-right: 0;
+}
+
+.recommend .modify {
+    font-size: 16px;
+    color: #00a4ff;
+}
+/* 景点推荐区域 */
+
+
+.topic-bd ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.topic-bd li {
+    width: 405px;
+    height: 355px;
+}
+
+.topic-bd .pic {
+    position: relative;
+    width: 405px;
+    height: 288px;
+}
+.topic-bd .img {
+    width: 405px;
+    height: 288px;
+}
+
+.topic-bd .txt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    width: 405px;
+    height: 67px;
+    font-size: 14px;
+    color: #666;
+}
+
+.topic-bd .txt .left {
+    display: flex;
+}
+
+.topic-bd .txt .left p {
+    margin-right: 20px;
+}
+
+.topic-bd .txt .left p:nth-child(1) i {
+    color: #AA2113;
+}
+
+.topic-bd .cover {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    width: 405px;
+    height: 90px;
+    background-image: linear-gradient(180deg, rgba(137, 137, 137, 0.00) 0%, rgba(0, 0, 0, 0.90) 100%);
+
+}
+
+.topic-bd .cover .left {
+    color: #fff;
+}
+
+.topic-bd .cover .left h4 {
+    margin-bottom: 6px;
+    font-size: 20px;
+}
+
+
+.attractions {
+    padding: 80px 0;
+}
+
+.attractions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.attraction-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.attraction-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.attraction-img {
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+}
+
+.attraction-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.attraction-card:hover .attraction-img img {
+    transform: scale(1.05);
+}
+
+.attraction-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.attraction-info {
+    padding: 25px;
+}
+
+.attraction-info h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+.attraction-location {
+    color: var(--gray-color);
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.attraction-location i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+.attraction-description {
+    color: var(--gray-color);
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+.attraction-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.stars {
+    color: #ffc107;
+    margin-right: 10px;
+}
+
+.rating-score {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title h2 {
+    font-size: 36px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 3px;
+    background-color: var(--accent-color);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.section-title p {
+    color: var(--gray-color);
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 18px;
+}
+/* 文化特色 */
+
+.culture {
+    padding: 80px 0;
+    background-color: var(--light-color);
+}
+.culture-section {
+    padding: 50px 50px;
+    background-color: #f8f9fa;
+}
+
+.culture-content {
+    display: flex;
+    align-items: center;
+
+}
+
+.culture-text {
+    flex: 1;
+}
+
+.culture-text h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.culture-img {
+    width: 700px;
+    height: 300px;
+
+    border-radius: 8px;
+}
+/* 旅游指南区域 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.guide {
+    padding: 80px 0;
+}
+
+.guide-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.guide-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.guide-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.guide-icon {
+    height: 120px;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 50px;
+}
+
+.guide-info {
+    padding: 40px;
+}
+
+.guide-info h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.guide-info ul {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.guide-info li {
+    margin-bottom: 10px;
+    color: var(--gray-color);
+    padding-left: 25px;
+    position: relative;
+}
+
+.guide-info li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* 版权区域 */
+
+.footer {
+    margin-top: 60px;
+    height: 273px;
+    background-color: #fff;
+    padding: 60px;
+}
+
+.footer .wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer .left {
+    height: 440px;
+}
+
+.footer .left p {
+    margin-top: 24px;
+    margin-bottom: 14px;
+    font-size: 20px;
+    line-height: 17px;
+    color: #666;
+}
+
+.footer .left .download {
+    display: block;
+    width: 120px;
+    height: 36px;
+    border: 1px solid #8b4513;
+    text-align: center;
+    line-height: 34px;
+    font-size: 20px;
+    color: #8b4513;
+}
+
+
+
+.footer .right {
+    display: flex;
+}
+
+.footer .right dl {
+    margin-left: 130px;
+}
+
+.footer .right dt {
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.footer .right a {
+    font-size: 14px;
+    color: #666;
+    line-height: 24px;
+}
+
+/* js*/
+.search-box {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 100;
+}
+
+.search-box.show {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-box input {
+    padding: 6px 12px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    outline: none;
+}
+.guide-card {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.guide-card.hovered {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.guide-info {
+    transition: all 0.3s ease;
+    opacity: 0.9;
+    transform: translateY(5px);
+}
+

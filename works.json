@@ -124,5 +124,20 @@
       "活动介绍"
     ],
     "award": null
+  },
+  {
+    "id": "quyang-tourism",
+    "title": "曲阳文旅网",
+    "author": "窦林涵",
+    "college": "计算机科学与技术学院",
+    "className": "软件2501",
+    "category": "文化探索",
+    "color": "#a76a2e",
+    "description": "以曲阳的景点、非遗石雕和民俗为线索，介绍当地文化与旅游指南。",
+    "tags": [
+      "文旅介绍",
+      "景点推荐"
+    ],
+    "award": null
   }
 ]
