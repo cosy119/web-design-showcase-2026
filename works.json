@@ -155,5 +155,20 @@
       "鼠标交互"
     ],
     "award": null
+  },
+  {
+    "id": "lunar-archive",
+    "title": "月之都幻想档案站",
+    "author": "侯玉星",
+    "college": "计算机科学与技术学院",
+    "className": "数据2501",
+    "category": "幻想档案",
+    "color": "#87729f",
+    "description": "以月面都市与结界意象构成的幻想档案主题交互网页。",
+    "tags": [
+      "幻想档案",
+      "Canvas"
+    ],
+    "award": null
   }
 ]
