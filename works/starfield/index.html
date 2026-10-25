@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>星域漫游 | Web前端视觉艺术</title>
+  <style>
+    :root {
+      --primary: #00f3ff;
+      --secondary: #ff00ea;
+      --bg: #05050a;
+      --text: #e0e0e0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Canvas 星空背景 */
+    #canvas-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+      /* 防止画布挡住鼠标事件 */
+    }
+
+    /* 环境光晕 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 10% 90%, rgba(0, 243, 255, 0.15), transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(255, 0, 234, 0.15), transparent 40%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* 自定义光标 */
+    .cursor {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 15px var(--primary);
+    }
+
+    .cursor-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+      /* 去掉left/top的transition，改用JS做丝滑动画 */
+    }
+
+    /* 第一屏 */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glitch {
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      position: relative;
+      text-shadow: 0 0 20px var(--primary), 0 0 50px var(--primary);
+      animation: glitch 2s infinite;
+      letter-spacing: 3px;
+    }
+
+    .hero p {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      color: #ccc;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .scroll-btn {
+      margin-top: 50px;
+      padding: 15px 40px;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      text-decoration: none;
+      border-radius: 30px;
+      transition: 0.4s;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .scroll-btn:hover {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 30px var(--primary);
+      transform: translateY(-3px);
+    }
+
+    /* 第二屏 */
+    .content-section {
+      padding: 100px 10%;
+      min-height: 100vh;
+      perspective: 1200px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 70px;
+      color: var(--primary);
+      text-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+      letter-spacing: 2px;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .card {
+      width: 320px;
+      height: 420px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .card:hover {
+      transform: rotateY(20deg) rotateX(15deg) translateY(-15px) scale(1.05);
+      box-shadow: -30px 30px 60px rgba(0, 243, 255, 0.3);
+      border-color: var(--primary);
+      background: rgba(0, 243, 255, 0.08);
+    }
+
+    .card-content {
+      padding: 40px 30px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #fff;
+      text-shadow: 0 0 10px var(--primary);
+    }
+
+    .card p {
+      color: #bbb;
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    /* 第三屏 */
+    .footer-section {
+      height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-section h2 {
+      color: var(--secondary);
+      letter-spacing: 8px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px rgba(255, 0, 234, 0.7);
+    }
+
+    .footer-section p {
+      color: #888;
+    }
+
+    @keyframes glitch {
+      0% {
+        transform: translate(0);
+      }
+
+      2% {
+        transform: translate(-3px, 2px);
+        text-shadow: 3px 0 var(--secondary), -3px 0 var(--primary);
+      }
+
+      4% {
+        transform: translate(3px, -2px);
+        text-shadow: -3px 0 var(--secondary), 3px 0 var(--primary);
+      }
+
+      6% {
+        transform: translate(0);
+        text-shadow: 0 0 20px var(--primary), 0 0 50px var(--primary);
+      }
+
+      100% {
+        transform: translate(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas-bg"></canvas>
+
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <section class="hero">
+    <h1 class="glitch">EXPLORE THE UNKNOWN</h1>
+    <p>探索未知的 Web 交互边界 | 纯原生实现</p>
+    <a href=" " class="scroll-btn">向下探索</a>
+  </section>
+
+  <section id="section1" class="content-section">
+    <h2 class="section-title">// 3D 视觉透视实验室 //</h2>
+    <div class="card-container">
+      <div class="card">
+        <div class="card-content">
+          <h3>玻璃拟态</h3>
+          <p>使用 backdrop-filter 实现高级毛玻璃效果，展现现代 UI 设计趋势，塑造轻盈的空间感。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <h3>CSS 动画</h3>
+          <p>利用 @keyframes 与 transform 实现流畅的 3D 翻转与悬浮光影，打造极致的视觉反馈。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <h3>原生交互</h3>
+          <p>通过纯 JavaScript 监听鼠标事件，结合 DOM 操作，带来丝滑的光标跟随与动态交互体验。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-section">
+    <h2>End of Transmission</h2>
+    <p>© 2024 毛欣梅 - 计算机学院网页设计大赛作品</p>
+  </section>
+
+  <script>
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    // ================= 星星逻辑 =================
+    let stars = [];
+    function initStars() {
+      stars = [];
+      const starCount = Math.floor((width * height) / 1500);
+      for (let i = 0; i < starCount; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 2.5 + 1,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.03 + 0.01,
+          direction: Math.random() > 0.5 ? 1 : -1,
+          isBlue: Math.random() > 0.8
+        });
+      }
+    }
+
+    // ================= 流星逻辑 =================
+    let meteors = [];
+    function spawnMeteor() {
+      meteors.push({
+        x: Math.random() * width + width * 0.2,
+        y: Math.random() * height * 0.5 - height * 0.2,
+        len: Math.random() * 200 + 150,
+        speedX: -(Math.random() * 10 + 10),
+        speedY: (Math.random() * 10 + 10),
+        lineWidth: Math.random() * 1.5 + 1,
+        alpha: 1
+      });
+    }
+
+    
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // 画星星
+      stars.forEach(star => {
+        star.alpha += star.speed * star.direction;
+        if (star.alpha >= 1) {star.alpha = 1; star.direction = -1;}
+        if (star.alpha <= 0.2) {star.alpha = 0.2; star.direction = 1;}
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+
+        if (star.radius > 2) {
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = star.isBlue ? '#00f3ff' : '#ffffff';
+        } else {
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.fillStyle = star.isBlue ? `rgba(0, 243, 255, ${star.alpha})` : `rgba(255, 255, 255, ${star.alpha})`;
+        ctx.fill();
+      });
+
+      ctx.shadowBlur = 0;
+
+      // 画流星
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        let m = meteors[i];
+        let endX = m.x - m.len;
+        let endY = m.y + m.len;
+
+        let gradient = ctx.createLinearGradient(m.x, m.y, endX, endY);
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${m.alpha})`);
+        gradient.addColorStop(0.2, `rgba(0, 243, 255, ${m.alpha})`);
+        gradient.addColorStop(1, 'rgba(0, 243, 255, 0)');
+
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = m.lineWidth;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#00f3ff';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${m.alpha})`;
+        ctx.fill();
+
+        m.x += m.speedX;
+        m.y += m.speedY;
+
+        if (m.x < -200 || m.y > height + 200) {
+          meteors.splice(i, 1);
+        }
+      }
+
+      // 丝滑鼠标跟随引擎
+      updateCursor();
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      initStars();
+    });
+
+
+
+    // ================= 丝滑鼠标跟随逻辑 (完美修复版) =================
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let followerX = mouseX;
+    let followerY = mouseY;
+
+    // 监听整个窗口的鼠标移动
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      // 小圆点瞬间移动，没有任何延迟
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    });
+
+    // 使用物理插值算法让大圆圈平滑跟随 (无敌丝滑)
+    function updateCursor() {
+      // 0.15 是跟随速度，数字越大跟得越紧
+      followerX += (mouseX - followerX) * 0.15;
+      followerY += (mouseY - followerY) * 0.15;
+
+      follower.style.left = followerX + 'px';
+      follower.style.top = followerY + 'px';
+    }
+
+    // 悬停放大效果
+    document.querySelectorAll('.card, .scroll-btn').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        follower.style.width = '60px';
+        follower.style.height = '60px';
+        follower.style.backgroundColor = 'rgba(0, 243, 255, 0.1)';
+        follower.style.borderColor = 'transparent';
+      });
+      el.addEventListener('mouseleave', () => {
+        follower.style.width = '40px';
+        follower.style.height = '40px';
+        follower.style.backgroundColor = 'transparent';
+        follower.style.borderColor = 'var(--primary)';
+      });
+    });
+    resizeCanvas();
+    initStars();
+    for (let i = 0; i < 5; i++) spawnMeteor();
+    setInterval(spawnMeteor, 800);
+    animate();
+  </script>
+</body>
+
+</html>

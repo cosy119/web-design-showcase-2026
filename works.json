@@ -139,5 +139,21 @@
       "景点推荐"
     ],
     "award": null
+  },
+  {
+    "id": "starfield",
+    "title": "星域漫游：Web前端视觉艺术",
+    "author": "毛欣梅",
+    "college": "计算机科学与技术学院",
+    "className": "软件2501",
+    "category": "视觉艺术",
+    "color": "#4c8ea7",
+    "description": "以原生 Canvas 星空、流星和鼠标跟随呈现霓虹视觉交互。",
+    "tags": [
+      "星空",
+      "Canvas",
+      "鼠标交互"
+    ],
+    "award": null
   }
 ]
