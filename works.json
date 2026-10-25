@@ -1,0 +1,92 @@
+[
+  {
+    "id": "star-fortune",
+    "title": "星签事务所",
+    "author": "李纪豪",
+    "college": "计算机科学与技术学院",
+    "className": "数据2501",
+    "category": "互动体验",
+    "color": "#b85c88",
+    "description": "一间可以触碰的未来小店。转动三维签机，翻开纸签，把今天的小灵感收藏起来。",
+    "tags": [
+      "三维互动",
+      "原创牌阵",
+      "本地收藏"
+    ]
+  },
+  {
+    "id": "solar-terms",
+    "title": "节气 · 时间的算法",
+    "author": "林俊浩",
+    "college": "计算机科学与技术学院",
+    "className": "数据2501",
+    "category": "文化探索",
+    "color": "#9a713c",
+    "description": "从圭表测影到节气罗盘，以可交互的黄经仪，感受四时物候与时间的秩序。",
+    "tags": [
+      "二十四节气",
+      "节气罗盘",
+      "SVG / Canvas"
+    ]
+  },
+  {
+    "id": "food-plan",
+    "title": "食光计划",
+    "author": "董世凯",
+    "college": "计算机科学与技术学院",
+    "className": "数据2401",
+    "category": "生活科普",
+    "color": "#397957",
+    "description": "从一日三餐出发，认识均衡餐盘与饮食误区，让健康知识回到校园日常。",
+    "tags": [
+      "健康饮食",
+      "均衡餐盘",
+      "互动自测"
+    ]
+  },
+  {
+    "id": "green-future",
+    "title": "驶向绿色未来",
+    "author": "慕轩宇",
+    "college": "交通与车辆工程学院",
+    "className": "新汽2603",
+    "category": "生活科普",
+    "color": "#306b91",
+    "description": "以清晰的页面介绍新能源汽车，了解绿色出行与汽车技术的基本知识。",
+    "tags": [
+      "新能源汽车",
+      "绿色出行",
+      "知识介绍"
+    ]
+  },
+  {
+    "id": "chinese-food",
+    "title": "中国待客美食",
+    "author": "闫继涵",
+    "college": "计算机科学与技术学院",
+    "className": "软件2602",
+    "category": "文化探索",
+    "color": "#ba5e35",
+    "description": "从美食走近中国待客文化，以图文呈现餐桌上的风味与人情。",
+    "tags": [
+      "中国美食",
+      "图文展示",
+      "饮食文化"
+    ]
+  },
+  {
+    "id": "inspiration",
+    "title": "墨笺 · 灵感手账",
+    "author": "孔春涛",
+    "college": "计算机科学与技术学院",
+    "className": "数据2501",
+    "category": "互动体验",
+    "color": "#806842",
+    "description": "以纸张与墨色构成一个安静的记录空间，让灵感在浏览器里留下痕迹。",
+    "tags": [
+      "纸墨风格",
+      "灵感记录",
+      "单页设计"
+    ]
+  }
+]

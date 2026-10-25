@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="食光计划——面向在校学生的健康饮食指南，讲清一日三餐怎么吃、餐盘怎么配、误区在哪里。">
+<title>食光计划 · 学生健康饮食指南</title>
+<style>
+/* ============ 基础 ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --green-900:#0d3b28;
+  --green-800:#125035;
+  --green-700:#17694a;
+  --green-600:#1f8459;
+  --green-500:#2fa06b;
+  --green-300:#8ad2ac;
+  --green-100:#e7f6ee;
+  --green-50:#f2faf5;
+
+  --orange:#ef9a4b;
+  --coral:#e2637d;
+  --wheat:#e3b04b;
+
+  --ink:#0f2018;
+  --ink-2:#4a6156;
+  --ink-3:#7b8f85;
+  --line:rgba(15,60,40,.10);
+  --line-2:rgba(15,60,40,.06);
+
+  --bg:#fbfdf9;
+  --card:#ffffff;
+
+  --r-lg:24px;
+  --r-md:18px;
+  --r-sm:12px;
+
+  --sh-1:0 2px 8px rgba(13,59,40,.05);
+  --sh-2:0 12px 32px -14px rgba(13,59,40,.22);
+  --sh-3:0 26px 60px -28px rgba(13,59,40,.34);
+
+  --fs-serif:"Songti SC","STSong","SimSun",serif;
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-text-size-adjust:100%}
+
+body{
+  font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.75;
+  font-size:16px;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{color:inherit;text-decoration:none}
+li{list-style:none}
+img,svg{display:block;max-width:100%}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input{font:inherit;color:inherit}
+
+.container{width:100%;max-width:1140px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+.section--tint{background:linear-gradient(180deg,#f4faf6 0%,#fbfdf9 100%)}
+
+/* ============ 顶部进度 & 导航 ============ */
+.progress{
+  position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
+  background:linear-gradient(90deg,var(--green-500),var(--green-300) 55%,var(--wheat));
+  transition:width .12s linear;
+}
+
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:110;
+  height:72px;display:flex;align-items:center;
+  transition:background .3s ease,box-shadow .3s ease,height .3s ease;
+  background:rgba(251,253,249,.55);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.nav.scrolled{
+  height:64px;
+  background:rgba(251,253,249,.9);
+  box-shadow:0 1px 0 rgba(15,60,40,.07),0 10px 30px -22px rgba(13,59,40,.5);
+}
+.nav__inner{width:100%;max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.5px}
+.brand__mark{
+  width:34px;height:34px;border-radius:11px;flex:none;
+  background:linear-gradient(145deg,var(--green-500),var(--green-800));
+  display:grid;place-items:center;box-shadow:0 6px 16px -8px rgba(23,105,74,.9);
+}
+.brand__mark svg{width:19px;height:19px}
+.brand__txt{font-size:17px}
+.brand__txt em{font-style:normal;color:var(--ink-3);font-weight:500;font-size:12px;letter-spacing:1.4px;margin-left:7px}
+
+.nav__links{display:flex;align-items:center;gap:4px}
+.nav__links a{
+  position:relative;font-size:14.5px;color:var(--ink-2);padding:8px 13px;border-radius:999px;
+  transition:color .2s ease,background .2s ease;white-space:nowrap;
+}
+.nav__links a:hover{color:var(--green-700);background:var(--green-100)}
+.nav__links a.active{color:var(--green-800);background:var(--green-100);font-weight:600}
+
+.nav__cta{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:14px;font-weight:600;color:#fff;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  padding:10px 18px;border-radius:999px;
+  box-shadow:0 10px 22px -12px rgba(23,105,74,.95);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.nav__cta:hover{transform:translateY(-1px);box-shadow:0 14px 26px -12px rgba(23,105,74,.95)}
+
+.nav__toggle{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);place-items:center}
+.nav__toggle span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;position:relative}
+.nav__toggle span::before,.nav__toggle span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:var(--ink);border-radius:2px}
+.nav__toggle span::before{top:-6px}
+.nav__toggle span::after{top:6px}
+
+/* ============ Hero ============ */
+.hero{
+  position:relative;overflow:hidden;
+  padding:138px 0 92px;
+  background:
+    radial-gradient(900px 520px at 78% -8%,#dff3e6 0%,rgba(223,243,230,0) 62%),
+    radial-gradient(680px 420px at 4% 104%,#fdf1dd 0%,rgba(253,241,221,0) 60%),
+    linear-gradient(180deg,#f6fbf7 0%,var(--bg) 100%);
+}
+.hero__grid{
+  display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:center;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:12.5px;font-weight:700;letter-spacing:2px;color:var(--green-700);
+  background:#fff;border:1px solid var(--line);
+  padding:7px 15px;border-radius:999px;box-shadow:var(--sh-1);
+}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--green-500);display:block;box-shadow:0 0 0 4px rgba(47,160,107,.16)}
+
+.hero h1{
+  font-size:clamp(34px,4.6vw,58px);
+  line-height:1.2;letter-spacing:-.5px;font-weight:800;
+  margin:24px 0 0;
+}
+.hero h1 .hl{
+  position:relative;color:var(--green-800);white-space:nowrap;
+}
+.hero h1 .hl::after{
+  content:"";position:absolute;left:-2px;right:-2px;bottom:6px;height:14px;
+  background:linear-gradient(90deg,rgba(138,210,172,.55),rgba(227,176,75,.5));
+  border-radius:6px;z-index:-1;
+}
+.hero__lead{
+  margin-top:22px;font-size:16.5px;color:var(--ink-2);max-width:30em;line-height:1.95;
+}
+.hero__actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 26px;border-radius:999px;font-size:15px;font-weight:600;
+  transition:transform .2s ease,box-shadow .25s ease,background .2s ease;
+}
+.btn svg{width:16px;height:16px}
+.btn--primary{
+  color:#fff;background:linear-gradient(135deg,var(--green-600),var(--green-800));
+  box-shadow:0 16px 32px -16px rgba(23,105,74,1);
+}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:0 22px 40px -16px rgba(23,105,74,1)}
+.btn--ghost{background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1)}
+.btn--ghost:hover{transform:translateY(-2px);border-color:rgba(47,160,107,.5);color:var(--green-700)}
+
+.hero__meta{display:flex;flex-wrap:wrap;gap:26px;margin-top:42px;padding-top:26px;border-top:1px solid var(--line)}
+.hero__meta div b{display:block;font-size:22px;font-weight:800;letter-spacing:-.3px;color:var(--green-800)}
+.hero__meta div span{font-size:12.5px;color:var(--ink-3);letter-spacing:.6px}
+
+/* Hero 右侧视觉卡 */
+.hero__visual{position:relative;padding:10px 0 26px}
+.hero__visual::before{
+  content:"";position:absolute;inset:14% 6% 6% 10%;
+  background:linear-gradient(140deg,rgba(47,160,107,.16),rgba(227,176,75,.18));
+  filter:blur(38px);border-radius:50%;
+}
+.dash{
+  position:relative;z-index:2;background:var(--card);border:1px solid var(--line);
+  border-radius:26px;padding:26px 26px 86px;box-shadow:var(--sh-3);
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+
+.dash__head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.dash__head h3{font-size:15px;font-weight:700;letter-spacing:.2px}
+.dash__head p{font-size:12px;color:var(--ink-3);margin-top:2px}
+.pill{
+  font-size:11.5px;font-weight:700;color:var(--green-700);background:var(--green-100);
+  padding:5px 11px;border-radius:999px;white-space:nowrap;
+}
+
+.ring{position:relative;width:190px;margin:22px auto 8px}
+.ring svg{width:100%;height:auto;transform:rotate(-90deg)}
+.ring__bg{fill:none;stroke:#eef5f0;stroke-width:15}
+.ring__fg{
+  fill:none;stroke:url(#ringGrad);stroke-width:15;stroke-linecap:round;
+  stroke-dasharray:530;stroke-dashoffset:530;
+  transition:stroke-dashoffset 1.6s cubic-bezier(.3,.8,.3,1) .25s;
+}
+.ring__txt{position:absolute;inset:0;display:grid;place-content:center;text-align:center;line-height:1.2}
+.ring__txt b{font-size:42px;font-weight:800;letter-spacing:-1px;color:var(--green-800)}
+.ring__txt b span{font-size:18px;font-weight:700;margin-left:2px}
+.ring__txt em{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3);letter-spacing:2px;margin-top:6px}
+
+.bars{display:grid;gap:13px;margin-top:16px}
+.bar-row{display:grid;grid-template-columns:48px 1fr 38px;align-items:center;gap:12px;font-size:12.5px}
+.bar-row span{color:var(--ink-2)}
+.bar-row b{text-align:right;color:var(--green-700);font-variant-numeric:tabular-nums;font-size:12px}
+.bar{height:7px;border-radius:99px;background:#eef5f0;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;width:var(--w);background:linear-gradient(90deg,var(--green-500),var(--green-300));transform-origin:left;animation:grow 1.4s cubic-bezier(.3,.8,.3,1) .35s both}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+.float-card{
+  position:absolute;z-index:3;background:#fff;border:1px solid var(--line);
+  border-radius:16px;box-shadow:var(--sh-2);padding:12px 16px;display:flex;align-items:center;gap:11px;
+  animation:float 6s ease-in-out infinite;
+}
+.float-card .ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;flex:none}
+.float-card .ic svg{width:17px;height:17px}
+.float-card b{display:block;font-size:13.5px;line-height:1.35}
+.float-card span{font-size:11px;color:var(--ink-3);line-height:1.3}
+.fc--water{top:2px;right:-14px;animation-delay:.6s}
+.fc--water .ic{background:#e8f3fb;color:#3b86c4}
+.fc--meal{bottom:14px;left:-22px;animation-delay:1.4s}
+.fc--meal .ic{background:var(--green-100);color:var(--green-700)}
+
+/* ============ 通用标题 ============ */
+.s-head{max-width:640px;margin-bottom:52px}
+.s-head--center{margin-inline:auto;text-align:center}
+.s-tag{
+  display:inline-block;font-size:12px;font-weight:700;letter-spacing:2.4px;
+  color:var(--green-600);text-transform:uppercase;
+}
+.s-head h2{
+  font-size:clamp(26px,3.1vw,38px);line-height:1.3;font-weight:800;letter-spacing:-.4px;
+  margin:14px 0 0;
+}
+.s-head p{margin-top:14px;color:var(--ink-2);font-size:15.5px}
+
+/* ============ 数据卡 ============ */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.stat{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+  padding:26px 22px;box-shadow:var(--sh-1);
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;
+  position:relative;overflow:hidden;
+}
+.stat::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:linear-gradient(90deg,var(--green-500),var(--green-300));
+  transform:scaleX(0);transform-origin:left;transition:transform .4s ease;
+}
+.stat:hover{transform:translateY(-5px);box-shadow:var(--sh-2);border-color:rgba(47,160,107,.35)}
+.stat:hover::after{transform:scaleX(1)}
+.stat__num{font-size:34px;font-weight:800;letter-spacing:-1.2px;color:var(--green-800);line-height:1.1;font-variant-numeric:tabular-nums}
+.stat__num small{font-size:14px;font-weight:600;color:var(--ink-3);margin-left:3px;letter-spacing:0}
+.stat__name{font-size:14.5px;font-weight:700;margin-top:10px}
+.stat__note{font-size:12.5px;color:var(--ink-3);margin-top:4px;line-height:1.6}
+
+/* ============ 三餐 ============ */
+.meals{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.meal{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:30px 28px 26px;box-shadow:var(--sh-1);position:relative;overflow:hidden;
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.meal:hover{transform:translateY(-6px);box-shadow:var(--sh-3)}
+.meal__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.meal__icon{width:50px;height:50px;border-radius:16px;display:grid;place-items:center}
+.meal__icon svg{width:24px;height:24px}
+.meal__time{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.meal h3{font-size:19px;font-weight:800;margin-top:18px;letter-spacing:-.2px}
+.meal__sub{font-size:13px;color:var(--ink-3);margin-top:4px}
+.meal__list{margin-top:20px;display:grid;gap:11px}
+.meal__list li{display:flex;gap:10px;font-size:14px;color:var(--ink-2);line-height:1.7}
+.meal__list li::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--green-500);
+  flex:none;margin-top:9px;
+}
+.meal__list li b{color:var(--ink);font-weight:600;white-space:nowrap}
+.meal__tip{
+  margin-top:20px;padding:12px 14px;border-radius:var(--r-sm);
+  background:var(--green-50);border:1px dashed rgba(47,160,107,.35);
+  font-size:12.5px;color:var(--green-800);line-height:1.7;
+}
+.meal--b .meal__icon{background:#fdf3e2;color:#cf8a2e}
+.meal--l .meal__icon{background:var(--green-100);color:var(--green-700)}
+.meal--d .meal__icon{background:#eef1fb;color:#5b6fb5}
+
+/* ============ 餐盘 ============ */
+.plate-wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:64px;align-items:center}
+.plate-visual{position:relative}
+.plate-visual svg{width:100%;height:auto;overflow:visible}
+.plate-legend{display:grid;gap:12px}
+.legend{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;
+  padding:15px 18px;border-radius:var(--r-md);background:#fff;border:1px solid var(--line);
+  box-shadow:var(--sh-1);cursor:pointer;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease;
+}
+.legend:hover,.legend.on{transform:translateX(6px);border-color:rgba(47,160,107,.4);box-shadow:var(--sh-2)}
+.legend .dot{width:12px;height:12px;border-radius:4px;flex:none}
+.legend b{font-size:14.5px;font-weight:700;display:block}
+.legend span{font-size:12.5px;color:var(--ink-3);display:block;margin-top:2px;line-height:1.6}
+.legend em{font-style:normal;font-size:15px;font-weight:800;color:var(--green-800);font-variant-numeric:tabular-nums}
+.plate-note{margin-top:18px;font-size:12.5px;color:var(--ink-3);line-height:1.8}
+.seg{cursor:pointer;transition:opacity .25s ease,transform .25s ease;transform-origin:200px 200px}
+.seg.dim{opacity:.32}
+.seg:hover{opacity:.92}
+.seg-lbl{font-size:14px;font-weight:700;fill:#fff;letter-spacing:.5px;pointer-events:none}
+
+/* ============ 误区 ============ */
+.myths{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.myth{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-md);
+  padding:22px 24px;box-shadow:var(--sh-1);position:relative;
+  transition:transform .28s ease,box-shadow .28s ease;
+}
+.myth:hover{transform:translateY(-4px);box-shadow:var(--sh-2)}
+.myth__wrong{display:flex;gap:11px;align-items:flex-start}
+.myth__wrong .x{
+  width:22px;height:22px;border-radius:50%;background:#fdeaea;color:#d9534f;flex:none;
+  display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:3px;
+}
+.myth__wrong p{font-size:14.5px;font-weight:600;color:#a3372f;line-height:1.65}
+.myth__right{display:flex;gap:11px;align-items:flex-start;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.myth__right .v{
+  width:22px;height:22px;border-radius:50%;background:var(--green-100);color:var(--green-700);flex:none;
+  display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:3px;
+}
+.myth__right p{font-size:14px;color:var(--ink-2);line-height:1.75}
+.myth__right p b{color:var(--green-800)}
+
+/* ============ 一周食谱 ============ */
+.table-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--sh-2);overflow:hidden;
+}
+.table-top{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:22px 26px;border-bottom:1px solid var(--line-2);background:linear-gradient(180deg,#fbfefc,#fff);
+}
+.table-top h3{font-size:16.5px;font-weight:800}
+.table-top p{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+.legend-inline{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+.legend-inline i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px;table-layout:fixed}
+thead th{
+  text-align:left;font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--ink-3);
+  padding:14px 20px;background:#f7fbf8;border-bottom:1px solid var(--line-2);white-space:nowrap;
+}
+tbody td{padding:16px 20px;border-bottom:1px solid var(--line-2);color:var(--ink-2);line-height:1.65;vertical-align:top}
+tbody tr{transition:background .2s ease}
+tbody tr:hover{background:#f6fbf8}
+tbody tr:last-child td{border-bottom:0}
+tbody td:first-child{font-weight:700;color:var(--green-800);white-space:nowrap}
+tbody td:first-child small{display:block;font-weight:500;color:var(--ink-3);font-size:11.5px;margin-top:2px}
+.tag{
+  display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;background:var(--green-100);
+  color:var(--green-700);font-weight:600;margin-left:6px;vertical-align:1px;
+}
+
+/* ============ 自测工具 ============ */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.tool{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:30px 30px 28px;box-shadow:var(--sh-1);
+}
+.tool__head{display:flex;align-items:center;gap:12px}
+.tool__head .ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:var(--green-100);color:var(--green-700);flex:none}
+.tool__head .ic svg{width:19px;height:19px}
+.tool__head h3{font-size:16.5px;font-weight:800}
+.tool__head p{font-size:12.5px;color:var(--ink-3);margin-top:1px}
+.tool__form{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.field{flex:1;min-width:120px}
+.field label{display:block;font-size:12px;color:var(--ink-3);margin-bottom:7px;letter-spacing:.4px}
+.field input{
+  width:100%;padding:12px 15px;border-radius:var(--r-sm);border:1px solid var(--line);
+  background:#fbfdfc;font-size:15px;font-variant-numeric:tabular-nums;
+  transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
+}
+.field input:focus{outline:none;border-color:var(--green-500);background:#fff;box-shadow:0 0 0 4px rgba(47,160,107,.12)}
+.tool__btn{
+  padding:12px 22px;border-radius:var(--r-sm);font-size:14px;font-weight:700;color:#fff;
+  flex:0 0 auto;white-space:nowrap;
+  background:linear-gradient(135deg,var(--green-600),var(--green-800));align-self:flex-end;
+  transition:transform .2s ease,box-shadow .2s ease;box-shadow:0 10px 20px -12px rgba(23,105,74,.9);
+}
+.tool__btn:hover{transform:translateY(-2px);box-shadow:0 14px 26px -12px rgba(23,105,74,.9)}
+
+.result{margin-top:22px;padding:20px;border-radius:var(--r-md);background:var(--green-50);border:1px solid rgba(47,160,107,.2);display:none}
+.result.show{display:block;animation:fadeUp .45s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.result__val{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.result__val b{font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--green-800);font-variant-numeric:tabular-nums}
+.result__val span{font-size:12.5px;color:var(--ink-3)}
+.result__badge{font-size:12.5px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--green-100);color:var(--green-700)}
+.result__text{font-size:13.5px;color:var(--ink-2);margin-top:10px;line-height:1.8}
+
+.scale{margin-top:16px}
+.scale__bar{
+  position:relative;height:9px;border-radius:99px;overflow:hidden;display:flex;
+  background:#eef5f0;
+}
+.scale__bar i{height:100%}
+.scale__bar i:nth-child(1){width:22.5%;background:#9fc8e0}
+.scale__bar i:nth-child(2){width:27%;background:var(--green-500)}
+.scale__bar i:nth-child(3){width:20%;background:var(--wheat)}
+.scale__bar i:nth-child(4){flex:1;background:#e0806e}
+.scale__pin{
+  position:absolute;top:50%;left:0;width:16px;height:16px;border-radius:50%;background:#fff;
+  border:3px solid var(--green-800);transform:translate(-50%,-50%);
+  transition:left .6s cubic-bezier(.3,.8,.3,1),opacity .3s ease;box-shadow:0 3px 8px rgba(13,59,40,.28);z-index:2;
+  opacity:0;
+}
+.result.calculated .scale__pin{opacity:1}
+.scale__lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3);margin-top:9px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{
+  font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:999px;
+  background:#fff;border:1px solid var(--line);color:var(--ink-2);
+  transition:all .2s ease;
+}
+.chip:hover,.chip.on{background:var(--green-100);border-color:rgba(47,160,107,.45);color:var(--green-800)}
+
+/* 水杯可视化 */
+.cups{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.cup{width:16px;height:22px;border-radius:3px 3px 6px 6px;background:#eaf3f9;border:1px solid #d3e6f3;position:relative;overflow:hidden}
+.cup::after{content:"";position:absolute;left:0;right:0;bottom:0;height:0;background:#5fa8d8;transition:height .5s ease}
+.cup.full::after{height:100%}
+
+/* ============ 宣言 ============ */
+.mantra{
+  position:relative;overflow:hidden;border-radius:28px;
+  background:linear-gradient(135deg,var(--green-800),#0a3323 62%,#12452f);
+  color:#eaf7f0;padding:64px 56px;
+}
+.mantra::before{
+  content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+  right:-90px;top:-140px;background:radial-gradient(circle,rgba(138,210,172,.28),transparent 66%);
+}
+.mantra::after{
+  content:"";position:absolute;width:320px;height:320px;border-radius:50%;
+  left:-70px;bottom:-160px;background:radial-gradient(circle,rgba(227,176,75,.22),transparent 66%);
+}
+.mantra__inner{position:relative;z-index:2}
+.mantra .s-tag{color:var(--green-300)}
+.mantra h2{font-size:clamp(24px,2.9vw,34px);line-height:1.4;font-weight:800;margin-top:14px;letter-spacing:-.3px;color:#fff}
+.mantra__lines{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.mline{
+  padding:22px 20px;border-radius:var(--r-md);
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(4px);
+}
+.mline b{display:block;font-size:17px;font-weight:800;color:#fff;letter-spacing:.5px}
+.mline span{display:block;font-size:13px;color:rgba(234,247,240,.82);margin-top:8px;line-height:1.8}
+
+/* ============ 页脚 ============ */
+.footer{padding:52px 0 40px;border-top:1px solid var(--line);margin-top:96px}
+.footer__inner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.footer p{font-size:12.5px;color:var(--ink-3);line-height:1.9}
+.footer__links{display:flex;gap:20px;font-size:12.5px;color:var(--ink-3)}
+.footer__links a:hover{color:var(--green-700)}
+
+.totop{
+  position:fixed;right:26px;bottom:26px;z-index:100;
+  width:46px;height:46px;border-radius:14px;background:#fff;border:1px solid var(--line);
+  box-shadow:var(--sh-2);display:grid;place-items:center;color:var(--green-700);
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:all .3s ease;
+}
+.totop.show{opacity:1;visibility:visible;transform:none}
+.totop:hover{background:var(--green-800);color:#fff;border-color:var(--green-800)}
+
+/* ============ 动画 ============ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ 响应式 ============ */
+@media (max-width:1024px){
+  .hero__grid{grid-template-columns:1fr;gap:52px}
+  .hero{padding-top:130px}
+  .hero__visual{max-width:440px;margin:0 auto;width:100%}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .meals{grid-template-columns:1fr;gap:18px}
+  .plate-wrap{grid-template-columns:1fr;gap:40px}
+  .plate-visual{max-width:460px;margin:0 auto}
+  .myths{grid-template-columns:1fr}
+  .tools{grid-template-columns:1fr}
+  .mantra__lines{grid-template-columns:1fr}
+}
+@media (max-width:768px){
+  .nav__links{display:none}
+  .nav__cta{display:none}
+  .nav__toggle{display:grid}
+  .nav.open .nav__links{
+    display:flex;flex-direction:column;align-items:stretch;gap:4px;
+    position:absolute;top:100%;left:16px;right:16px;
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:12px;box-shadow:var(--sh-3);
+  }
+  .nav.open .nav__links a{padding:12px 14px}
+  .section{padding:68px 0}
+  .hero{padding:118px 0 68px}
+  .hero h1{letter-spacing:-.6px}
+  .hero__meta{gap:20px}
+  .hero__meta div b{font-size:19px}
+  .stats{grid-template-columns:repeat(2,1fr);gap:14px}
+  .stat{padding:20px 18px}
+  .stat__num{font-size:27px}
+  .s-head{margin-bottom:36px}
+  .float-card.fc--water{right:-6px;transform:scale(.92)}
+  .float-card.fc--meal{left:-6px;transform:scale(.92)}
+  .mantra{padding:40px 26px;border-radius:22px}
+  .footer{margin-top:64px}
+  .footer__inner{flex-direction:column;align-items:flex-start;gap:14px}
+}
+@media (max-width:420px){
+  .stats{grid-template-columns:1fr}
+  .ring{width:160px}
+  .ring__txt b{font-size:34px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ================= 导航 ================= -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#top" class="brand">
+      <span class="brand__mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.6 10.6h16.8a8.4 8.4 0 0 1-8.4 8.4 8.4 8.4 0 0 1-8.4-8.4z"/>
+          <path d="M9.3 7.6c.9-.8.9-1.8 0-2.7M14.7 7.6c.9-.8.9-1.8 0-2.7"/>
+        </svg>
+      </span>
+      <span class="brand__txt">食光计划<em>EAT WELL</em></span>
+    </a>
+
+    <nav class="nav__links" id="navLinks">
+      <a href="#why">饮食现状</a>
+      <a href="#meals">一日三餐</a>
+      <a href="#plate">均衡餐盘</a>
+      <a href="#myths">常见误区</a>
+      <a href="#week">一周食谱</a>
+      <a href="#test">健康自测</a>
+    </nav>
+
+    <a href="#test" class="nav__cta">
+      测测我的饮食
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <button class="nav__toggle" id="navToggle" aria-label="展开菜单"><span></span></button>
+  </div>
+</header>
+
+<!-- ================= Hero ================= -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero__grid">
+      <div class="hero__text">
+        <span class="eyebrow"><i></i>STUDENT HEALTHY DIET · 学生健康饮食</span>
+        <h1>好好吃饭，<br>是青春最<span class="hl">划算的投资</span></h1>
+        <p class="hero__lead">
+          早餐别将就，午餐要吃饱，晚餐不硬撑。<br>
+          把营养学里那些绕口的数字，变成食堂里随手就能打的三餐——健康不是自律到苦，而是每天都能做到一点点。
+        </p>
+        <div class="hero__actions">
+          <a href="#meals" class="btn btn--primary">
+            查看一日三餐
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#test" class="btn btn--ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg>
+            健康自测
+          </a>
+        </div>
+        <div class="hero__meta">
+          <div><b>3</b><span>餐 / 天</span></div>
+          <div><b>8</b><span>杯水左右</span></div>
+          <div><b>30</b><span>分钟运动</span></div>
+          <div><b>0</b><span>含糖饮料</span></div>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="dash">
+          <div class="dash__head">
+            <div>
+              <h3>今日营养打卡</h3>
+              <p>连续记录第 12 天</p>
+            </div>
+            <span class="pill">进行中</span>
+          </div>
+
+          <div class="ring">
+            <svg viewBox="0 0 200 200" role="img" aria-label="今日营养达成度 82%">
+              <defs>
+                <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#2fa06b"/>
+                  <stop offset="60%" stop-color="#57bc8b"/>
+                  <stop offset="100%" stop-color="#e3b04b"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring__bg" cx="100" cy="100" r="84"/>
+              <circle class="ring__fg" id="ringFg" cx="100" cy="100" r="84"/>
+            </svg>
+            <div class="ring__txt">
+              <b>82<span>%</span></b>
+              <em>营养达成</em>
+            </div>
+          </div>
+
+          <div class="bars">
+            <div class="bar-row"><span>蔬菜</span><div class="bar"><i style="--w:88%"></i></div><b>88%</b></div>
+            <div class="bar-row"><span>蛋白质</span><div class="bar"><i style="--w:79%"></i></div><b>79%</b></div>
+            <div class="bar-row"><span>谷薯</span><div class="bar"><i style="--w:76%"></i></div><b>76%</b></div>
+            <div class="bar-row"><span>饮水</span><div class="bar"><i style="--w:64%"></i></div><b>64%</b></div>
+          </div>
+        </div>
+
+        <div class="float-card fc--water">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5s6 6.1 6 10a6 6 0 0 1-12 0c0-3.9 6-10 6-10z"/></svg>
+          </span>
+          <div><b>饮水 1500 ml</b><span>还差 2 杯</span></div>
+        </div>
+
+        <div class="float-card fc--meal">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>
+          </span>
+          <div><b>早餐已打卡</b><span>鸡蛋 + 牛奶 + 玉米</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 饮食现状 / 推荐量 ================= -->
+<section class="section section--tint" id="why">
+  <div class="container">
+    <div class="s-head reveal">
+      <span class="s-tag">Why It Matters</span>
+      <h2>身体不会说话，但它会记账</h2>
+      <p>课表满、实验多、外卖方便，三餐常常被压缩成「随便吃点」。可营养素是每天都要重新进货的原料，缺一天，专注力和免疫力就先替你付账。下面这些数字，来自《中国居民膳食指南（2022）》的每日建议量。</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal" style="--d:.02s">
+        <div class="stat__num"><span class="count" data-num="300">300</span><small>g</small></div>
+        <div class="stat__name">蔬菜</div>
+        <div class="stat__note">建议 300–500 g / 天，深色蔬菜过半</div>
+      </div>
+      <div class="stat reveal" style="--d:.08s">
+        <div class="stat__num"><span class="count" data-num="200">200</span><small>g</small></div>
+        <div class="stat__name">水果</div>
+        <div class="stat__note">建议 200–350 g / 天，整果优于果汁</div>
+      </div>
+      <div class="stat reveal" style="--d:.14s">
+        <div class="stat__num"><span class="count" data-num="300">300</span><small>g</small></div>
+        <div class="stat__name">奶及奶制品</div>
+        <div class="stat__note">建议 300–500 g / 天，补钙主力</div>
+      </div>
+      <div class="stat reveal" style="--d:.2s">
+        <div class="stat__num"><span class="count" data-num="1500">1500</span><small>ml</small></div>
+        <div class="stat__name">饮水</div>
+        <div class="stat__note">建议 1500–1700 ml，白水或淡茶</div>
+      </div>
+      <div class="stat reveal" style="--d:.26s">
+        <div class="stat__num"><span class="count" data-num="5">5</span><small>g 以内</small></div>
+        <div class="stat__name">食盐</div>
+        <div class="stat__note">上限 5 g / 天，油 25–30 g / 天</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 一日三餐 ================= -->
+<section class="section" id="meals">
+  <div class="container">
+    <div class="s-head reveal">
+      <span class="s-tag">Three Meals</span>
+      <h2>一日三餐，各管一段路</h2>
+      <p>不需要精确称重，记住「主食一拳、蛋白一掌、蔬菜两手捧」，就能在食堂窗口前快速做出选择。</p>
+    </div>
+
+    <div class="meals">
+      <article class="meal meal--b reveal" style="--d:.02s">
+        <div class="meal__top">
+          <span class="meal__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>
+            </svg>
+          </span>
+          <span class="meal__time">07:00 — 08:30</span>
+        </div>
+        <h3>早餐 · 启动代谢</h3>
+        <p class="meal__sub">起床后 1 小时内吃完，别让身体空转一上午</p>
+        <ul class="meal__list">
+          <li><b>一份主食</b>：全麦面包、杂粮粥、玉米或红薯</li>
+          <li><b>一份蛋白</b>：鸡蛋、牛奶、无糖豆浆、瘦肉包</li>
+          <li><b>一份果蔬</b>：小番茄、香蕉、黄瓜，随手补上</li>
+        </ul>
+        <div class="meal__tip">提醒：用一杯加糖奶茶代替早餐，血糖先冲高再骤降，第二节课最容易犯困。</div>
+      </article>
+
+      <article class="meal meal--l reveal" style="--d:.1s">
+        <div class="meal__top">
+          <span class="meal__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 11h16a8 8 0 0 1-8 8 8 8 0 0 1-8-8z"/><path d="M2.6 11h18.8"/><path d="M9 3.2c0 1.4-1.4 1.6-1.4 3M13.6 3c0 1.4-1.4 1.6-1.4 3"/>
+            </svg>
+          </span>
+          <span class="meal__time">11:30 — 13:00</span>
+        </div>
+        <h3>午餐 · 能量主战场</h3>
+        <p class="meal__sub">一天里最该吃饱、也最该吃全的一顿</p>
+        <ul class="meal__list">
+          <li><b>主食一拳</b>：米饭或面条，掺三分之一粗粮更好</li>
+          <li><b>蛋白一掌</b>：鸡胸、鱼、瘦肉、豆腐，选一种</li>
+          <li><b>蔬菜两手捧</b>：深绿色叶菜占一半，少油版优先</li>
+        </ul>
+        <div class="meal__tip">顺序小技巧：先吃蔬菜和蛋白，最后吃主食，餐后更清醒，下午不易困。</div>
+      </article>
+
+      <article class="meal meal--d reveal" style="--d:.18s">
+        <div class="meal__top">
+          <span class="meal__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5 8.6 8.6 0 1 0 20.5 14.2z"/>
+            </svg>
+          </span>
+          <span class="meal__time">17:30 — 19:00</span>
+        </div>
+        <h3>晚餐 · 清淡不将就</h3>
+        <p class="meal__sub">睡前 3 小时吃完，给肠胃留出下班时间</p>
+        <ul class="meal__list">
+          <li><b>主食减半</b>：粥、薯类、杂粮饭，比精米白面更耐饿</li>
+          <li><b>蛋白易消化</b>：鱼、豆腐、蒸蛋，少选油炸和烧烤</li>
+          <li><b>蔬菜照旧</b>：凉拌、白灼、清炒，控制油盐</li>
+        </ul>
+        <div class="meal__tip">夜宵换成一杯温牛奶或一小把坚果，比泡面更扛饿，也不影响睡眠。</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 均衡餐盘 ================= -->
+<section class="section section--tint" id="plate">
+  <div class="container">
+    <div class="s-head reveal">
+      <span class="s-tag">My Plate</span>
+      <h2>把餐盘分成四块，配比就对了</h2>
+      <p>参考中国居民膳食餐盘的比例：一半是蔬菜水果，四分之一是谷薯主食，四分之一是优质蛋白，再配一杯奶。不必每餐都完美，一天下来大致平衡就够。</p>
+    </div>
+
+    <div class="plate-wrap">
+      <div class="plate-visual reveal">
+        <svg viewBox="0 0 400 400" role="img" aria-label="均衡餐盘比例图：蔬菜 35%、谷薯 25%、水果 20%、优质蛋白 20%">
+          <defs>
+            <filter id="plateShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0d3b28" flood-opacity="0.18"/>
+            </filter>
+          </defs>
+
+          <circle cx="200" cy="200" r="176" fill="#ffffff" filter="url(#plateShadow)"/>
+          <circle cx="200" cy="200" r="172" fill="none" stroke="#eef5f0" stroke-width="2"/>
+          <circle cx="200" cy="200" r="152" fill="#f7fbf8"/>
+
+          <g class="seg" data-seg="veg">
+            <path d="M200,200 L200,50 A150,150 0 0 1 321.35,288.17 Z" fill="#2f9e6b" stroke="#f7fbf8" stroke-width="5"/>
+            <text class="seg-lbl" x="292" y="152" text-anchor="middle">蔬菜 35%</text>
+          </g>
+          <g class="seg" data-seg="grain">
+            <path d="M200,200 L321.35,288.17 A150,150 0 0 1 111.83,321.35 Z" fill="#e3b04b" stroke="#f7fbf8" stroke-width="5"/>
+            <text class="seg-lbl" x="216" y="302" text-anchor="middle">谷薯 25%</text>
+          </g>
+          <g class="seg" data-seg="fruit">
+            <path d="M200,200 L111.83,321.35 A150,150 0 0 1 57.34,153.65 Z" fill="#e2637d" stroke="#f7fbf8" stroke-width="5"/>
+            <text class="seg-lbl" x="102" y="232" text-anchor="middle">水果 20%</text>
+          </g>
+          <g class="seg" data-seg="protein">
+            <path d="M200,200 L57.34,153.65 A150,150 0 0 1 200,50 Z" fill="#ef9a4b" stroke="#f7fbf8" stroke-width="5"/>
+            <text class="seg-lbl" x="139" y="117" text-anchor="middle">蛋白 20%</text>
+          </g>
+
+          <circle cx="200" cy="200" r="58" fill="#ffffff"/>
+          <circle cx="200" cy="200" r="58" fill="none" stroke="#eef5f0" stroke-width="2"/>
+          <g transform="translate(200,192)" fill="none" stroke="#2f9e6b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M0-22c8.2 9.2 12.8 15.6 12.8 22A12.8 12.8 0 0 1-12.8 0c0-6.4 4.6-12.8 12.8-22z"/>
+          </g>
+          <text x="200" y="228" text-anchor="middle" font-size="11" fill="#7b8f85" letter-spacing="1.5">一份奶</text>
+        </svg>
+      </div>
+
+      <div class="reveal" style="--d:.1s">
+        <div class="plate-legend">
+          <div class="legend on" data-seg="veg">
+            <span class="dot" style="background:#2f9e6b"></span>
+            <div><b>蔬菜类</b><span>深色叶菜优先，清炒、白灼、凉拌换着来</span></div>
+            <em>35%</em>
+          </div>
+          <div class="legend" data-seg="grain">
+            <span class="dot" style="background:#e3b04b"></span>
+            <div><b>谷薯类</b><span>米饭面条里掺粗粮，玉米红薯当主食也算数</span></div>
+            <em>25%</em>
+          </div>
+          <div class="legend" data-seg="fruit">
+            <span class="dot" style="background:#e2637d"></span>
+            <div><b>水果类</b><span>整果嚼着吃，果汁滤掉了纤维还容易过量</span></div>
+            <em>20%</em>
+          </div>
+          <div class="legend" data-seg="protein">
+            <span class="dot" style="background:#ef9a4b"></span>
+            <div><b>优质蛋白</b><span>鱼禽蛋瘦肉豆制品轮换，加工肉少碰</span></div>
+            <em>20%</em>
+          </div>
+        </div>
+        <p class="plate-note">把鼠标移到任一块，餐盘会对应高亮。比例是长期的平均值，不是每一餐都要分毫不差。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 常见误区 ================= -->
+<section class="section" id="myths">
+  <div class="container">
+    <div class="s-head reveal">
+      <span class="s-tag">Myth Busters</span>
+      <h2>这些「养生常识」，其实是个坑</h2>
+      <p>很多吃法听起来合理，坚持半年反而更累。挑出五个最常见的，一次说清。</p>
+    </div>
+
+    <div class="myths">
+      <article class="myth reveal" style="--d:.02s">
+        <div class="myth__wrong"><span class="x">✕</span><p>不吃早餐能减肥，少吃一顿少长肉。</p></div>
+        <div class="myth__right"><span class="v">✓</span><p>跳过早餐往往在午餐报复性进食，<b>全天总热量反而更高</b>，上午的注意力和记忆力也会明显打折。</p></div>
+      </article>
+
+      <article class="myth reveal" style="--d:.08s">
+        <div class="myth__wrong"><span class="x">✕</span><p>奶茶、果汁也是水，喝着就算补水了。</p></div>
+        <div class="myth__right"><span class="v">✓</span><p>一杯全糖奶茶的添加糖常接近一天上限，<b>白水、淡茶、无糖气泡水</b>才是日常主力，甜饮当偶尔的奖励。</p></div>
+      </article>
+
+      <article class="myth reveal" style="--d:.14s">
+        <div class="myth__wrong"><span class="x">✕</span><p>想瘦就水煮一切，油一点都不能碰。</p></div>
+        <div class="myth__right"><span class="v">✓</span><p>长期极低脂会影响脂溶性维生素吸收和激素水平。<b>油要选好、要限量</b>，每天 25–30 g，坚果和深海鱼都是好脂肪来源。</p></div>
+      </article>
+
+      <article class="myth reveal" style="--d:.2s">
+        <div class="myth__wrong"><span class="x">✕</span><p>熬夜写作业，靠咖啡续命就行。</p></div>
+        <div class="myth__right"><span class="v">✓</span><p>咖啡因在体内半衰期约 5 小时，<b>下午三点后就别再喝</b>；用咖啡替代睡眠，欠下的觉迟早要还。</p></div>
+      </article>
+
+      <article class="myth reveal" style="--d:.26s">
+        <div class="myth__wrong"><span class="x">✕</span><p>零食都是垃圾食品，减肥期间一口不能吃。</p></div>
+        <div class="myth__right"><span class="v">✓</span><p>无糖酸奶、原味坚果、水果都是好零食，<b>关键是定时定量</b>：两餐之间一小把，比忍到崩溃再暴食更可持续。</p></div>
+      </article>
+
+      <article class="myth reveal" style="--d:.32s">
+        <div class="myth__wrong"><span class="x">✕</span><p>补剂、代餐粉比好好吃饭更省事更有效。</p></div>
+        <div class="myth__right"><span class="v">✓</span><p>食物里的膳食纤维、植物化学物是补剂替代不了的。<b>先吃好三餐</b>，确有缺口再在专业指导下补充。</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 一周食谱 ================= -->
+<section class="section section--tint" id="week">
+  <div class="container">
+    <div class="s-head reveal">
+      <span class="s-tag">Weekly Plan</span>
+      <h2>照着吃一周，食堂就能搞定</h2>
+      <p>全部按「食堂常见窗口 + 宿舍能做的」设计，不需要厨艺，也不需要额外花钱买补剂。</p>
+    </div>
+
+    <div class="table-card reveal">
+      <div class="table-top">
+        <div>
+          <h3>学生一周食谱参考</h3>
+          <p>每日另加饮水 1500 ml 以上、水果 200 g 左右</p>
+        </div>
+        <div class="legend-inline">
+          <span><i style="background:#e3b04b"></i>主食</span>
+          <span><i style="background:#2f9e6b"></i>蔬菜</span>
+          <span><i style="background:#ef9a4b"></i>蛋白</span>
+          <span><i style="background:#e2637d"></i>水果 / 奶</span>
+        </div>
+      </div>
+
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:110px">日期</th>
+              <th>早餐</th>
+              <th>午餐</th>
+              <th>晚餐</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>周一<small>重启模式</small></td>
+              <td>燕麦牛奶 + 水煮蛋 + 半个苹果</td>
+              <td>米饭 + 番茄炒蛋 + 清炒油麦菜</td>
+              <td>小米粥 + 香菇滑鸡 + 凉拌黄瓜</td>
+            </tr>
+            <tr>
+              <td>周二<small>粗粮日</small></td>
+              <td>杂粮粥 + 鸡蛋 + 一小碟凉菜</td>
+              <td>杂粮饭 + 清蒸鱼 + 蒜蓉西兰花</td>
+              <td>荞麦面 + 香煎豆腐 + 青菜</td>
+            </tr>
+            <tr>
+              <td>周三<small>补钙日</small></td>
+              <td>全麦三明治 + 无糖豆浆</td>
+              <td>米饭 + 土豆炖牛肉 + 蒜蓉菠菜</td>
+              <td>南瓜粥 + 虾仁滑蛋 + 拌木耳</td>
+            </tr>
+            <tr>
+              <td>周四<small>轻负担</small></td>
+              <td>玉米 + 酸奶 + 一小把坚果</td>
+              <td>米饭 + 宫保鸡丁 + 紫菜蛋花汤</td>
+              <td>杂粮饭 + 清炒时蔬 + 香煎豆腐</td>
+            </tr>
+            <tr>
+              <td>周五<small>补充蛋白</small></td>
+              <td>菜包 + 鸡蛋 + 牛奶</td>
+              <td>面条 + 卤鸡腿 + 双拼蔬菜</td>
+              <td>红薯 + 鲫鱼豆腐汤 + 凉拌西兰花</td>
+            </tr>
+            <tr>
+              <td>周六<small>慢慢吃</small></td>
+              <td>鸡蛋饼 + 小番茄 + 香蕉</td>
+              <td>米饭 + 清炒虾仁 + 冬瓜汤</td>
+              <td>蔬菜粥 + 蒸蛋 + 凉拌豆干</td>
+            </tr>
+            <tr>
+              <td>周日<small>留点余地</small></td>
+              <td>酸奶燕麦杯 + 水煮蛋</td>
+              <td>米饭 + 香菇滑鸡 + 炒时蔬</td>
+              <td>杂粮粥 + 凉拌鸡丝 + 水煮菜心</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 自测 ================= -->
+<section class="section" id="test">
+  <div class="container">
+    <div class="s-head reveal">
+      <span class="s-tag">Self Check</span>
+      <h2>先花十秒，测测自己的基本盘</h2>
+      <p>两个小工具，数据只在你自己的浏览器里计算，不会上传，也不做任何存储。</p>
+    </div>
+
+    <div class="tools">
+      <!-- BMI -->
+      <div class="tool reveal" style="--d:.02s">
+        <div class="tool__head">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 20a7 7 0 1 1 14 0"/><path d="M12 13l3.6-4"/><circle cx="12" cy="13.6" r="1.4" fill="currentColor" stroke="none"/>
+            </svg>
+          </span>
+          <div>
+            <h3>BMI 体重指数</h3>
+            <p>参考中国成人标准</p>
+          </div>
+        </div>
+
+        <div class="tool__form">
+          <div class="field">
+            <label for="hInput">身高（cm）</label>
+            <input id="hInput" type="number" inputmode="decimal" placeholder="例如 172" min="120" max="230" step="0.1">
+          </div>
+          <div class="field">
+            <label for="wInput">体重（kg）</label>
+            <input id="wInput" type="number" inputmode="decimal" placeholder="例如 62" min="25" max="200" step="0.1">
+          </div>
+          <button class="tool__btn" id="bmiBtn" type="button">开始测算</button>
+        </div>
+
+        <div class="result show" id="bmiResult">
+          <div class="result__val">
+            <b id="bmiVal">--</b>
+            <span>kg/m²</span>
+            <span class="result__badge" id="bmiBadge">待测算</span>
+          </div>
+          <div class="scale">
+            <div class="scale__bar">
+              <i></i><i></i><i></i><i></i>
+              <span class="scale__pin" id="bmiPin"></span>
+            </div>
+            <div class="scale__lbl"><span>偏瘦</span><span>正常</span><span>超重</span><span>肥胖</span></div>
+          </div>
+          <p class="result__text" id="bmiText">输入身高和体重后点击「开始测算」，结果会显示在这里。BMI 只反映体重与身高的关系，不区分肌肉与脂肪，仅供参考。</p>
+        </div>
+      </div>
+
+      <!-- 饮水 -->
+      <div class="tool reveal" style="--d:.1s">
+        <div class="tool__head">
+          <span class="ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3.2s6.4 6.5 6.4 10.6A6.4 6.4 0 0 1 5.6 13.8c0-4.1 6.4-10.6 6.4-10.6z"/>
+            </svg>
+          </span>
+          <div>
+            <h3>每日饮水估算</h3>
+            <p>按体重粗略折算</p>
+          </div>
+        </div>
+
+        <div class="tool__form">
+          <div class="field">
+            <label for="waterInput">体重（kg）</label>
+            <input id="waterInput" type="number" inputmode="decimal" placeholder="例如 60" min="25" max="200" step="0.1">
+          </div>
+          <button class="tool__btn" id="waterBtn" type="button">算一算</button>
+        </div>
+
+        <div style="margin-top:14px">
+          <div class="chips" id="waterChips">
+            <button class="chip" type="button" data-w="50">50 kg</button>
+            <button class="chip" type="button" data-w="60">60 kg</button>
+            <button class="chip" type="button" data-w="70">70 kg</button>
+            <button class="chip" type="button" data-w="80">80 kg</button>
+          </div>
+        </div>
+
+        <div class="result show" id="waterResult">
+          <div class="result__val">
+            <b id="waterVal">--</b>
+            <span>ml / 天</span>
+            <span class="result__badge" id="waterBadge">待估算</span>
+          </div>
+          <div class="cups" id="cups"><span class="cup"></span><span class="cup"></span><span class="cup"></span><span class="cup"></span><span class="cup"></span><span class="cup"></span><span class="cup"></span><span class="cup"></span></div>
+          <p class="result__text">按每杯 200 ml 折算。运动、天气炎热或出汗较多时，需要在此基础上再多补充。别等口渴才喝，口渴时身体已经缺水了。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 宣言 ================= -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="mantra reveal">
+      <div class="mantra__inner">
+        <span class="s-tag">Daily Mantra</span>
+        <h2>记住三句话，健康不用靠意志力</h2>
+        <div class="mantra__lines">
+          <div class="mline">
+            <b>早吃好 · 午吃饱 · 晚吃少</b>
+            <span>把一天的能量重心放在白天，晚上给肠胃留出休息的时间。</span>
+          </div>
+          <div class="mline">
+            <b>餐餐有蔬菜，天天有水果</b>
+            <span>颜色越多越好，深绿色、橙黄色、紫红色轮着上桌。</span>
+          </div>
+          <div class="mline">
+            <b>少油少盐少糖，多水多动多睡</b>
+            <span>饮食、运动、睡眠是同一件事的三个面，缺一块都补不回来。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 页脚 ================= -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div>
+      <div class="brand" style="margin-bottom:10px">
+        <span class="brand__mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3.6 10.6h16.8a8.4 8.4 0 0 1-8.4 8.4 8.4 8.4 0 0 1-8.4-8.4z"/>
+            <path d="M9.3 7.6c.9-.8.9-1.8 0-2.7M14.7 7.6c.9-.8.9-1.8 0-2.7"/>
+          </svg>
+        </span>
+        <span class="brand__txt">食光计划<em>EAT WELL</em></span>
+      </div>
+      <p>学生健康饮食主题单页作品 · 膳食数据参考《中国居民膳食指南（2022）》</p>
+    </div>
+    <div class="footer__links">
+      <a href="#top">回到顶部</a>
+      <a href="#meals">三餐安排</a>
+      <a href="#week">一周食谱</a>
+    </div>
+  </div>
+</footer>
+
+<a href="#top" class="totop" id="toTop" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</a>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- 顶部滚动进度 ---------- */
+  var progress = document.getElementById('progress');
+  var nav = document.getElementById('nav');
+  var toTop = document.getElementById('toTop');
+
+  function onScroll() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var y = window.pageYOffset || document.documentElement.scrollTop;
+    var p = h > 0 ? (y / h) * 100 : 0;
+    progress.style.width = p + '%';
+    if (y > 12) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+    if (y > 520) { toTop.classList.add('show'); } else { toTop.classList.remove('show'); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- 移动端菜单 ---------- */
+  var navToggle = document.getElementById('navToggle');
+  navToggle.addEventListener('click', function () {
+    nav.classList.toggle('open');
+  });
+  document.querySelectorAll('#navLinks a').forEach(function (a) {
+    a.addEventListener('click', function () { nav.classList.remove('open'); });
+  });
+
+  /* ---------- 滚动出现动画 ---------- */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- 数字滚动 ---------- */
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-num')) || 0;
+    var dur = 1200, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased);
+      if (p < 1) requestAnimationFrame(step); else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('.count');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    counters.forEach(function (el) { el.textContent = '0'; });
+    var io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { countUp(en.target); io2.unobserve(en.target); }
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (el) { io2.observe(el); });
+  }
+
+  /* ---------- Hero 环形进度 ---------- */
+  var ringFg = document.getElementById('ringFg');
+  var CIRC = 2 * Math.PI * 84;
+  ringFg.style.strokeDasharray = CIRC;
+  setTimeout(function () {
+    ringFg.style.strokeDashoffset = CIRC * (1 - 0.82);
+  }, 350);
+
+  /* ---------- 导航高亮 ---------- */
+  var sections = ['why', 'meals', 'plate', 'myths', 'week', 'test'];
+  var navAnchors = {};
+  document.querySelectorAll('#navLinks a').forEach(function (a) {
+    navAnchors[a.getAttribute('href').replace('#', '')] = a;
+  });
+
+  function syncNav() {
+    var pos = window.pageYOffset + 140;
+    var current = null;
+    sections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= pos) current = id;
+    });
+    Object.keys(navAnchors).forEach(function (k) {
+      navAnchors[k].classList.toggle('active', k === current);
+    });
+  }
+  window.addEventListener('scroll', syncNav, { passive: true });
+  syncNav();
+
+  /* ---------- 餐盘交互 ---------- */
+  var segs = document.querySelectorAll('.seg');
+  var legends = document.querySelectorAll('.legend');
+
+  function activateSeg(key) {
+    segs.forEach(function (s) {
+      s.classList.toggle('dim', key !== null && s.getAttribute('data-seg') !== key);
+    });
+    legends.forEach(function (l) {
+      l.classList.toggle('on', key !== null && l.getAttribute('data-seg') === key);
+    });
+  }
+  legends.forEach(function (l) {
+    var key = l.getAttribute('data-seg');
+    l.addEventListener('mouseenter', function () { activateSeg(key); });
+    l.addEventListener('mouseleave', function () { activateSeg(null); });
+  });
+  segs.forEach(function (s) {
+    var key = s.getAttribute('data-seg');
+    s.addEventListener('mouseenter', function () { activateSeg(key); });
+    s.addEventListener('mouseleave', function () { activateSeg(null); });
+  });
+
+  /* ---------- BMI ---------- */
+  var hInput = document.getElementById('hInput');
+  var wInput = document.getElementById('wInput');
+  var bmiBtn = document.getElementById('bmiBtn');
+  var bmiResult = document.getElementById('bmiResult');
+  var bmiVal = document.getElementById('bmiVal');
+  var bmiBadge = document.getElementById('bmiBadge');
+  var bmiText = document.getElementById('bmiText');
+  var bmiPin = document.getElementById('bmiPin');
+
+  function calcBMI() {
+    var h = parseFloat(hInput.value);
+    var w = parseFloat(wInput.value);
+    if (!h || !w || h < 100 || h > 250 || w < 20 || w > 250) {
+      bmiResult.classList.add('show');
+      bmiVal.textContent = '—';
+      bmiBadge.textContent = '请输入有效数值';
+      bmiText.textContent = '身高请在 100–250 cm、体重在 20–250 kg 之间填写，例如身高 172、体重 62。';
+      bmiPin.style.left = '0%';
+      return;
+    }
+    var bmi = w / Math.pow(h / 100, 2);
+    var v = bmi.toFixed(1);
+    var label, txt, color;
+
+    if (bmi < 18.5) {
+      label = '偏瘦'; color = '#3f7fa8';
+      txt = '能量摄入可能不足。优先增加优质蛋白和主食的量，配合力量训练长肌肉，而不是靠零食空补热量。';
+    } else if (bmi < 24) {
+      label = '正常'; color = '#1f8459';
+      txt = '处在健康区间。继续保持三餐规律、蔬菜充足，体重稳定比数字更低更重要。';
+    } else if (bmi < 28) {
+      label = '超重'; color = '#cf8a2e';
+      txt = '建议先减少含糖饮料和油炸食品，把主食换成一半粗粮，每天增加 30 分钟快走，不必极端节食。';
+    } else {
+      label = '肥胖'; color = '#c9533f';
+      txt = '建议在医生或营养师指导下制定减重计划，循序渐进，每周减重 0.5–1 kg 较为稳妥。';
+    }
+
+    bmiVal.textContent = v;
+    bmiBadge.textContent = label;
+    bmiBadge.style.color = color;
+    bmiBadge.style.background = 'rgba(0,0,0,.04)';
+    bmiText.textContent = txt;
+
+    var pos = ((bmi - 14) / 20) * 100;
+    pos = Math.max(2, Math.min(98, pos));
+    bmiPin.style.left = pos + '%';
+    bmiResult.classList.add('show','calculated');
+  }
+  bmiBtn.addEventListener('click', calcBMI);
+  [hInput, wInput].forEach(function (inp) {
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') calcBMI();
+    });
+  });
+
+  /* ---------- 饮水 ---------- */
+  var waterInput = document.getElementById('waterInput');
+  var waterBtn = document.getElementById('waterBtn');
+  var waterResult = document.getElementById('waterResult');
+  var waterVal = document.getElementById('waterVal');
+  var waterBadge = document.getElementById('waterBadge');
+  var cups = document.getElementById('cups');
+
+  function calcWater(w) {
+    if (!w || w < 25 || w > 200) {
+      waterResult.classList.add('show');
+      waterVal.textContent = '—';
+      waterBadge.textContent = '请输入有效体重';
+      cups.innerHTML = '';
+      return;
+    }
+    var ml = Math.round((w * 35) / 50) * 50;
+    if (ml < 1200) ml = 1200;
+    if (ml > 3500) ml = 3500;
+    var n = Math.round(ml / 200);
+
+    waterVal.textContent = ml;
+    waterBadge.textContent = '约 ' + n + ' 杯';
+    cups.innerHTML = '';
+    var shown = Math.min(n, 16);
+    for (var i = 0; i < shown; i++) {
+      var d = document.createElement('span');
+      d.className = 'cup';
+      cups.appendChild(d);
+      (function (el, delay) {
+        setTimeout(function () { el.classList.add('full'); }, 120 + delay * 55);
+      })(d, i);
+    }
+    waterResult.classList.add('show','calculated');
+  }
+
+  waterBtn.addEventListener('click', function () {
+    calcWater(parseFloat(waterInput.value));
+  });
+  waterInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') calcWater(parseFloat(waterInput.value));
+  });
+
+  document.querySelectorAll('#waterChips .chip').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('#waterChips .chip').forEach(function (b) { b.classList.remove('on'); });
+      btn.classList.add('on');
+      var w = parseFloat(btn.getAttribute('data-w'));
+      waterInput.value = w;
+      calcWater(w);
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

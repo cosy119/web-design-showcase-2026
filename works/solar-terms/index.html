@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>节气 · 时间的算法 | 二十四节气</title>
+<meta name="description" content="以太阳黄经每 15° 一个节气为线索，用长卷、黄经仪与节气罗盘，重读二十四节气这套写了三千年的时间算法。">
+<meta name="author" content="计算机学院网页设计大赛参赛作品">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳至正文</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="#top" aria-label="回到首屏">
+    <span class="brand-seal" aria-hidden="true">節</span>
+    <span class="brand-txt"><strong>节气</strong><em>THE 24 SOLAR TERMS</em></span>
+  </a>
+  <nav class="nav" aria-label="章节导航">
+    <a href="#intro" data-nav="intro"><i>壹</i>观象</a>
+    <a href="#instrument" data-nav="instrument"><i>贰</i>黄经仪</a>
+    <a href="#seasons" data-nav="seasons"><i>叁</i>四时</a>
+    <a href="#wheel" data-nav="wheel"><i>肆</i>罗盘</a>
+  </nav>
+  <div class="top-meta">
+    <span>今日 <b id="navTermName">霜降</b></span>
+    <span class="sep" aria-hidden="true"></span>
+    <span>黄经 <b id="navTermLon">210</b>°</span>
+  </div>
+</header>
+
+<div class="ruler" aria-hidden="true">
+  <div class="ruler-track"><div class="ruler-marks" id="rulerMarks"></div><span class="ruler-marker" id="rulerMarker"></span></div>
+  <span class="ruler-label" id="rulerLabel">00</span>
+</div>
+
+<main id="main">
+  <!-- 一 · 首屏 -->
+  <section class="hero" id="top">
+    <div class="hero-ring" aria-hidden="true"><span class="hero-ring-inner"></span></div>
+    <div class="hero-inner">
+      <div class="hero-main">
+        <p class="kicker">THE 24 SOLAR TERMS<span class="dot">·</span>中国时间算法</p>
+        <h1 class="hero-title" aria-label="节气">
+          <span class="char"><span>节</span></span>
+          <span class="char char-2"><span>气</span></span>
+        </h1>
+        <div class="hero-sub">
+          <span class="rule" aria-hidden="true"></span>
+          <p>太阳每走 <b>15°</b>，人间换一个节气</p>
+        </div>
+      </div>
+      <div class="hero-side">
+        <p class="vertical-note">太阳每走十五度<br>人间换一个节气</p>
+        <div class="today-card">
+          <span class="today-label">今日节气 · TODAY</span>
+          <strong id="heroTerm">霜降</strong>
+          <span class="today-date" id="heroDate">10月23日 · 太阳黄经 210°</span>
+          <span class="today-next" id="heroNext">距 立冬 还有 15 天</span>
+        </div>
+        <span class="seal" aria-hidden="true">候</span>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <a class="scroll-cue" href="#intro"><span>向下 · 观象</span><i aria-hidden="true"></i></a>
+      <p class="hero-fine">立春 · 雨水 · 惊蛰 · 春分 · 清明 · 谷雨 · 立夏 · … · 大寒</p>
+    </div>
+  </section>
+
+  <!-- 二 · 观象 -->
+  <section class="intro" id="intro">
+    <header class="sec-head">
+      <span class="sec-num">壹</span>
+      <span class="sec-name">观象</span>
+      <span class="sec-en">OBSERVING THE SUN</span>
+    </header>
+    <div class="intro-grid">
+      <div class="intro-copy">
+        <h2 class="display reveal">把太阳走的路<br>切成<span class="hl">二十四</span>段</h2>
+        <p class="lead reveal">二十四节气，是中国人写给太阳的一份观测笔记。</p>
+        <p class="reveal">两千多年前，人们把一根八尺长的木杆立在土地上，量正午影子的长短。影子最长的那一天，叫冬至；最短的那一天，叫夏至。</p>
+        <p class="reveal">后来，他们不再只依赖影子，而是把太阳一年走过的黄道等分成二十四份。太阳每前进 <b>15°</b>，就有一个新的节气诞生；走完 <b>360°</b>，人间正好过完一年。</p>
+        <p class="reveal">它从来不是二十四个节日，而是一套把天文、农事、物候与饮食写进同一行代码的时间算法——没有服务器，只靠太阳，运行了三千年。</p>
+        <div class="stats">
+          <div class="stat"><strong class="count" data-count="24">24</strong><span>节气</span></div>
+          <div class="stat"><strong class="count" data-count="72">72</strong><span>物候</span></div>
+          <div class="stat"><strong class="count" data-count="360" data-suffix="°">360°</strong><span>黄经</span></div>
+          <div class="stat"><strong class="count" data-count="3000" data-suffix="+">3000+</strong><span>年</span></div>
+        </div>
+      </div>
+      <figure class="gnomon reveal">
+        <svg viewBox="0 0 520 400" role="img" aria-label="圭表测影示意图：立杆测正午日影，影最长时为冬至">
+          <defs>
+            <linearGradient id="sunGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#C2A25A"/><stop offset="1" stop-color="#A8382C"/>
+            </linearGradient>
+          </defs>
+          <line x1="40" y1="330" x2="480" y2="330" class="gn-ground"/>
+          <line x1="40" y1="330" x2="40" y2="90" class="gn-tick"/>
+          <line x1="480" y1="330" x2="480" y2="90" class="gn-tick"/>
+          <path d="M60 300 Q260 40 460 300" class="gn-arc"/>
+          <circle cx="150" cy="150" r="15" class="gn-sun-halo"/>
+          <circle cx="150" cy="150" r="7" class="gn-sun"/>
+          <line x1="260" y1="90" x2="260" y2="330" class="gn-pole"/>
+          <line x1="150" y1="150" x2="260" y2="150" class="gn-ray"/>
+          <rect x="260" y="326" width="132" height="5" class="gn-shadow" rx="2.5"/>
+          <line x1="260" y1="330" x2="392" y2="330" class="gn-measure"/>
+          <text x="326" y="356" class="gn-label" text-anchor="middle">影</text>
+          <text x="260" y="76" class="gn-label" text-anchor="middle">表 · 八尺</text>
+          <text x="66" y="318" class="gn-label gn-label-sm">地</text>
+          <text x="150" y="120" class="gn-label gn-label-sm" text-anchor="middle">日</text>
+        </svg>
+        <figcaption>圭表测影 · 影至长则冬至，影至短则夏至</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 三 · 黄经仪 -->
+  <section class="instrument" id="instrument">
+    <canvas class="inst-stars" id="starCanvas" aria-hidden="true"></canvas>
+    <div class="inst-inner">
+      <header class="sec-head light">
+        <span class="sec-num">贰</span>
+        <span class="sec-name">黄经仪</span>
+        <span class="sec-en">SOLAR LONGITUDE INSTRUMENT</span>
+      </header>
+      <div class="inst-title-row">
+        <h2 class="display light reveal">转动太阳，<br>看见时间。</h2>
+        <p class="inst-lead reveal">太阳黄经每增加 15°，节气便向前一步。拖动圆环上的太阳，看日期、物候与正午影长如何同时改变。</p>
+      </div>
+      <div class="instrument-grid">
+        <div class="scope">
+          <svg id="scopeSvg" viewBox="0 0 720 720" tabindex="0" role="slider"
+               aria-label="太阳能黄经仪，拖动或按方向键切换节气"
+               aria-valuemin="0" aria-valuemax="345" aria-valuenow="210" aria-valuetext="霜降，太阳黄经 210 度">
+            <defs>
+              <radialGradient id="sunCore" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#FFF4D8"/>
+                <stop offset="55%" stop-color="#E3C27C"/>
+                <stop offset="100%" stop-color="#B08D4F"/>
+              </radialGradient>
+              <filter id="sunGlow" x="-120%" y="-120%" width="340%" height="340%">
+                <feGaussianBlur stdDeviation="10" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <circle cx="360" cy="360" r="330" class="sc-ring-faint"/>
+            <circle cx="360" cy="360" r="252" class="sc-ring"/>
+            <circle cx="360" cy="360" r="190" class="sc-ring-faint"/>
+            <g id="scopeTicks"></g>
+            <g id="scopeLabels"></g>
+            <path id="scopeArc" class="sc-arc" d=""/>
+            <g id="scopeHandle" class="sc-handle">
+              <line x1="360" y1="360" x2="360" y2="120" class="sc-needle"/>
+              <circle cx="360" cy="120" r="26" class="sc-sun-halo" filter="url(#sunGlow)"/>
+              <circle cx="360" cy="120" r="9" fill="url(#sunCore)"/>
+              <circle cx="360" cy="360" r="4" class="sc-center-dot"/>
+            </g>
+            <g class="sc-center" aria-hidden="true">
+              <text x="360" y="330" text-anchor="middle" class="sc-center-name" id="scopeCenterName">霜降</text>
+              <text x="360" y="382" text-anchor="middle" class="sc-center-degree" id="scopeCenterDegree">210°</text>
+              <text x="360" y="410" text-anchor="middle" class="sc-center-cap">太阳黄经 · SOLAR LONGITUDE</text>
+            </g>
+          </svg>
+          <p class="scope-hint">拖动太阳 · 每 15° 一个节气</p>
+        </div>
+        <div class="readout">
+          <div class="readout-top">
+            <span id="roIndex">18 / 24</span>
+            <span id="roSeason">秋 · 霜降</span>
+          </div>
+          <h3 id="roName">霜降</h3>
+          <p class="ro-py"><span id="roPy">Shuāng Jiàng</span> · <span id="roEn">Frost's Descent</span></p>
+          <p class="ro-date" id="roDate">10月23日 · 太阳到达黄经 210°</p>
+          <div class="ro-block">
+            <span class="ro-label">三候 · 五日为一候</span>
+            <ol class="phenology" id="roPhenology">
+              <li><i>初候</i><span>豺乃祭兽</span></li>
+              <li><i>二候</i><span>草木黄落</span></li>
+              <li><i>三候</i><span>蛰虫咸俯</span></li>
+            </ol>
+          </div>
+          <div class="ro-block">
+            <span class="ro-label">时俗</span>
+            <p class="ro-text" id="roCustom">赏红叶、吃柿子</p>
+          </div>
+          <div class="ro-block">
+            <span class="ro-label">正午影长 · 八尺之表</span>
+            <div class="shadow-meter"><i id="roShadowBar" style="width:52%"></i><span class="shadow-ticks" aria-hidden="true"></span></div>
+            <p class="ro-small" id="roShadow">影长约 9.8 尺，日已偏南</p>
+          </div>
+          <div class="ro-actions">
+            <button type="button" id="btnToday">定位今日</button>
+            <button type="button" id="btnAuto" aria-pressed="false">自动巡天</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 四 · 四时 -->
+  <section class="seasons" id="seasons" aria-label="四时长卷">
+    <article class="chapter" data-season="spring">
+      <canvas class="chapter-canvas" aria-hidden="true"></canvas>
+      <span class="chapter-glyph" aria-hidden="true">春</span>
+      <div class="chapter-inner">
+        <div class="chapter-head">
+          <span class="chapter-num">四时 · 一</span>
+          <span class="chapter-en">SPRING · 立春 — 谷雨</span>
+          <h2 class="chapter-title">春</h2>
+          <blockquote>律回岁晚冰霜少，<br>春到人间草木知</blockquote>
+          <cite>张栻《立春偶成》</cite>
+          <p class="chapter-note">风从东来，冰面裂开第一道缝；草木不说话，只把绿意递上来。</p>
+        </div>
+        <nav class="chapter-terms" aria-label="春季六个节气">
+          <a class="term-row" href="#wheel" data-term-link="立春"><span class="tr-idx">01</span><span class="tr-name">立春</span><span class="tr-date">02.04</span><span class="tr-line">冰消一寸，春生一分</span></a>
+          <a class="term-row" href="#wheel" data-term-link="雨水"><span class="tr-idx">02</span><span class="tr-name">雨水</span><span class="tr-date">02.19</span><span class="tr-line">天一生水，润物无声</span></a>
+          <a class="term-row" href="#wheel" data-term-link="惊蛰"><span class="tr-idx">03</span><span class="tr-name">惊蛰</span><span class="tr-date">03.05</span><span class="tr-line">一雷惊蛰，万物抬头</span></a>
+          <a class="term-row" href="#wheel" data-term-link="春分"><span class="tr-idx">04</span><span class="tr-name">春分</span><span class="tr-date">03.20</span><span class="tr-line">昼夜均分，春色平分</span></a>
+          <a class="term-row" href="#wheel" data-term-link="清明"><span class="tr-idx">05</span><span class="tr-name">清明</span><span class="tr-date">04.05</span><span class="tr-line">气清景明，万物皆显</span></a>
+          <a class="term-row" href="#wheel" data-term-link="谷雨"><span class="tr-idx">06</span><span class="tr-name">谷雨</span><span class="tr-date">04.20</span><span class="tr-line">雨生百谷，春事将阑</span></a>
+        </nav>
+      </div>
+    </article>
+
+    <article class="chapter" data-season="summer">
+      <canvas class="chapter-canvas" aria-hidden="true"></canvas>
+      <span class="chapter-glyph" aria-hidden="true">夏</span>
+      <div class="chapter-inner">
+        <div class="chapter-head">
+          <span class="chapter-num">四时 · 二</span>
+          <span class="chapter-en">SUMMER · 立夏 — 大暑</span>
+          <h2 class="chapter-title">夏</h2>
+          <blockquote>绿树阴浓夏日长，<br>楼台倒影入池塘</blockquote>
+          <cite>高骈《山亭夏日》</cite>
+          <p class="chapter-note">日头把影子压到最短，蝉声把午后拉得很长，万物都在用力生长。</p>
+        </div>
+        <nav class="chapter-terms" aria-label="夏季六个节气">
+          <a class="term-row" href="#wheel" data-term-link="立夏"><span class="tr-idx">07</span><span class="tr-name">立夏</span><span class="tr-date">05.05</span><span class="tr-line">绿肥红瘦，夏木成阴</span></a>
+          <a class="term-row" href="#wheel" data-term-link="小满"><span class="tr-idx">08</span><span class="tr-name">小满</span><span class="tr-date">05.21</span><span class="tr-line">麦气初盈，将满未满</span></a>
+          <a class="term-row" href="#wheel" data-term-link="芒种"><span class="tr-idx">09</span><span class="tr-name">芒种</span><span class="tr-date">06.05</span><span class="tr-line">有芒之种，忙收忙种</span></a>
+          <a class="term-row" href="#wheel" data-term-link="夏至"><span class="tr-idx">10</span><span class="tr-name">夏至</span><span class="tr-date">06.21</span><span class="tr-line">日长至，影短至</span></a>
+          <a class="term-row" href="#wheel" data-term-link="小暑"><span class="tr-idx">11</span><span class="tr-name">小暑</span><span class="tr-date">07.07</span><span class="tr-line">温风至，蟋蟀居壁</span></a>
+          <a class="term-row" href="#wheel" data-term-link="大暑"><span class="tr-idx">12</span><span class="tr-name">大暑</span><span class="tr-date">07.23</span><span class="tr-line">腐草为萤，大雨时行</span></a>
+        </nav>
+      </div>
+    </article>
+
+    <article class="chapter" data-season="autumn">
+      <canvas class="chapter-canvas" aria-hidden="true"></canvas>
+      <span class="chapter-glyph" aria-hidden="true">秋</span>
+      <div class="chapter-inner">
+        <div class="chapter-head">
+          <span class="chapter-num">四时 · 三</span>
+          <span class="chapter-en">AUTUMN · 立秋 — 霜降</span>
+          <h2 class="chapter-title">秋</h2>
+          <blockquote>云天收夏色，<br>木叶动秋声</blockquote>
+          <cite>刘禹锡《始闻秋风》</cite>
+          <p class="chapter-note">一场雨凉一层，稻穗低头，霜把山野的叶子一寸寸染红。</p>
+        </div>
+        <nav class="chapter-terms" aria-label="秋季六个节气">
+          <a class="term-row" href="#wheel" data-term-link="立秋"><span class="tr-idx">13</span><span class="tr-name">立秋</span><span class="tr-date">08.07</span><span class="tr-line">凉风有信，一叶知秋</span></a>
+          <a class="term-row" href="#wheel" data-term-link="处暑"><span class="tr-idx">14</span><span class="tr-name">处暑</span><span class="tr-date">08.23</span><span class="tr-line">暑气至此，禾乃登场</span></a>
+          <a class="term-row" href="#wheel" data-term-link="白露"><span class="tr-idx">15</span><span class="tr-name">白露</span><span class="tr-date">09.07</span><span class="tr-line">露凝而白，鸿雁南飞</span></a>
+          <a class="term-row" href="#wheel" data-term-link="秋分"><span class="tr-idx">16</span><span class="tr-name">秋分</span><span class="tr-date">09.23</span><span class="tr-line">雷收声，虫坯户</span></a>
+          <a class="term-row" href="#wheel" data-term-link="寒露"><span class="tr-idx">17</span><span class="tr-name">寒露</span><span class="tr-date">10.08</span><span class="tr-line">露气寒冷，将凝为霜</span></a>
+          <a class="term-row" href="#wheel" data-term-link="霜降"><span class="tr-idx">18</span><span class="tr-name">霜降</span><span class="tr-date">10.23</span><span class="tr-line">草木黄落，霜华满天</span></a>
+        </nav>
+      </div>
+    </article>
+
+    <article class="chapter" data-season="winter">
+      <canvas class="chapter-canvas" aria-hidden="true"></canvas>
+      <span class="chapter-glyph" aria-hidden="true">冬</span>
+      <div class="chapter-inner">
+        <div class="chapter-head">
+          <span class="chapter-num">四时 · 四</span>
+          <span class="chapter-en">WINTER · 立冬 — 大寒</span>
+          <h2 class="chapter-title">冬</h2>
+          <blockquote>晚来天欲雪，<br>能饮一杯无</blockquote>
+          <cite>白居易《问刘十九》</cite>
+          <p class="chapter-note">万物收藏，雪落无声，炉火替太阳守着人间。</p>
+        </div>
+        <nav class="chapter-terms" aria-label="冬季六个节气">
+          <a class="term-row" href="#wheel" data-term-link="立冬"><span class="tr-idx">19</span><span class="tr-name">立冬</span><span class="tr-date">11.07</span><span class="tr-line">水始冰，地始冻</span></a>
+          <a class="term-row" href="#wheel" data-term-link="小雪"><span class="tr-idx">20</span><span class="tr-name">小雪</span><span class="tr-date">11.22</span><span class="tr-line">虹藏不见，天地闭塞</span></a>
+          <a class="term-row" href="#wheel" data-term-link="大雪"><span class="tr-idx">21</span><span class="tr-name">大雪</span><span class="tr-date">12.07</span><span class="tr-line">雪盛此时，万籁俱寂</span></a>
+          <a class="term-row" href="#wheel" data-term-link="冬至"><span class="tr-idx">22</span><span class="tr-name">冬至</span><span class="tr-date">12.21</span><span class="tr-line">日短至，阳气生</span></a>
+          <a class="term-row" href="#wheel" data-term-link="小寒"><span class="tr-idx">23</span><span class="tr-name">小寒</span><span class="tr-date">01.05</span><span class="tr-line">雁北乡，鹊始巢</span></a>
+          <a class="term-row" href="#wheel" data-term-link="大寒"><span class="tr-idx">24</span><span class="tr-name">大寒</span><span class="tr-date">01.20</span><span class="tr-line">岁末天寒，静待春归</span></a>
+        </nav>
+      </div>
+    </article>
+  </section>
+
+  <!-- 五 · 罗盘 -->
+  <section class="wheel-sec" id="wheel">
+    <header class="sec-head">
+      <span class="sec-num">肆</span>
+      <span class="sec-name">罗盘</span>
+      <span class="sec-en">THE SOLAR TERM COMPASS</span>
+    </header>
+    <div class="wheel-title-row">
+      <h2 class="display reveal">二十四次，<br>提醒你抬头。</h2>
+      <p class="wheel-lead reveal">拖动罗盘，或直接点选一个节气。每一条物候，都曾是某个人抬头看见的天气。</p>
+    </div>
+    <div class="wheel-grid">
+      <div class="wheel-wrap">
+        <span class="wheel-pointer" aria-hidden="true"></span>
+        <svg id="wheelSvg" viewBox="0 0 760 760" tabindex="0" role="slider"
+             aria-label="二十四节气罗盘，左右方向键切换节气"
+             aria-valuemin="1" aria-valuemax="24" aria-valuenow="18" aria-valuetext="霜降">
+          <circle cx="380" cy="380" r="336" class="wh-ring-faint"/>
+          <circle cx="380" cy="380" r="304" class="wh-ring"/>
+          <circle cx="380" cy="380" r="190" class="wh-ring-faint"/>
+          <g id="wheelRotate">
+            <g id="wheelSegments"></g>
+            <g id="wheelLabels"></g>
+          </g>
+          <g class="wheel-center" aria-hidden="true">
+            <text x="380" y="356" text-anchor="middle" class="wh-center-index" id="wheelCenterIndex">18 / 24</text>
+            <text x="380" y="404" text-anchor="middle" class="wh-center-name" id="wheelCenterName">霜降</text>
+            <text x="380" y="436" text-anchor="middle" class="wh-center-py" id="wheelCenterPy">SHUĀNG JIÀNG</text>
+          </g>
+          <circle cx="380" cy="380" r="118" class="wh-center-ring"/>
+        </svg>
+        <div class="wheel-controls">
+          <button type="button" class="wheel-nav" id="wheelPrev" aria-label="上一个节气">‹</button>
+          <span>拖拽 / 点选 / ← →</span>
+          <button type="button" class="wheel-nav" id="wheelNext" aria-label="下一个节气">›</button>
+        </div>
+      </div>
+      <div class="term-detail" id="termDetail" aria-live="polite">
+        <div class="td-head"><span id="tdIndex">18 / 24</span><span id="tdSeason">秋 · 霜降</span></div>
+        <h3 id="tdName">霜降</h3>
+        <p class="td-py"><span id="tdPy">Shuāng Jiàng</span> · <span id="tdEn">Frost's Descent</span></p>
+        <p class="td-line" id="tdLine">草木黄落，霜华满天</p>
+        <div class="td-color"><i id="tdSwatch" style="background:#A05B33"></i><span id="tdColorName">柿红</span><span class="td-color-sep">中国传统色</span></div>
+        <div class="td-block">
+          <span class="td-label">三候</span>
+          <ul id="tdPhenology">
+            <li><i>初候</i>豺乃祭兽</li>
+            <li><i>二候</i>草木黄落</li>
+            <li><i>三候</i>蛰虫咸俯</li>
+          </ul>
+        </div>
+        <div class="td-block">
+          <span class="td-label">时俗</span>
+          <p id="tdCustom">赏红叶、吃柿子</p>
+        </div>
+        <div class="td-foot">
+          <span>太阳黄经 <b id="tdLon">210</b>°</span>
+          <span id="tdDate">10月23日</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 六 · 尾声 -->
+  <section class="end" id="end">
+    <div class="end-inner">
+      <p class="kicker light">FINALE<span class="dot">·</span>写在最后</p>
+      <h2 class="end-title">时间不是被计算出来的，<br><em>是被过出来的。</em></h2>
+      <p class="end-copy">二十四节气不是二十四个节日，而是二十四次提醒：再精确的算法，也要落到一场雨、一片叶、一顿饭上。抬头看看今天的天色，那就是时间写给我们的返回值。</p>
+      <div class="end-meta">
+        <div><span>参赛作品</span><strong>节气 · 时间的算法</strong></div>
+        <div><span>实现</span><strong>HTML / CSS / JavaScript · 零依赖</strong></div>
+        <div><span>图形</span><strong>全部由 SVG 与 Canvas 实时绘制</strong></div>
+      </div>
+      <a class="back-top" href="#top">回到首屏 <span aria-hidden="true">↑</span></a>
+      <div class="end-foot">
+        <span>MMXXVI · 计算机学院网页设计大赛</span>
+        <span>立春 — 大寒 · 一个完整的圆</span>
+      </div>
+    </div>
+    <span class="end-seal" aria-hidden="true">節氣</span>
+  </section>
+</main>
+
+<nav class="mobile-nav" aria-label="移动端章节导航">
+  <a href="#intro">观象</a>
+  <a href="#instrument">黄经仪</a>
+  <a href="#seasons">四时</a>
+  <a href="#wheel">罗盘</a>
+</nav>
+
+<noscript><p class="noscript">本页的罗盘与黄经仪需要启用 JavaScript 才能交互，文字内容仍可正常阅读。</p></noscript>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/scenes.js"></script>
+<script src="assets/js/instrument.js"></script>
+<script src="assets/js/wheel.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

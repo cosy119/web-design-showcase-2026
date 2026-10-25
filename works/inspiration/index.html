@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>墨笺 · 灵感手账</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     文案与主题配置
+     想换内容 / 配色，改这里即可，无需动其它代码。
+     ============================================================ */
+  :root {
+    --paper: #f7f3ec;        /* 背景 · 象牙宣纸 */
+    --paper-soft: #fbf8f2;   /* 卡片底 */
+    --ink: #34302a;          /* 正文墨色 */
+    --ink-soft: #6f665b;     /* 次要文字 */
+    --accent: #9c7a4d;       /* 点缀 · 赭石 */
+    --accent-soft: #e7dcc8;  /* 标签底 */
+    --line: #e3dac9;         /* 分隔线 */
+    --shadow: 0 6px 24px rgba(80, 66, 45, 0.10);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle at 18% 20%, rgba(156, 122, 77, 0.05), transparent 40%),
+      radial-gradient(circle at 82% 75%, rgba(156, 122, 77, 0.06), transparent 45%);
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  /* ---------- 头部 ---------- */
+  header { text-align: center; margin-bottom: 56px; }
+
+  .brand {
+    font-family: "Ma Shan Zheng", "Noto Serif SC", serif;
+    font-size: 56px;
+    letter-spacing: 6px;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .subtitle {
+    margin: 14px 0 0;
+    font-weight: 300;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--ink-soft);
+  }
+
+  .rule {
+    width: 64px;
+    height: 1px;
+    background: var(--accent);
+    margin: 22px auto 0;
+    opacity: 0.7;
+  }
+
+  /* ---------- 书写区 ---------- */
+  .composer {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px 28px 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+  }
+
+  .composer textarea {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 18px;
+    color: var(--ink);
+    line-height: 1.9;
+    outline: none;
+  }
+  .composer textarea::placeholder { color: #b6ab97; }
+
+  .composer .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .composer .field { flex: 1 1 200px; display: flex; flex-direction: column; }
+
+  .composer label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .composer input {
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    padding: 4px 2px;
+    outline: none;
+    transition: border-color .25s ease;
+  }
+  .composer input:focus { border-color: var(--accent); }
+
+  .actions { margin-top: 22px; text-align: right; }
+
+  .btn {
+    font-family: inherit;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: var(--paper-soft);
+    background: var(--accent);
+    border: none;
+    border-radius: 2px;
+    padding: 11px 30px;
+    cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  /* ---------- 筛选 ---------- */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .filters .filter-label {
+    font-size: 13px;
+    color: var(--ink-soft);
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .chip {
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 16px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.active { background: var(--accent); color: var(--paper-soft); border-color: var(--accent); }
+
+  /* ---------- 卡片墙 ---------- */
+  .wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 26px 24px 22px;
+    box-shadow: var(--shadow);
+    animation: fade .5s ease both;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(80, 66, 45, 0.14); }
+
+  .card .quote { font-size: 17px; line-height: 1.95; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+
+  .card .card-footer {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .card .tag { color: var(--accent); letter-spacing: 1px; }
+
+  .card .del {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: transparent;
+    color: #c2b6a0;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .2s ease, color .2s ease;
+  }
+  .card:hover .del { opacity: 1; }
+  .card .del:hover { color: #b05a4a; }
+
+  /* ---------- 空状态 ---------- */
+  .empty {
+    text-align: center;
+    color: var(--ink-soft);
+    font-weight: 300;
+    padding: 60px 20px;
+    border: 1px dashed var(--line);
+    border-radius: 4px;
+  }
+  .empty .big { font-size: 20px; color: var(--ink); margin-bottom: 8px; }
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    margin-top: 72px;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+  }
+
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .brand { font-size: 42px; }
+    .wrap { padding: 44px 18px 72px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 class="brand">墨笺</h1>
+      <p class="subtitle" id="subtitle">把 fleeting 的灵感，安放进纸上</p>
+      <div class="rule"></div>
+    </header>
+
+    <section class="composer">
+      <textarea id="text" placeholder="写下一句触动你的话，或一个微小的念头……"></textarea>
+      <div class="meta">
+        <div class="field">
+          <label for="tag">标签</label>
+          <input id="tag" type="text" placeholder="如：晨读 / 夜思 / 旅途" />
+        </div>
+        <div class="field">
+          <label for="source">出处 · 署名</label>
+          <input id="source" type="text" placeholder="谁说的，或来自哪里" />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="save">收 进 手 账</button>
+      </div>
+    </section>
+
+    <div class="filters" id="filters">
+      <span class="filter-label">筛选</span>
+    </div>
+
+    <section class="wall" id="wall"></section>
+
+    <footer id="footer">愿你有所记，有所惜。</footer>
+  </div>
+
+  <script>
+    /* ============================================================
+       文案配置区 —— 想改内容改这里
+       ============================================================ */
+    const CONFIG = {
+      siteName: "墨笺",
+      subtitle: "把 fleeting 的灵感，安放进纸上",
+      placeholder: "写下一句触动你的话，或一个微小的念头……",
+      tagPlaceholder: "如：晨读 / 夜思 / 旅途",
+      sourcePlaceholder: "谁说的，或来自哪里",
+      saveButton: "收 进 手 账",
+      filterLabel: "筛选",
+      emptyTitle: "手账还是空白的",
+      emptyText: "写下第一笺，让它在此停留。",
+      footer: "愿你有所记，有所惜。",
+      storageKey: "mojian_entries_v1"
+    };
+
+    /* ---------- 应用逻辑 ---------- */
+    const $ = (id) => document.getElementById(id);
+    const els = {
+      subtitle: $("subtitle"), text: $("text"), tag: $("tag"),
+      source: $("source"), save: $("save"), filters: $("filters"),
+      wall: $("wall"), footer: $("footer")
+    };
+
+    // 注入文案
+    els.subtitle.textContent = CONFIG.subtitle;
+    els.text.placeholder = CONFIG.placeholder;
+    els.tag.placeholder = CONFIG.tagPlaceholder;
+    els.source.placeholder = CONFIG.sourcePlaceholder;
+    els.save.textContent = CONFIG.saveButton;
+    document.querySelector(".filter-label").textContent = CONFIG.filterLabel;
+    els.footer.textContent = CONFIG.footer;
+    document.title = CONFIG.siteName + " · 灵感手账";
+
+    let entries = load();
+    let activeFilter = "全部";
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(CONFIG.storageKey)) || []; }
+      catch (e) { return []; }
+    }
+    function persist() {
+      localStorage.setItem(CONFIG.storageKey, JSON.stringify(entries));
+    }
+    function fmtDate(ts) {
+      const d = new Date(ts);
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}·${pad(d.getMonth() + 1)}·${pad(d.getDate())}`;
+    }
+
+    function renderFilters() {
+      const tags = ["全部", ...new Set(entries.map((e) => e.tag).filter(Boolean))];
+      els.filters.innerHTML = `<span class="filter-label">${CONFIG.filterLabel}</span>`;
+      tags.forEach((t) => {
+        const b = document.createElement("button");
+        b.className = "chip" + (t === activeFilter ? " active" : "");
+        b.textContent = t;
+        b.onclick = () => { activeFilter = t; renderFilters(); renderWall(); };
+        els.filters.appendChild(b);
+      });
+    }
+
+    function renderWall() {
+      const list = activeFilter === "全部"
+        ? entries
+        : entries.filter((e) => e.tag === activeFilter);
+      els.wall.innerHTML = "";
+      if (list.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.innerHTML = `<div class="big">${CONFIG.emptyTitle}</div><div>${CONFIG.emptyText}</div>`;
+        els.wall.appendChild(empty);
+        return;
+      }
+      list.slice().reverse().forEach((e) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <button class="del" title="删除">×</button>
+          <div class="quote"></div>
+          <div class="card-footer">
+            <span class="tag">${e.tag ? "#" + escapeHtml(e.tag) : ""}</span>
+            <span>${escapeHtml(e.source || "") + "　" + fmtDate(e.ts)}</span>
+          </div>`;
+        card.querySelector(".quote").textContent = e.text;
+        card.querySelector(".del").onclick = () => {
+          if (confirm("确定要从手账中抹去这一笺吗？")) {
+            entries = entries.filter((x) => x.id !== e.id);
+            persist(); renderFilters(); renderWall();
+          }
+        };
+        els.wall.appendChild(card);
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    els.save.onclick = () => {
+      const text = els.text.value.trim();
+      if (!text) { els.text.focus(); return; }
+      entries.push({
+        id: Date.now() + "_" + Math.random().toString(36).slice(2, 7),
+        text,
+        tag: els.tag.value.trim(),
+        source: els.source.value.trim(),
+        ts: Date.now()
+      });
+      persist();
+      els.text.value = ""; els.tag.value = ""; els.source.value = "";
+      activeFilter = "全部";
+      renderFilters(); renderWall();
+      els.text.focus();
+    };
+
+    renderFilters();
+    renderWall();
+  </script>
+</body>
+</html>
