@@ -170,5 +170,20 @@
       "Canvas"
     ],
     "award": null
+  },
+  {
+    "id": "healthy-living",
+    "title": "健康生活指南",
+    "author": "李书言",
+    "college": "计算机科学与技术学院",
+    "className": "数据2501",
+    "category": "生活科普",
+    "color": "#508c7a",
+    "description": "围绕日常生活习惯，展示饮食与作息方案的交互式健康主题网页。",
+    "tags": [
+      "健康生活",
+      "表单交互"
+    ],
+    "award": null
   }
 ]
