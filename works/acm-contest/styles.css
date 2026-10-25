@@ -1,0 +1,650 @@
+/* 全局样式 */
+:root {
+    --primary-color: #ff4d4d;
+    --secondary-color: #2c3e50;
+    --accent-color: #3498db;
+    --text-color: #333;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 头部样式 */
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    padding: 2rem 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    animation: fadeInDown 1s ease, pulse 2s infinite;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* 英雄区域 */
+.hero {
+    background: url('assets/hero.jpg') center/cover;
+    padding: 4rem 0;
+    text-align: center;
+    color: var(--white);
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    animation: fadeIn 1.5s ease;
+}
+
+/* 理由卡片 */
+.reasons {
+    padding: 4rem 0;
+    background-color: var(--white);
+}
+
+.reason-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* 时间线 */
+.schedule {
+    padding: 4rem 0;
+    background-color: var(--light-bg);
+}
+
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: var(--primary-color);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1px;
+}
+
+.event {
+    padding: 1rem;
+    position: relative;
+    width: 50%;
+    margin-bottom: 2rem;
+}
+
+.event:nth-child(odd) {
+    left: 0;
+}
+
+.event:nth-child(even) {
+    left: 50%;
+}
+
+.date {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+/* 奖品区域 */
+.prizes {
+    padding: 4rem 0;
+    background-color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.prizes::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255, 77, 77, 0.05) 0%,
+        rgba(44, 62, 80, 0.05) 100%);
+    z-index: 0;
+}
+
+.prize-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.prize-item {
+    text-align: center;
+    padding: 2rem;
+    background: var(--light-bg);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 77, 77, 0.1);
+}
+
+.prize-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 77, 77, 0.1) 0%,
+        rgba(44, 62, 80, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.prize-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.prize-item:hover::before {
+    opacity: 1;
+}
+
+.prize-item i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.prize-item:hover i {
+    transform: scale(1.2);
+    color: var(--secondary-color);
+}
+
+.prize-item h3 {
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.prize-item:hover h3 {
+    color: var(--primary-color);
+}
+
+.sponsor-info {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 77, 77, 0.05);
+    border-radius: 10px;
+    border: 1px dashed var(--primary-color);
+}
+
+.sponsor-info p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
+.sponsor-info p:first-child {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* 行动号召区域 */
+.cta {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    text-align: center;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+}
+
+.btn:hover::after {
+    transform: rotate(45deg) translate(50%, 50%);
+}
+
+.btn.primary {
+    background: var(--white);
+    color: var(--primary-color);
+}
+
+.btn.secondary {
+    background: transparent;
+    border: 2px solid var(--white);
+    color: var(--white);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 页脚 */
+footer {
+    background: var(--secondary-color);
+    color: var(--white);
+    padding: 2rem 0;
+    text-align: center;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .timeline::before {
+        left: 30px;
+    }
+
+    .event {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+
+    .event:nth-child(even) {
+        left: 0;
+    }
+}
+
+/* 新增悬浮效果 */
+.card:hover i {
+    animation: rotate 2s linear infinite;
+}
+
+.prize-item:hover i {
+    animation: pulse 1s infinite;
+}
+
+/* 新增文字动画 */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+.typing-text {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--primary-color);
+    animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+}
+
+/* 新增背景动画 */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 77, 77, 0.1) 0%,
+        rgba(44, 62, 80, 0.1) 100%);
+    animation: pulse 4s infinite;
+}
+
+/* 分享按钮样式 */
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.share-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.share-btn:hover {
+    transform: translateY(-5px) scale(1.1);
+}
+
+.share-btn.wechat {
+    background: #07C160;
+}
+
+.share-btn.qq {
+    background: #12B7F5;
+}
+
+.share-btn.weibo {
+    background: #E6162D;
+}
+
+/* 返回按钮样式 */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--primary-color);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn i {
+    margin-right: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.back-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.back-btn:hover i {
+    transform: translateX(-5px);
+}
+
+/* 欢迎弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.welcome-content {
+    background: linear-gradient(135deg, var(--white), var(--light-bg));
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.5s ease;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-header i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+}
+
+.welcome-header h2 {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+}
+
+.welcome-body {
+    margin: 1.5rem 0;
+}
+
+.welcome-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.welcome-body li {
+    padding: 0.5rem 0;
+    color: var(--secondary-color);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.welcome-body li::before {
+    content: '✓';
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.countdown-timer {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 77, 77, 0.1);
+    border-radius: 10px;
+}
+
+#welcome-countdown {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-top: 0.5rem;
+}
+
+.welcome-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.welcome-footer .btn {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.close:hover {
+    color: var(--primary-color);
+    transform: rotate(90deg);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 作者信息样式 */
+.author-info {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.author-info p {
+    margin: 0.3rem 0;
+}
+
+.author-info p:first-child {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+} 

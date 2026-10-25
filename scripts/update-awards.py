@@ -19,5 +19,7 @@ def update_card(m):
  search=' '.join([w['title'],w['author'],w['college'],w['className'],label]);card=re.sub(r'data-search="[^"]*"',f'data-search="{html.escape(search,quote=True)}"',card,count=1)
  card=re.sub(r'(<div class="work-meta">)<span[^>]*>.*?</span>',rf'\1<span class="award-label" data-level="{level}">{label}</span>',card,count=1,flags=re.S)
  return card
-s=re.sub(r'<article class="work".*?</article>',update_card,s,flags=re.S);p.write_text(s,encoding='utf-8')
+s=re.sub(r'<article class="work".*?</article>',update_card,s,flags=re.S)
+s=re.sub(r'(<p id="result-count"[^>]*>).*?(</p>)',lambda m:m.group(1)+f'正在展示全部 {len(works)} 件作品'+m.group(2),s,count=1,flags=re.S)
+p.write_text(s,encoding='utf-8')
 print('Updated award categories:',counts,'Pending:',sum(w['award'] is None for w in works))

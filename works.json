@@ -109,5 +109,20 @@
       "单页设计"
     ],
     "award": null
+  },
+  {
+    "id": "acm-contest",
+    "title": "第17届ACM程序设计大赛专题页",
+    "author": "王怡飞",
+    "college": "计算机科学与技术学院",
+    "className": "数据2401",
+    "category": "赛事专题",
+    "color": "#b34462",
+    "description": "以2025年山东理工大学第17届ACM程序设计大赛为主题，展示赛事日程、奖励与参赛信息。",
+    "tags": [
+      "赛事专题",
+      "活动介绍"
+    ],
+    "award": null
   }
 ]
