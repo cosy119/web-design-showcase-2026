@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春校园 | 网页设计大赛作品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        :root {
+            --main-color: #409eff;
+            --light-blue: #e8f4ff;
+            --text-dark: #333;
+            --text-gray: #666;
+            --white: #ffffff;
+        }
+        body {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        /* 导航栏 */
+        nav {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            background-color: rgba(255,255,255,0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            z-index: 99;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--main-color);
+        }
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 36px;
+        }
+        .nav-list a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size:16px;
+            transition: color 0.3s;
+        }
+        .nav-list a:hover {
+            color: var(--main-color);
+        }
+        /* 首页横幅 */
+        .banner {
+            margin-top:64px;
+            height: 85vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("");
+            background-color:#7cb3e8;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            color:white;
+            text-align:center;
+        }
+        .banner h1 {
+            font-size:48px;
+            margin-bottom:16px;
+        }
+        .banner p {
+            font-size:20px;
+            margin-bottom:30px;
+        }
+        .banner-btn {
+            padding:12px 30px;
+            background-color:var(--white);
+            color:var(--main-color);
+            border-radius:30px;
+            text-decoration:none;
+            font-weight:bold;
+            transition: all 0.3s;
+        }
+        .banner-btn:hover{
+            background-color:var(--main-color);
+            color:white;
+        }
+        /* 通用板块 */
+        .section{
+            max-width:1200px;
+            margin:0 auto;
+            padding:80px 20px;
+            text-align:center;
+        }
+        .section h2{
+            font-size:32px;
+            color:var(--text-dark);
+            margin-bottom:50px;
+        }
+        /* 校园介绍卡片 */
+        .card-wrap{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+            gap:28px;
+        }
+        .card{
+            background:var(--white);
+            padding:35px 25px;
+            border-radius:16px;
+            box-shadow:0 4px 16px rgba(0,0,0,0.08);
+            transition:transform 0.3s;
+        }
+        .card:hover{
+            transform: translateY(-8px);
+        }
+        .card h3{
+            color:var(--main-color);
+            margin-bottom:15px;
+            font-size:22px;
+        }
+        .card p{
+            color:var(--text-gray);
+        }
+        /* 校园风光板块 */
+        .bg-section{
+            background-color:var(--light-blue);
+        }
+        .img-card-wrap{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+            gap:24px;
+        }
+        .img-card{
+            background:white;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 4px 12px rgba(0,0,0,0.07);
+        }
+        .img-box{
+            height:180px;
+            background-color:#b8ddfa;
+        }
+        .img-card p{
+            padding:16px;
+            font-size:17px;
+            font-weight:500;
+        }
+        /* 页脚 */
+        footer{
+            background-color:#2c3e50;
+            color:white;
+            text-align:center;
+            padding:25px;
+        }
+    </style>
+</head>
+<body>
+<!--导航栏-->
+<nav>
+    <div class="nav-container">
+        <div class="logo">校园风华</div>
+        <ul class="nav-list">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#intro">校园简介</a></li>
+            <li><a href="#scene">校园风光</a></li>
+            <li><a href="#dream">青春寄语</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!--横幅区域-->
+<section class="banner" id="home">
+    <h1>青春校园，逐梦前行</h1>
+    <p>在校园的时光里，奔赴热爱，收获成长</p>
+    <a href="#intro" class="banner-btn">开始探索</a>
+</section>
+
+<!--校园简介板块-->
+<section class="section" id="intro">
+    <h2>校园风采</h2>
+    <div class="card-wrap">
+        <div class="card">
+            <h3>知识殿堂</h3>
+            <p>图书馆、教学楼承载求知梦想，在书本与课堂中积累知识，充实自我。</p>
+        </div>
+        <div class="card">
+            <h3>活力赛场</h3>
+            <p>操场与体育馆见证少年活力，运动释放热情，展现青年蓬勃朝气。</p>
+        </div>
+        <div class="card">
+            <h3>多彩社团</h3>
+            <p>丰富的社团活动，发掘兴趣特长，结识志同道合的伙伴，丰富课余生活。</p>
+        </div>
+    </div>
+</section>
+
+<!--校园风光板块-->
+<section class="section bg-section" id="scene">
+    <h2>校园风光</h2>
+    <div class="img-card-wrap">
+        <div class="img-card">
+            <div class="img-box"></div>
+            <p>教学楼</p>
+        </div>
+        <div class="img-card">
+            <div class="img-box"></div>
+            <p>校园湖畔</p>
+        </div>
+        <div class="img-card">
+            <div class="img-box"></div>
+            <p>林荫小路</p>
+        </div>
+    </div>
+</section>
+
+<!--青春寄语板块-->
+<section class="section" id="dream">
+    <h2>青春寄语</h2>
+    <div style="max-width:700px;margin:0 auto;font-size:18px;color:#555;">
+        <p>校园是梦想启航的地方。我们在这里学习、思考、成长，不负韶华，不负时代，以青春之我，书写属于自己的篇章。</p>
+    </div>
+</section>
+
+<!--页脚-->
+<footer>
+    <p>计算机学院网页设计大赛 · 参赛作品</p>
+</footer>
+</body>
+</html>

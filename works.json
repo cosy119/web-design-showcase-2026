@@ -284,5 +284,29 @@
       "文化介绍"
     ],
     "award": null
+  },
+  {
+    "id": "characters-landscape",
+    "title": "字里山河 · 汉字美的解剖学",
+    "author": "孔丰雪",
+    "college": "数学与统计学院",
+    "className": "统计2401",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "youth-campus",
+    "title": "青春校园，逐梦前行",
+    "author": "孙越",
+    "college": "计算机科学与技术学院",
+    "className": "数据2501",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
   }
 ]
