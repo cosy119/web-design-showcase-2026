@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春与成长——以梦为马，不负韶华</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ===== 顶部横幅 ===== */
+        .hero {
+            background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+            color: white;
+            text-align: center;
+            padding: 110px 20px 100px;
+        }
+        .hero h1 {
+            font-size: 46px;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+            font-weight: 300;
+            text-shadow: none;
+            transform: translateZ(0);
+            -webkit-font-smoothing: grayscale;
+            font-family: 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .hero-tag {
+            font-size: 20px;
+            letter-spacing: 4px;
+            margin-bottom: 18px;
+            color: #fff;
+            opacity: 0.95;
+            font-weight: 600;
+            text-shadow: 0 2px 12px rgba(116,235,213,0.6);
+            /* 静态渲染，避免截图字体残影 */
+        }
+        @keyframes glow {
+            0%,100% { opacity: .85; text-shadow: 0 2px 12px rgba(116,235,213,.5); }
+            50%     { opacity: 1;  text-shadow: 0 2px 20px rgba(255,255,255,.9), 0 0 30px rgba(116,235,213,.8); }
+        }
+        .hero-sub {
+            font-size: 17px;
+            opacity: 0.92;
+            max-width: 620px;
+            margin: 0 auto;
+            line-height: 1.9;
+        }
+        .hero p {
+            opacity: 0.92;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+        .hero .scroll-tip {
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.8;
+            animation: breathe 2s ease-in-out infinite;
+        }
+        @keyframes breathe { 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+        /* ===== 通用容器 ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 70px 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #74ebd5, #acb6e5);
+            margin: 14px auto 0;
+            border-radius: 2px;
+        }
+        .section-desc {
+            text-align: center;
+            color: #777;
+            max-width: 640px;
+            margin: -30px auto 50px;
+            font-size: 15px;
+        }
+
+        /* ===== 时间轴 ===== */
+        .timeline {
+            border-left: 3px solid #74ebd5;
+            padding-left: 32px;
+            margin-left: 20px;
+        }
+        .timeline-item {
+            margin-bottom: 46px;
+            position: relative;
+            transition: transform .3s ease;
+        }
+        .timeline-item:hover { transform: translateX(6px); }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -41px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border: 3px solid #74ebd5;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(116,235,213,.2);
+        }
+        .timeline-item .tag {
+            display: inline-block;
+            font-size: 12px;
+            color: #fff;
+            background: #acb6e5;
+            padding: 2px 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        .timeline-item h3 {
+            font-size: 21px;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+        .timeline-item p { color: #666; font-size: 16px; }
+
+        /* ===== 金句卡片 ===== */
+        .quotes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .quote-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 24px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+        .quote-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(116,235,213,.25);
+        }
+        .quote-card .icon { font-size: 28px; margin-bottom: 12px; }
+        .quote-card p { font-size: 15px; color: #555; font-style: italic; }
+        .quote-card span { display: block; margin-top: 14px; font-size: 13px; color: #acb6e5; }
+
+        /* ===== 寄语 ===== */
+        .message {
+            background: linear-gradient(135deg, #acb6e5 0%, #74ebd5 100%);
+            color: #fff;
+            border-radius: 18px;
+            padding: 50px 30px;
+            text-align: center;
+        }
+        .message h3 { font-size: 24px; margin-bottom: 18px; }
+        .message p { font-size: 16px; opacity: 0.95; max-width: 660px; margin: 0 auto; }
+
+        /* ===== 底部 ===== */
+        footer {
+            text-align: center;
+            padding: 32px;
+            background: #2c3e50;
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        footer .heart { color: #e74c3c; }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 34px; }
+            .container { padding: 50px 16px; }
+            .section-title { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部横幅 -->
+    <header class="hero">
+        <h1>青春与成长</h1>
+        <p class="hero-tag">—— 以梦为马，不负韶华 ——</p>
+        <p class="hero-sub">记录大学岁月里的迷茫、拼搏与蜕变，把每一份热爱都写成脚下的路。</p>
+        <div class="scroll-tip">↓ 向下滑动，看见成长</div>
+    </header>
+
+    <main>
+        <!-- 成长轨迹 -->
+        <section class="container">
+            <h2 class="section-title">成长轨迹</h2>
+            <p class="section-desc">每一步脚印，都是青春留给未来的答案。</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="tag">大一</span>
+                    <h3>初入校园 · 探索</h3>
+                    <p>带着青涩与好奇踏入大学校门，在浩瀚的知识海洋里寻找自己的方向。第一次写代码、第一次站上讲台，每一次尝试都在为青春铺色。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="tag">大二</span>
+                    <h3>挑战自我 · 拼搏</h3>
+                    <p>面对学业与实践的双重考验，熬夜调试、团队碰撞，在挫折里学会坚持。原来成长不是从不跌倒，而是每次跌倒后都选择站起来。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="tag">大三</span>
+                    <h3>笃定方向 · 沉淀</h3>
+                    <p>渐渐明白自己想要什么，把热情变成专注。在热爱里深耕，在安静中积蓄，让每一份努力都悄悄长成底气。</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="tag">未来</span>
+                    <h3>逐梦前行 · 蜕变</h3>
+                    <p>从懵懂到从容，青春不只是年华，更是向上的力量。成长，是终于成为自己喜欢的模样。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 青春关键词 -->
+        <section class="container">
+            <h2 class="section-title">青春关键词</h2>
+            <p class="section-desc">几个词，装得下整段滚烫的岁月。</p>
+            <div class="quotes">
+                <div class="quote-card">
+                    <div class="icon">🌱</div>
+                    <p>“别怕起点低，种子破土前，也要经历漫长的黑暗。”</p>
+                    <span>—— 勇敢开始</span>
+                </div>
+                <div class="quote-card">
+                    <div class="icon">🔥</div>
+                    <p>“热爱可抵岁月漫长，专注能破万难。”</p>
+                    <span>—— 保持热爱</span>
+                </div>
+                <div class="quote-card">
+                    <div class="icon">🌊</div>
+                    <p>“风浪里学会游泳，迷茫中长出清醒。”</p>
+                    <span>—— 接纳挫折</span>
+                </div>
+                <div class="quote-card">
+                    <div class="icon">✨</div>
+                    <p>“所谓光芒，不过是咬牙坚持后的样子。”</p>
+                    <span>—— 静待绽放</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 写给未来的自己 -->
+        <section class="container">
+            <div class="message">
+                <h3>写给未来的自己</h3>
+                <p>愿你走过很多路，依然对世界好奇；愿你被生活磨去棱角，却没丢掉温柔与倔强。此刻的每一分努力，都会在未来的某一天，笑着与你重逢。</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <p>青春与成长 · 以梦为马，不负韶华 &nbsp;|&nbsp; 由 <span class="heart">♥</span> 与一行行代码写成</p>
+        <p style="margin-top:8px;opacity:.6;">计算机学院网页设计大赛参赛作品</p>
+    </footer>
+</body>
+</html>

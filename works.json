@@ -185,5 +185,89 @@
       "表单交互"
     ],
     "award": null
+  },
+  {
+    "id": "nuo-opera",
+    "title": "千年傩戏，神舞人间",
+    "author": "张婧琦",
+    "college": "管理学院",
+    "className": "会计2603",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "chemistry-beauty",
+    "title": "化学之美",
+    "author": "陈思琪",
+    "college": "化学化工学院",
+    "className": "化工2405",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "heze",
+    "title": "牡丹之都 · 菏泽",
+    "author": "端木贺绪",
+    "college": "计算机科学与技术学院",
+    "className": "计科2603",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "ai-lab",
+    "title": "探索智能边界",
+    "author": "刘嘉威",
+    "college": "计算机科学与技术学院",
+    "className": "数据2602",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "youth-growth",
+    "title": "青春与成长",
+    "author": "刘清源",
+    "college": "数学与统计学院",
+    "className": "统计2602",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "techfest",
+    "title": "校园科技文化节",
+    "author": "邵明新",
+    "college": "体育学院",
+    "className": "体教2501",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "youth-innovation",
+    "title": "青春逐梦，智创未来",
+    "author": "田爽",
+    "college": "数学与统计学院",
+    "className": "信科2303",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
   }
 ]

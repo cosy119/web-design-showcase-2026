@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>校园科技文化节 | TechFest</title>
+<style>
+    :root {
+        --primary: #4f46e5;
+        --accent: #06b6d4;
+        --pink: #ec4899;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --card: rgba(255, 255, 255, 0.72);
+        --shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        color: #1e293b;
+        background: linear-gradient(135deg, #eef2ff 0%, #f0f9ff 50%, #fdf2f8 100%);
+        line-height: 1.6;
+        scroll-behavior: smooth;
+    }
+
+    /* 导航 */
+    nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+        background: rgba(255,255,255,0.65);
+        border-bottom: 1px solid rgba(255,255,255,0.6);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 40px;
+    }
+    nav .logo {
+        font-weight: 800;
+        color: var(--primary);
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+    }
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 28px;
+    }
+    nav a {
+        text-decoration: none;
+        color: #334155;
+        font-weight: 500;
+        transition: color .3s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* Hero */
+    header.hero {
+        min-height: 100vh;
+        padding: 120px 10% 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        background:
+            radial-gradient(circle at 20% 20%, rgba(79,70,229,.18), transparent 25%),
+            radial-gradient(circle at 85% 30%, rgba(6,182,212,.18), transparent 25%),
+            radial-gradient(circle at 50% 90%, rgba(236,72,153,.15), transparent 25%);
+    }
+    .hero-text h1 {
+        font-size: clamp(2.2rem, 4vw, 3.8rem);
+        line-height: 1.15;
+        margin-bottom: 18px;
+    }
+    .hero-text h1 span {
+        background: linear-gradient(90deg, var(--primary), var(--accent), var(--pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-text p {
+        max-width: 520px;
+        color: #475569;
+        margin-bottom: 30px;
+        font-size: 1.05rem;
+    }
+    .btn-group { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+        padding: 12px 26px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform .25s, box-shadow .25s;
+    }
+    .btn-primary {
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(79,70,229,.25);
+    }
+    .btn-outline {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        background: #fff;
+    }
+    .btn:hover { transform: translateY(-3px); }
+
+    .hero-visual {
+        width: 360px; height: 360px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        background: linear-gradient(135deg, var(--primary), var(--accent), var(--pink));
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 5rem;
+        box-shadow: var(--shadow);
+        animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+        0%,100% { transform: translateY(0); }
+        50% { transform: translateY(-18px); }
+    }
+
+    /* 通用区块 */
+    section { padding: 90px 10%; }
+    .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    .section-title h2 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+    .section-title p {
+        color: #64748b;
+    }
+
+    /* 活动介绍 */
+    .intro {
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: var(--shadow);
+        max-width: 1000px;
+        margin: -60px auto 0;
+        position: relative;
+        z-index: 10;
+        line-height: 1.8;
+    }
+    .intro h3 { color: var(--primary); margin-bottom: 12px; }
+    .intro ul {
+        margin: 12px 0 0 20px;
+        color: #475569;
+    }
+
+    /* 日程 */
+    .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 22px;
+    }
+    .schedule-card {
+        background: var(--card);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+        border-top: 4px solid var(--primary);
+        transition: transform .3s;
+    }
+    .schedule-card:nth-child(2) { border-top-color: var(--accent); }
+    .schedule-card:nth-child(3) { border-top-color: var(--pink); }
+    .schedule-card:nth-child(4) { border-top-color: #10b981; }
+    .schedule-card:hover { transform: translateY(-6px); }
+    .schedule-card .time {
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 8px;
+    }
+    .schedule-card h4 { margin-bottom: 8px; }
+
+    /* 嘉宾/板块 */
+    .guests {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+    }
+    .guest-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 28px 20px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: .3s;
+    }
+    .guest-card:hover { box-shadow: 0 18px 40px rgba(79,70,229,.2); }
+    .avatar {
+        width: 88px; height: 88px;
+        border-radius: 50%;
+        margin: 0 auto 14px;
+        background: linear-gradient(135deg, var(--primary), var(--pink));
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 2rem;
+    }
+    .guest-card p { color: #64748b; font-size: .95rem; }
+
+    /* 报名 */
+    .register {
+        background: linear-gradient(120deg, var(--primary), var(--accent));
+        color: #fff;
+        border-radius: 28px;
+        padding: 50px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(6,182,212,.25);
+    }
+    .register h2 { margin-bottom: 14px; }
+    .register p { margin-bottom: 26px; opacity: .95; }
+    .register .btn {
+        background: #fff;
+        color: var(--primary);
+    }
+
+    /* 联系/页脚 */
+    footer {
+        text-align: center;
+        padding: 36px 10%;
+        color: #64748b;
+        font-size: .9rem;
+    }
+    footer p + p { margin-top: 6px; }
+
+    /* 响应式 */
+    @media (max-width: 860px) {
+        nav ul { display: none; }
+        nav { padding: 12px 20px; }
+        header.hero {
+            flex-direction: column-reverse;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .hero-visual { width: 260px; height: 260px; font-size: 3.5rem; }
+        .btn-group { justify-content: center; }
+        .intro { margin: 0 16px; }
+        section { padding: 70px 6%; }
+        .register { padding: 36px 20px; }
+    }
+
+    /* 入场动画 */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(24px);
+        animation: fade 1s ease forwards;
+    }
+    @keyframes fade {
+        to { opacity: 1; transform: none; }
+    }
+    .delay-1 { animation-delay: .2s; }
+    .delay-2 { animation-delay: .4s; }
+</style>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav>
+    <div class="logo">TechFest · 校园科技文化节</div>
+    <ul>
+        <li><a href="#about">活动介绍</a></li>
+        <li><a href="#schedule">活动日程</a></li>
+        <li><a href="#zones">特色板块</a></li>
+        <li><a href="#register">立即报名</a></li>
+    </ul>
+</nav>
+
+<!-- 首屏 -->
+<header class="hero">
+    <div class="hero-text fade-in">
+        <h1>点亮代码灵感<br><span>共赴校园科技盛宴</span></h1>
+        <p>由计算机学院主办的校园科技文化节，汇聚网页设计、AI体验、编程挑战与创意市集，让技术有温度，让校园更精彩。</p>
+        <div class="btn-group">
+            <a href="#register" class="btn btn-primary">立即报名参与</a>
+            <a href="#about" class="btn btn-outline">了解活动</a>
+        </div>
+    </div>
+    <div class="hero-visual fade-in delay-1">🎓</div>
+</header>
+
+<!-- 活动介绍卡片 -->
+<section id="about" style="padding-top:20px;">
+    <div class="intro fade-in">
+        <h3>关于本次校园科技文化节</h3>
+        <p>本届活动面向全校在校大学生开展，旨在激发同学们对计算机技术与网页设计的兴趣，锻炼动手实践与审美创作能力，搭建作品交流展示平台，推动专业知识学以致用，丰富校园科技文化，助力学院学风建设。</p>
+        <ul>
+            <li>活动时间：2026年5月15日 — 5月17日</li>
+            <li>活动地点：学校图书馆广场 / 计算机学院实验楼</li>
+            <li>参与对象：全校在校生（可个人/团队参与不同子活动）</li>
+            <li>核心环节：网页设计展示、编程马拉松、AI体验区、开源分享会</li>
+        </ul>
+    </div>
+</section>
+
+<!-- 日程 -->
+<section id="schedule">
+    <div class="section-title">
+        <h2>活动日程安排</h2>
+        <p>Schedule · 三天精彩不停</p>
+    </div>
+    <div class="schedule-grid">
+        <div class="schedule-card">
+            <div class="time">Day 1 · 5月15日</div>
+            <h4>开幕式 & 网页设计展</h4>
+            <p>展示各参赛者的单页网页作品，现场投票与评委点评，体验HTML/CSS创意之美。</p>
+        </div>
+        <div class="schedule-card">
+            <div class="time">Day 2 · 5月16日</div>
+            <h4>编程马拉松</h4>
+            <p>48小时极限开发（分时段进行），围绕“智慧校园”主题完成小项目原型。</p>
+        </div>
+        <div class="schedule-card">
+            <div class="time">Day 2 下午</div>
+            <h4>AI 互动体验区</h4>
+            <p>体验大语言模型、图像生成、语音识别等AI应用，感受前沿技术落地。</p>
+        </div>
+        <div class="schedule-card">
+            <div class="time">Day 3 · 5月17日</div>
+            <h4>颁奖礼 & 开源分享</h4>
+            <p>公布网页设计大赛获奖名单，优秀作者分享设计思路与代码实践。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 特色板块/嘉宾 -->
+<section id="zones">
+    <div class="section-title">
+        <h2>特色板块 & 分享嘉宾</h2>
+        <p>Zones & Guests</p>
+    </div>
+    <div class="guests">
+        <div class="guest-card">
+            <div class="avatar">💻</div>
+            <h4>网页设计工坊</h4>
+            <p>从零到一完成单页站点，讲解布局、动效与响应式。</p>
+        </div>
+        <div class="guest-card">
+            <div class="avatar">🤖</div>
+            <h4>AI 应用体验</h4>
+            <p>动手尝试提示词工程、AI绘图与智能助手搭建。</p>
+        </div>
+        <div class="guest-card">
+            <div class="avatar">📱</div>
+            <h4>校园创客市集</h4>
+            <p>展示学生自制的硬件、小程序与数字创意作品。</p>
+        </div>
+        <div class="guest-card">
+            <div class="avatar">🎤</div>
+            <h4>学长经验谈</h4>
+            <p>邀请优秀毕业生分享实习、竞赛与开源贡献经历。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 报名 -->
+<section id="register">
+    <div class="register">
+        <h2>欢迎加入本届科技文化节</h2>
+        <p>无论是参与网页设计大赛、编程挑战，还是来现场体验交流，都期待与你相遇</p>
+        <a href="#" class="btn">点击报名 / 提交作品</a>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 计算机学院 · 校园科技文化节宣传页（网页设计大赛参赛作品）</p>
+    <p>使用纯 HTML + CSS 构建 · 仅作学习展示使用</p>
+</footer>
+
+</body>
+</html>

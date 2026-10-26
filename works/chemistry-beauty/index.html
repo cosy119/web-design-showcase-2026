@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>化学之美 · 网页设计大赛参赛作品</title>
+<meta name="description" content="《化学之美》——以 HTML 与 CSS 重构元素世界：交互式元素周期表、分子画廊、化学年表与化学与生活。网页设计大赛参赛作品。">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070D1A'/%3E%3Cpolygon points='32,10 52,21 52,43 32,54 12,43 12,21' fill='none' stroke='%2357D9F0' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23F6B352'/%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   化学之美 · The Beauty of Chemistry
+   网页设计大赛参赛作品 —— 单文件自包含 · 原生 HTML / CSS / JS
+   ============================================================ */
+
+/* ---------- 设计令牌 ---------- */
+:root{
+  --bg-deep:#04070F;
+  --bg:#070D1A;
+  --bg-2:#0B1526;
+  --card:#0E1A30;
+  --card-2:#132238;
+  --ink:#E9F1FF;
+  --ink-2:#A8BCDB;
+  --ink-3:#6C81A6;
+  --line:rgba(168,188,221,.14);
+  --line-2:rgba(168,188,221,.28);
+  --cyan:#57D9F0;
+  --mint:#6FE3D2;
+  --teal:#2FB9C7;
+  --amber:#F6B352;
+  --gold:#F4CF7A;
+  --violet:#9A8CFF;
+  --coral:#F0878F;
+  --serif:'Noto Serif SC','Songti SC',STSong,SimSun,serif;
+  --sans:'Noto Sans SC','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif;
+  --mono:ui-monospace,'Cascadia Mono','JetBrains Mono',Consolas,monospace;
+}
+
+/* ---------- 基础 ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-deep);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:rgba(87,217,240,.32);color:#fff}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+svg{display:block}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
+.container{width:min(1160px,92%);margin-inline:auto}
+
+/* 胶片颗粒质感 */
+body::after{
+  content:'';position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ---------- 顶部导航 ---------- */
+.nav{
+  position:fixed;inset:0 0 auto;z-index:100;
+  background:rgba(5,10,22,.72);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.14em}
+.logo svg{width:26px;height:26px;flex:none}
+.logo small{font-family:var(--sans);font-weight:400;font-size:11px;letter-spacing:.22em;color:var(--ink-3);margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:30px;font-size:14px;color:var(--ink-2)}
+.nav-links a{position:relative;padding:6px 2px;transition:color .25s;letter-spacing:.06em}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--amber));
+  transition:width .3s ease;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a.active::after{width:100%}
+.burger{
+  display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:10px;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;
+}
+.burger span{display:block;width:18px;height:1.6px;background:var(--ink-2);transition:.3s}
+.burger.open span:nth-child(1){transform:translateY(6.6px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-6.6px) rotate(-45deg)}
+
+.mobile-menu{
+  position:fixed;top:64px;left:0;right:0;z-index:99;
+  background:rgba(6,11,22,.96);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+  transform:translateY(-12px);opacity:0;pointer-events:none;transition:.3s ease;
+}
+.mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+.mobile-menu a{display:block;padding:16px 6%;font-size:16px;letter-spacing:.1em;border-top:1px solid var(--line);color:var(--ink-2)}
+.mobile-menu a:first-child{border-top:none}
+
+/* ---------- Hero 首屏 ---------- */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;
+  padding:132px 0 64px;
+  background:
+    radial-gradient(1100px 720px at 78% 8%, rgba(87,217,240,.11), transparent 62%),
+    radial-gradient(900px 640px at 12% 88%, rgba(246,179,82,.09), transparent 60%),
+    linear-gradient(180deg,#050912 0%,#070D1A 58%,#081120 100%);
+}
+.hex-bg{
+  position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='111' viewBox='0 0 96 111'%3E%3Cpath d='M48 2 92 27v54L48 106 4 81V27Z' fill='none' stroke='%236C81A6' stroke-opacity='0.14' stroke-width='1'/%3E%3C/svg%3E");
+  background-size:96px 111px;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.7),transparent 88%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.7),transparent 88%);
+}
+.hero-grid{
+  position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;
+  gap:36px;align-items:center;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:13px;letter-spacing:.34em;color:var(--ink-3);
+}
+.eyebrow::before{content:'';width:34px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.hero h1{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(58px,9vw,116px);line-height:1.06;letter-spacing:.02em;
+  margin-top:26px;
+  background:linear-gradient(115deg,#F6C87A 6%,#F6B352 22%,#57D9F0 66%,#8FE3F0 94%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 8px 34px rgba(87,217,240,.22));
+}
+.hero-sub{
+  margin-top:22px;font-family:var(--serif);font-weight:600;
+  font-size:clamp(17px,2.1vw,23px);letter-spacing:.2em;color:var(--ink);
+}
+.hero-desc{margin-top:16px;max-width:52ch;color:var(--ink-3);font-size:15px}
+.hero-cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 28px;border-radius:999px;font-size:14.5px;letter-spacing:.08em;
+  transition:transform .25s,box-shadow .25s,background .25s,color .25s,border-color .25s;
+}
+.btn svg{width:15px;height:15px}
+.btn-primary{
+  color:#04121C;font-weight:700;
+  background:linear-gradient(120deg,#7FE4F5,#3EC6D8 60%,#2FB9C7);
+  box-shadow:0 8px 30px -8px rgba(87,217,240,.55);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 38px -8px rgba(87,217,240,.7)}
+.btn-ghost{border:1px solid var(--line-2);color:var(--ink-2)}
+.btn-ghost:hover{transform:translateY(-2px);border-color:var(--cyan);color:var(--ink);box-shadow:0 0 26px -6px rgba(87,217,240,.35)}
+
+.hero-stats{
+  display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:0 52px;
+  margin-top:60px;border-top:1px solid var(--line);padding-top:26px;
+}
+.stat b{
+  display:block;font-family:var(--serif);font-weight:900;font-size:clamp(28px,3.4vw,40px);line-height:1.2;
+  background:linear-gradient(120deg,#E9F1FF,var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat span{font-size:12.5px;letter-spacing:.14em;color:var(--ink-3)}
+
+/* ---------- Hero 分子舞台 ---------- */
+.mol-stage{position:relative;height:min(64vh,540px);min-height:400px}
+.benzene{
+  position:absolute;inset:0;margin:auto;width:min(92%,460px);
+  filter:drop-shadow(0 0 26px rgba(87,217,240,.16));
+  animation:benzene-breath 9s ease-in-out infinite;
+}
+@keyframes benzene-breath{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.025) rotate(3deg)}}
+.orbit{transform-origin:200px 200px;animation:spin 34s linear infinite}
+.orbit.o2{animation-duration:46s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flow{
+  stroke-dasharray:14 10;animation:flow 3.2s linear infinite;
+}
+@keyframes flow{to{stroke-dashoffset:-96}}
+.orbit-dot{transform-origin:200px 200px;animation:spin 7s linear infinite}
+.orbit-dot.d2{animation-duration:9.5s;animation-direction:reverse}
+
+.float{position:absolute;will-change:transform}
+.float svg{animation:floaty 7s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(87,217,240,.14))}
+.float.f2 svg{animation-duration:8.6s;animation-delay:.8s}
+.float.f3 svg{animation-duration:9.4s;animation-delay:1.6s}
+.float.f4 svg{animation-duration:7.8s;animation-delay:2.2s}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.f1{top:6%;left:4%;width:84px}
+.f2{top:14%;right:2%;width:64px}
+.f3{bottom:10%;left:8%;width:72px}
+.f4{bottom:4%;right:10%;width:58px}
+.mol-caption{
+  position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);
+  font-size:12.5px;letter-spacing:.12em;color:var(--ink-3);white-space:nowrap;
+  text-align:center;
+}
+.mol-caption b{color:var(--amber);font-weight:600;font-family:var(--mono)}
+
+.scroll-hint{
+  position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  color:var(--ink-3);font-size:11.5px;letter-spacing:.4em;
+}
+.scroll-hint i{width:1px;height:46px;background:linear-gradient(180deg,var(--cyan),transparent);animation:hint 2.2s ease-in-out infinite}
+@keyframes hint{0%,100%{transform:scaleY(.35);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+/* ---------- 通用板块 ---------- */
+.section{position:relative;padding:108px 0}
+.section:nth-of-type(even){background:var(--bg)}
+.section-head{margin-bottom:58px}
+.kicker{
+  display:flex;align-items:center;gap:13px;
+  font-size:13px;letter-spacing:.42em;color:var(--cyan);
+}
+.kicker::before{content:'';width:26px;height:1px;background:var(--cyan)}
+.section h2{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(30px,4.4vw,46px);letter-spacing:.05em;margin-top:16px;
+}
+.section-lead{max-width:66ch;color:var(--ink-2);margin-top:16px;font-size:15px}
+.section-lead em{font-style:normal;color:var(--gold)}
+
+/* ---------- 第一章 · 元素之境 ---------- */
+.pt-layout{display:grid;grid-template-columns:minmax(0,1fr);align-items:start}
+.pt-scroll{overflow-x:auto;padding-bottom:14px;scrollbar-width:thin}
+.pt-grid{
+  display:grid;grid-template-columns:26px repeat(18,52px);
+  gap:5px;width:max-content;margin-inline:auto;
+}
+.pt-hd,.pt-rowlab{
+  font-family:var(--mono);font-size:10px;color:var(--ink-3);
+  display:flex;align-items:center;justify-content:center;
+  letter-spacing:.06em;
+}
+.pt-mark{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;color:var(--ink-3);
+  border:1px dashed var(--line-2);border-radius:8px;letter-spacing:.02em;gap:2px;
+}
+.pt-cell{
+  width:52px;height:52px;border:1px solid var(--line);border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;
+  background:linear-gradient(180deg,rgba(19,34,56,.5),rgba(11,21,38,.66));
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+  color:var(--c,var(--ink));
+}
+.pt-cell:hover,.pt-cell:focus-visible{
+  transform:translateY(-3px) scale(1.07);z-index:5;border-color:var(--c,var(--ink));
+  box-shadow:0 0 0 1px var(--c,var(--ink)),0 12px 30px -10px var(--c,var(--ink));
+}
+.pt-cell.locked{
+  z-index:5;transform:translateY(-3px) scale(1.07);border-color:var(--c,var(--ink));
+  box-shadow:0 0 0 1.5px var(--c,var(--ink)),0 0 34px -4px var(--c,var(--ink));
+}
+.pt-num{position:absolute;top:2px;left:5px;font-family:var(--mono);font-size:8.5px;color:var(--ink-3)}
+.pt-sym{font-size:21px;font-weight:700;line-height:1.05;font-family:var(--sans);margin-top:4px}
+.pt-name{font-size:9.5px;color:var(--ink-3);margin-top:3px;line-height:1;letter-spacing:.04em}
+.pt-hint{margin-top:16px;font-size:12.5px;color:var(--ink-3);letter-spacing:.06em}
+.pt-hint b{color:var(--cyan);font-weight:400}
+.pt-legend{display:flex;flex-wrap:wrap;gap:11px 20px;margin-top:26px}
+.pt-legend span{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);letter-spacing:.04em}
+.pt-legend i{width:10px;height:10px;border-radius:3px;background:var(--c);box-shadow:0 0 10px -1px var(--c)}
+
+.pt-info{
+  margin-top:30px;border:1px solid var(--line-2);border-radius:18px;
+  background:linear-gradient(180deg,rgba(19,34,56,.82),rgba(9,18,34,.92));
+  padding:26px 30px;min-height:0;position:relative;overflow:hidden;
+}
+.pt-info::before{
+  content:'';position:absolute;inset:0 0 auto;height:2px;
+  background:linear-gradient(90deg,var(--cyan),var(--amber));
+}
+.pt-info-empty{color:var(--ink-3);font-size:14px;line-height:2;padding-right:30px}
+.pt-info-empty b{color:var(--ink-2);font-weight:400}
+#ptDetail{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.pt-info-cat{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;
+  padding:5px 13px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2);flex:none;
+}
+.pt-info-cat i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.pt-info-num{font-family:var(--mono);font-size:13px;color:var(--ink-3);margin:0;letter-spacing:.14em;flex:none}
+.pt-info-sym{
+  font-size:56px;font-weight:800;line-height:1;color:var(--c);margin:0;
+  text-shadow:0 0 34px -6px var(--c);flex:none;width:82px;text-align:center;
+}
+.pt-info-name{font-family:var(--serif);font-size:26px;font-weight:700;margin:0;flex:none}
+.pt-info-mass{font-family:var(--mono);font-size:14px;color:var(--ink-2);margin:4px 0 0;letter-spacing:.06em;flex:none}
+.pt-info-desc{
+  margin:0;flex:1;min-width:240px;font-size:13.5px;color:var(--ink-2);
+  border-left:1px dashed var(--line);padding:2px 0 2px 26px;
+}
+.pt-info-close{
+  position:absolute;top:14px;right:16px;width:38px;height:38px;border-radius:50%;
+  color:var(--ink-3);font-size:17px;line-height:1;display:grid;place-items:center;
+  border:1px solid transparent;transition:.25s;
+}
+.pt-info-close:hover{color:var(--ink);border-color:var(--line-2)}
+
+/* 元素类别配色 */
+.cat-alkali{--c:#F6B352}
+.cat-alkaline{--c:#E8C36A}
+.cat-transition{--c:#57D9F0}
+.cat-post{--c:#33B8CC}
+.cat-metalloid{--c:#9A8CFF}
+.cat-nonmetal{--c:#6FE3D2}
+.cat-halogen{--c:#7CC8F2}
+.cat-noble{--c:#8FB4FF}
+.cat-lanthanide{--c:#C08CFF}
+.cat-actinide{--c:#E08FD8}
+
+/* ---------- 第二章 · 分子之美 ---------- */
+.mol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.m-card{
+  position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(19,34,56,.52),rgba(10,19,36,.78));
+  padding:26px 24px 22px;display:flex;flex-direction:column;
+  transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.m-card::before{
+  content:'';position:absolute;inset:0 0 auto;height:2px;opacity:0;transition:.3s;
+  background:linear-gradient(90deg,var(--cyan),var(--amber));
+}
+.m-card:hover{transform:translateY(-6px);border-color:var(--line-2);box-shadow:0 22px 50px -26px rgba(87,217,240,.4)}
+.m-card:hover::before{opacity:1}
+.m-card svg{width:100%;height:auto;margin-bottom:6px;transition:transform .4s ease}
+.m-card:hover svg{transform:scale(1.035)}
+.m-formula{font-family:var(--mono);color:var(--amber);font-size:14.5px;letter-spacing:.04em}
+.m-name{font-family:var(--serif);font-size:21px;font-weight:700;margin-top:5px}
+.m-fact{font-size:13.5px;color:var(--ink-2);margin-top:10px;flex:1}
+.m-tag{
+  align-self:flex-start;margin-top:14px;font-size:11.5px;letter-spacing:.18em;color:var(--cyan);
+  border:1px solid var(--line);border-radius:999px;padding:4px 13px;
+}
+.legend-line{margin-top:26px;font-size:13px;color:var(--ink-3);letter-spacing:.06em}
+.legend-line b{font-weight:500;color:var(--ink-2)}
+
+/* ---------- 第三章 · 化学年表 ---------- */
+.tl{position:relative;max-width:920px;margin:0 auto}
+.tl::before{
+  content:'';position:absolute;left:50%;top:6px;bottom:6px;width:1px;transform:translateX(-50%);
+  background:linear-gradient(180deg,transparent,rgba(87,217,240,.5) 18%,rgba(246,179,82,.45) 82%,transparent);
+}
+.tl-row{display:grid;grid-template-columns:1fr 34px 1fr;align-items:start;margin-bottom:46px;position:relative}
+.tl-dot{
+  width:15px;height:15px;border-radius:50%;justify-self:center;margin-top:24px;
+  background:var(--bg-deep);border:2px solid var(--cyan);
+  box-shadow:0 0 0 4px rgba(87,217,240,.14),0 0 20px rgba(87,217,240,.65);
+}
+.tl-row:nth-child(even) .tl-dot{border-color:var(--amber);box-shadow:0 0 0 4px rgba(246,179,82,.14),0 0 20px rgba(246,179,82,.6)}
+.tl-time{grid-area:1/1;text-align:right;padding-right:32px;align-self:center}
+.tl-time b{
+  font-family:var(--serif);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.1;
+  background:linear-gradient(120deg,#F6C87A,var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.tl-card{grid-area:1/3;padding-left:32px}
+.tl-card div{
+  border:1px solid var(--line);border-radius:16px;padding:18px 22px;
+  background:rgba(14,26,48,.55);transition:border-color .3s,transform .3s;
+}
+.tl-card div:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.tl-title{font-weight:600;font-size:17px;letter-spacing:.05em}
+.tl-desc{font-size:13.5px;color:var(--ink-2);margin-top:7px}
+.tl-row:nth-child(even) .tl-time{grid-area:1/3;text-align:left;padding-left:32px;padding-right:0}
+.tl-row:nth-child(even) .tl-card{grid-area:1/1;padding-left:0;padding-right:32px}
+
+/* ---------- 第四章 · 化学与生活 ---------- */
+.life-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.l-card{
+  border:1px solid var(--line);border-radius:20px;padding:28px 26px;
+  background:linear-gradient(180deg,rgba(19,34,56,.5),rgba(10,19,36,.74));
+  transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.l-card:hover{transform:translateY(-6px);border-color:var(--line-2);box-shadow:0 22px 50px -26px rgba(246,179,82,.35)}
+.l-icon{
+  width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+  border:1px solid var(--line-2);color:var(--c,var(--cyan));
+  background:radial-gradient(circle at 30% 25%,rgba(87,217,240,.14),transparent 70%);
+}
+.l-icon svg{width:22px;height:22px}
+.l-title{font-family:var(--serif);font-size:18.5px;font-weight:700;margin-top:18px;letter-spacing:.04em}
+.l-text{font-size:13.5px;color:var(--ink-2);margin-top:9px}
+.l-tag{margin-top:14px;font-size:11.5px;letter-spacing:.2em;color:var(--amber)}
+.l-c1{--c:var(--cyan)} .l-c2{--c:var(--coral)} .l-c3{--c:var(--violet)}
+.l-c4{--c:var(--gold)} .l-c5{--c:var(--mint)} .l-c6{--c:var(--amber)}
+
+/* ---------- 尾声 · 关于作品 ---------- */
+.finale{text-align:center;padding:96px 0 40px}
+.finale .quote{
+  font-family:var(--serif);font-weight:700;font-size:clamp(22px,3.4vw,34px);line-height:1.7;
+  max-width:24em;margin:0 auto;letter-spacing:.08em;
+}
+.finale .quote em{
+  font-style:normal;
+  background:linear-gradient(120deg,#F6C87A,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.finale p{max-width:56ch;margin:22px auto 0;color:var(--ink-3);font-size:14.5px}
+.about-card{
+  max-width:920px;margin:56px auto 0;border:1px solid var(--line);border-radius:22px;
+  background:linear-gradient(180deg,rgba(19,34,56,.5),rgba(9,18,34,.8));
+  padding:34px 38px;
+}
+.about-card h3{font-family:var(--serif);font-size:21px;font-weight:700;display:flex;align-items:center;gap:12px}
+.about-card h3 svg{width:22px;height:22px;color:var(--cyan);flex:none}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 40px;margin-top:22px}
+.about-grid dt{font-size:12px;letter-spacing:.2em;color:var(--ink-3);margin-top:12px}
+.about-grid dd{font-size:14px;color:var(--ink-2);margin-top:3px}
+.about-grid dd b{color:var(--ink);font-weight:500}
+details{max-width:920px;margin:22px auto 0;border:1px solid var(--line);border-radius:16px;background:rgba(11,21,38,.6)}
+summary{
+  list-style:none;cursor:pointer;padding:18px 26px;font-size:14.5px;color:var(--ink-2);
+  display:flex;align-items:center;gap:12px;letter-spacing:.06em;
+}
+summary::-webkit-details-marker{display:none}
+summary::before{content:'＋';color:var(--cyan);font-size:16px;transition:transform .3s}
+details[open] summary::before{content:'－'}
+details .inner{padding:4px 26px 24px;font-size:13.5px;color:var(--ink-3);line-height:2}
+details .inner li{margin-left:1.4em}
+
+/* ---------- 页脚 ---------- */
+footer{border-top:1px solid var(--line);padding:38px 0 44px;text-align:center;color:var(--ink-3);font-size:13px;letter-spacing:.08em}
+footer b{color:var(--ink-2);font-weight:500}
+footer .ft-line{margin-top:6px;font-size:11.5px;letter-spacing:.14em}
+
+/* ---------- 返回顶部 / 通用工具 ---------- */
+.to-top{
+  position:fixed;right:26px;bottom:26px;z-index:90;width:46px;height:46px;border-radius:50%;
+  border:1px solid var(--line-2);background:rgba(11,21,38,.82);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  display:grid;place-items:center;color:var(--ink-2);
+  opacity:0;pointer-events:none;transform:translateY(8px);transition:.3s ease;
+}
+.to-top.show{opacity:1;pointer-events:auto;transform:none}
+.to-top:hover{color:var(--cyan);border-color:var(--cyan)}
+.to-top svg{width:17px;height:17px}
+
+/* ---------- 滚动揭示 ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease;transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{background:rgba(168,188,221,.18);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(168,188,221,.32)}
+
+/* ---------- 响应式 ---------- */
+@media (min-width:901px){
+  .mobile-menu{display:none}
+}
+@media (max-width:1180px){
+  /* 周期表区域：表格保持可横向滚动，详情栏自动堆叠在下方 */
+}
+@media (max-width:1020px){
+  .hero-grid{grid-template-columns:1fr;gap:10px}
+  .mol-stage{height:340px;min-height:0;margin-top:6px}
+  .mol-caption{position:static;transform:none;margin-top:14px}
+  .mol-caption br{display:none}
+  .section{padding:84px 0}
+  .tl{max-width:640px}
+}
+@media (max-width:900px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  .mol-grid,.life-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:700px){
+  .hero{padding:110px 0 90px}
+  .hero-stats{gap:0 26px;margin-top:44px}
+  .f1{width:62px}.f2{width:50px}.f3{width:56px}.f4{width:46px}
+  .mol-stage{height:290px}
+  .pt-info{padding:22px 20px}
+  #ptDetail{gap:14px 18px}
+  .pt-info-sym{width:60px;font-size:46px}
+  .pt-info-desc{flex-basis:100%;border-left:none;border-top:1px dashed var(--line);padding:12px 0 0;margin-top:2px}
+  .tl::before{left:17px;transform:none}
+  .tl-row{grid-template-columns:34px 1fr;gap:0}
+  .tl-dot{grid-column:1;grid-row:1;margin:30px 0 0;justify-self:center}
+  .tl-time{grid-column:2;grid-row:1;text-align:left;padding:0}
+  .tl-time b{font-size:24px}
+  .tl-card{grid-column:2;grid-row:2;padding:0}
+  .tl-row:nth-child(even) .tl-time{grid-area:1/2;text-align:left;padding:0}
+  .tl-row:nth-child(even) .tl-card{grid-area:2/2;padding:0}
+  .about-grid{grid-template-columns:1fr}
+  .about-card{padding:26px 22px}
+}
+@media (max-width:600px){
+  .mol-grid,.life-grid{grid-template-columns:1fr}
+  .hero-cta .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+  .benzene{animation:none}
+  .flow{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== 导航 ===================== -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#top" aria-label="返回顶部">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,10 52,21 52,43 32,54 12,43 12,21" fill="none" stroke="#57D9F0" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#F6B352"/></svg>
+      <span>化学之美<small>THE BEAUTY OF CHEMISTRY</small></span>
+    </a>
+    <nav class="nav-links" aria-label="章节导航">
+      <a href="#elements" data-spy="elements">元素之境</a>
+      <a href="#molecules" data-spy="molecules">分子之美</a>
+      <a href="#timeline" data-spy="timeline">化学年表</a>
+      <a href="#life" data-spy="life">化学与生活</a>
+      <a href="#about" data-spy="about">关于作品</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#elements">元素之境</a>
+  <a href="#molecules">分子之美</a>
+  <a href="#timeline">化学年表</a>
+  <a href="#life">化学与生活</a>
+  <a href="#about">关于作品</a>
+</div>
+
+<main id="top">
+
+<!-- ===================== Hero 首屏 ===================== -->
+<section class="hero">
+  <div class="hex-bg" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">网页设计大赛 · 参赛作品</span>
+      <h1>化学之美</h1>
+      <p class="hero-sub">从一颗原子的微光，到万物的秩序与浪漫</p>
+      <p class="hero-desc">以 HTML 与 CSS 重构元素世界——把 118 种元素、数以亿计的化合物，装进一页可以触摸的星空。</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#elements">进入元素之境
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#molecules">感受分子之美</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>118</b><span>种已确认元素</span></div>
+        <div class="stat"><b>1亿+</b><span>种已登记化合物</span></div>
+        <div class="stat"><b>94</b><span>种天然存在元素</span></div>
+      </div>
+    </div>
+
+    <div class="mol-stage" id="molStage" aria-hidden="true">
+      <div class="float f1" data-depth="0.5">
+        <svg viewBox="0 0 200 140"><defs><radialGradient id="wO"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient><radialGradient id="wH"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D8F0"/></radialGradient></defs><line x1="88" y1="118" x2="116" y2="92" stroke="#8FA5C8" stroke-width="6" stroke-linecap="round"/><line x1="152" y1="118" x2="124" y2="92" stroke="#8FA5C8" stroke-width="6" stroke-linecap="round"/><circle cx="120" cy="88" r="24" fill="url(#wO)"/><circle cx="76" cy="126" r="15" fill="url(#wH)"/><circle cx="164" cy="126" r="15" fill="url(#wH)"/></svg>
+      </div>
+      <div class="float f2" data-depth="0.8">
+        <svg viewBox="0 0 240 140"><defs><radialGradient id="cO"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient><radialGradient id="cC"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient></defs><line x1="82" y1="70" x2="108" y2="70" stroke="#8FA5C8" stroke-width="5"/><line x1="82" y1="78" x2="108" y2="78" stroke="#8FA5C8" stroke-width="5"/><line x1="132" y1="70" x2="158" y2="70" stroke="#8FA5C8" stroke-width="5"/><line x1="132" y1="78" x2="158" y2="78" stroke="#8FA5C8" stroke-width="5"/><circle cx="120" cy="74" r="21" fill="url(#cC)"/><circle cx="62" cy="74" r="19" fill="url(#cO)"/><circle cx="178" cy="74" r="19" fill="url(#cO)"/></svg>
+      </div>
+      <div class="float f3" data-depth="0.6">
+        <svg viewBox="0 0 240 150"><defs><radialGradient id="mO"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient><radialGradient id="mC"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient><radialGradient id="mH"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D8F0"/></radialGradient></defs><line x1="108" y1="86" x2="66" y2="100" stroke="#8FA5C8" stroke-width="5"/><line x1="132" y1="86" x2="174" y2="100" stroke="#8FA5C8" stroke-width="5"/><line x1="116" y1="72" x2="110" y2="36" stroke="#8FA5C8" stroke-width="5"/><line x1="124" y1="72" x2="130" y2="120" stroke="#8FA5C8" stroke-width="5"/><circle cx="120" cy="78" r="22" fill="url(#mC)"/><circle cx="56" cy="104" r="13" fill="url(#mH)"/><circle cx="184" cy="104" r="13" fill="url(#mH)"/><circle cx="108" cy="30" r="13" fill="url(#mH)"/><circle cx="132" cy="128" r="13" fill="url(#mH)"/></svg>
+      </div>
+      <div class="float f4" data-depth="1">
+        <svg viewBox="0 0 200 120"><defs><radialGradient id="oO"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient></defs><line x1="88" y1="52" x2="112" y2="52" stroke="#8FA5C8" stroke-width="5"/><line x1="88" y1="60" x2="112" y2="60" stroke="#8FA5C8" stroke-width="5"/><circle cx="74" cy="56" r="18" fill="url(#oO)"/><circle cx="126" cy="56" r="18" fill="url(#oO)"/></svg>
+      </div>
+
+      <div class="benzene">
+        <svg viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="benzN"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient>
+            <linearGradient id="benzRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#57D9F0"/><stop offset="1" stop-color="#F6B352"/></linearGradient>
+          </defs>
+          <g class="orbit"><ellipse cx="200" cy="200" rx="188" ry="84" fill="none" stroke="rgba(87,217,240,.16)" stroke-width="1.6"/></g>
+          <g class="orbit o2"><ellipse cx="200" cy="200" rx="188" ry="84" fill="none" stroke="rgba(246,179,82,.13)" stroke-width="1.6" transform="rotate(60 200 200)"/></g>
+          <polygon points="200,82 302,141 302,259 200,318 98,259 98,141" fill="none" stroke="rgba(168,188,221,.38)" stroke-width="2.4"/>
+          <polygon points="200,104 285,152 285,248 200,296 115,248 115,152" fill="none" stroke="url(#benzRing)" stroke-width="2.2" class="flow" opacity=".9"/>
+          <g fill="url(#benzN)" stroke="rgba(87,217,240,.6)" stroke-width="1.5">
+            <circle cx="200" cy="82" r="13"/><circle cx="302" cy="141" r="13"/><circle cx="302" cy="259" r="13"/>
+            <circle cx="200" cy="318" r="13"/><circle cx="98" cy="259" r="13"/><circle cx="98" cy="141" r="13"/>
+          </g>
+          <circle cx="348" cy="132" r="4" fill="#F6B352" class="orbit-dot"/>
+          <circle cx="60" cy="280" r="3.4" fill="#57D9F0" class="orbit-dot d2"/>
+        </svg>
+      </div>
+      <p class="mol-caption"><b>C₆H₆ · 苯</b><br>离域 π 电子在环上流动，赋予苯独特的芳香性</p>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true"><i></i><span>滚动探索</span></div>
+</section>
+
+<!-- ===================== 第一章 · 元素之境 ===================== -->
+<section class="section" id="elements" style="background:linear-gradient(180deg,#081120,#070D1A 60%)">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">第一章 · 周期表</span>
+      <h2>元素之境</h2>
+      <p class="section-lead">元素周期表是化学的「地图」。悬停或点击任一元素格，点亮属于它的原子微光；镧系与锕系元素单列于下方。</p>
+    </div>
+
+    <div class="pt-layout">
+      <div class="reveal" style="--d:.1s">
+        <div class="pt-scroll">
+          <div class="pt-grid" id="ptGrid" role="grid" aria-label="交互式元素周期表"></div>
+        </div>
+        <p class="pt-hint">悬停预览 · <b>点击锁定</b> · 支持键盘方向键与回车</p>
+        <div class="pt-legend" id="ptLegend"></div>
+      </div>
+      <aside class="pt-info reveal" id="ptInfo" style="--d:.2s" aria-live="polite">
+        <button class="pt-info-close" id="ptClose" aria-label="关闭元素详情">×</button>
+        <div class="pt-info-empty" id="ptEmpty">
+          尚未点亮任何元素。<br><br>把光标移入左侧周期表，<br>或点击任意一格，<br>即可查看它的<b>身份档案</b>。
+        </div>
+        <div id="ptDetail" hidden>
+          <span class="pt-info-cat" id="dCat"><i></i><em>类别</em></span>
+          <div class="pt-info-num" id="dNum">Z = —</div>
+          <div class="pt-info-sym" id="dSym">—</div>
+          <div class="pt-info-name" id="dName">—</div>
+          <div class="pt-info-mass" id="dMass">相对原子质量 —</div>
+          <p class="pt-info-desc" id="dDesc"></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 第二章 · 分子之美 ===================== -->
+<section class="section" id="molecules">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">第二章 · 分子</span>
+      <h2>分子之美</h2>
+      <p class="section-lead">原子结合成分子，分子的排列与组合，构成了这个物质世界。以下结构均为<em>简化示意</em>。</p>
+    </div>
+
+    <div class="mol-grid">
+      <article class="m-card reveal" style="--d:0s">
+        <svg viewBox="0 0 240 170" aria-hidden="true"><defs><radialGradient id="w2O"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient><radialGradient id="w2H"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D8F0"/></radialGradient></defs><line x1="90" y1="116" x2="117" y2="90" stroke="#8FA5C8" stroke-width="7" stroke-linecap="round"/><line x1="150" y1="116" x2="123" y2="90" stroke="#8FA5C8" stroke-width="7" stroke-linecap="round"/><circle cx="120" cy="86" r="25" fill="url(#w2O)"/><circle cx="78" cy="124" r="16" fill="url(#w2H)"/><circle cx="162" cy="124" r="16" fill="url(#w2H)"/></svg>
+        <div class="m-formula">H₂O</div>
+        <h3 class="m-name">水</h3>
+        <p class="m-fact">两个氢原子与一个氧原子，以约 104.5° 的键角相遇。液态水的极性让它成为地球生命的万能溶剂。</p>
+        <span class="m-tag">生命之源</span>
+      </article>
+
+      <article class="m-card reveal" style="--d:.08s">
+        <svg viewBox="0 0 240 170" aria-hidden="true"><defs><radialGradient id="c2O"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient><radialGradient id="c2C"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient></defs><line x1="84" y1="78" x2="110" y2="78" stroke="#8FA5C8" stroke-width="5.5"/><line x1="84" y1="86" x2="110" y2="86" stroke="#8FA5C8" stroke-width="5.5"/><line x1="130" y1="78" x2="156" y2="78" stroke="#8FA5C8" stroke-width="5.5"/><line x1="130" y1="86" x2="156" y2="86" stroke="#8FA5C8" stroke-width="5.5"/><circle cx="120" cy="82" r="21" fill="url(#c2C)"/><circle cx="62" cy="82" r="19" fill="url(#c2O)"/><circle cx="178" cy="82" r="19" fill="url(#c2O)"/></svg>
+        <div class="m-formula">CO₂</div>
+        <h3 class="m-name">二氧化碳</h3>
+        <p class="m-fact">直线形的三原子分子。它既是温室效应的主要推手，也是植物光合作用固定碳的起点。</p>
+        <span class="m-tag">碳循环</span>
+      </article>
+
+      <article class="m-card reveal" style="--d:.16s">
+        <svg viewBox="0 0 240 170" aria-hidden="true"><defs><radialGradient id="m2C"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient><radialGradient id="m2H"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D8F0"/></radialGradient></defs><line x1="106" y1="84" x2="62" y2="102" stroke="#8FA5C8" stroke-width="6"/><line x1="134" y1="84" x2="178" y2="102" stroke="#8FA5C8" stroke-width="6"/><line x1="116" y1="70" x2="106" y2="32" stroke="#8FA5C8" stroke-width="6"/><line x1="124" y1="70" x2="134" y2="122" stroke="#8FA5C8" stroke-width="6"/><circle cx="120" cy="76" r="22" fill="url(#m2C)"/><circle cx="50" cy="108" r="14" fill="url(#m2H)"/><circle cx="190" cy="108" r="14" fill="url(#m2H)"/><circle cx="102" cy="26" r="14" fill="url(#m2H)"/><circle cx="138" cy="130" r="14" fill="url(#m2H)"/></svg>
+        <div class="m-formula">CH₄</div>
+        <h3 class="m-name">甲烷</h3>
+        <p class="m-fact">最简单的有机物。天然气的主要成分，在空气中燃烧，是千家万户灶台上的蓝色火焰。</p>
+        <span class="m-tag">清洁燃料</span>
+      </article>
+
+      <article class="m-card reveal" style="--d:0s">
+        <svg viewBox="0 0 240 190" aria-hidden="true"><defs><radialGradient id="g2O"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient><radialGradient id="g2C"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient></defs><polygon points="120,41 166.8,68 166.8,122 120,149 73.2,122 73.2,68" fill="none" stroke="#8FA5C8" stroke-width="5.5" stroke-linejoin="round"/><line x1="166.8" y1="68" x2="194" y2="52" stroke="#8FA5C8" stroke-width="4.5"/><line x1="166.8" y1="122" x2="194" y2="138" stroke="#8FA5C8" stroke-width="4.5"/><line x1="120" y1="149" x2="120" y2="180" stroke="#8FA5C8" stroke-width="4.5"/><line x1="73.2" y1="122" x2="46" y2="138" stroke="#8FA5C8" stroke-width="4.5"/><line x1="73.2" y1="68" x2="46" y2="52" stroke="#8FA5C8" stroke-width="4.5"/><circle cx="120" cy="41" r="17" fill="url(#g2O)"/><circle cx="166.8" cy="68" r="15" fill="url(#g2C)"/><circle cx="166.8" cy="122" r="15" fill="url(#g2C)"/><circle cx="120" cy="149" r="15" fill="url(#g2C)"/><circle cx="73.2" cy="122" r="15" fill="url(#g2C)"/><circle cx="73.2" cy="68" r="15" fill="url(#g2C)"/><circle cx="194" cy="52" r="10" fill="url(#g2O)"/><circle cx="194" cy="138" r="10" fill="url(#g2O)"/><circle cx="120" cy="180" r="10" fill="url(#g2O)"/><circle cx="46" cy="138" r="10" fill="url(#g2O)"/><circle cx="46" cy="52" r="10" fill="url(#g2O)"/></svg>
+        <div class="m-formula">C₆H₁₂O₆</div>
+        <h3 class="m-name">葡萄糖</h3>
+        <p class="m-fact">六元环结构是它最熟悉的姿态。细胞将葡萄糖逐步氧化，为生命活动供给能量。</p>
+        <span class="m-tag">能量货币</span>
+      </article>
+
+      <article class="m-card reveal" style="--d:.08s">
+        <svg viewBox="0 0 260 190" aria-hidden="true"><defs><radialGradient id="a2C"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient><radialGradient id="a2O"><stop offset="0" stop-color="#F7A9AF"/><stop offset="1" stop-color="#E06876"/></radialGradient></defs><polygon points="95,47 136.6,71 136.6,119 95,143 53.4,119 53.4,71" fill="none" stroke="#8FA5C8" stroke-width="5.5" stroke-linejoin="round"/><line x1="95" y1="47" x2="95" y2="26" stroke="#8FA5C8" stroke-width="5"/><line x1="95" y1="26" x2="78" y2="13" stroke="#8FA5C8" stroke-width="5"/><line x1="95" y1="26" x2="114" y2="12" stroke="#8FA5C8" stroke-width="5"/><line x1="136.6" y1="119" x2="168" y2="128" stroke="#8FA5C8" stroke-width="5"/><line x1="168" y1="128" x2="192" y2="146" stroke="#8FA5C8" stroke-width="5"/><line x1="192" y1="146" x2="212" y2="136" stroke="#8FA5C8" stroke-width="5"/><circle cx="95" cy="47" r="14" fill="url(#a2C)"/><circle cx="136.6" cy="71" r="14" fill="url(#a2C)"/><circle cx="136.6" cy="119" r="14" fill="url(#a2C)"/><circle cx="95" cy="143" r="14" fill="url(#a2C)"/><circle cx="53.4" cy="119" r="14" fill="url(#a2C)"/><circle cx="53.4" cy="71" r="14" fill="url(#a2C)"/><circle cx="114" cy="12" r="12" fill="url(#a2O)"/><circle cx="192" cy="146" r="13" fill="url(#a2O)"/><circle cx="168" cy="128" r="11" fill="url(#a2O)"/><text x="86" y="9" fill="#E9F1FF" font-size="13" font-family="Consolas,monospace">COOH</text><text x="196" y="176" fill="#E9F1FF" font-size="13" font-family="Consolas,monospace">OCOCH₃</text></svg>
+        <div class="m-formula">C₉H₈O₄</div>
+        <h3 class="m-name">阿司匹林</h3>
+        <p class="m-fact">苯环上连着羧基与酯基。它从柳树皮中的水杨酸走来，成为应用最广泛的经典药物之一。</p>
+        <span class="m-tag">经典药物</span>
+      </article>
+
+      <article class="m-card reveal" style="--d:.16s">
+        <svg viewBox="0 0 260 200" aria-hidden="true"><defs><radialGradient id="cfC"><stop offset="0" stop-color="#A9ECF7"/><stop offset="1" stop-color="#3CB9CF"/></radialGradient><radialGradient id="cfN"><stop offset="0" stop-color="#C9BFFF"/><stop offset="1" stop-color="#8A76E8"/></radialGradient></defs><polygon points="70,60 118,40 160,60 160,112 118,132 70,112" fill="none" stroke="#8FA5C8" stroke-width="5" stroke-linejoin="round"/><polygon points="160,112 200,92 212,132 172,150" fill="none" stroke="#8FA5C8" stroke-width="5" stroke-linejoin="round"/><line x1="70" y1="60" x2="42" y2="40" stroke="#8FA5C8" stroke-width="4"/><line x1="160" y1="60" x2="190" y2="38" stroke="#8FA5C8" stroke-width="4"/><line x1="200" y1="92" x2="232" y2="78" stroke="#8FA5C8" stroke-width="4"/><circle cx="118" cy="40" r="14" fill="url(#cfN)"/><circle cx="160" cy="60" r="14" fill="url(#cfN)"/><circle cx="160" cy="112" r="14" fill="url(#cfC)"/><circle cx="118" cy="132" r="14" fill="url(#cfC)"/><circle cx="70" cy="60" r="14" fill="url(#cfN)"/><circle cx="200" cy="92" r="13" fill="url(#cfN)"/><circle cx="212" cy="132" r="13" fill="url(#cfC)"/><circle cx="172" cy="150" r="13" fill="url(#cfN)"/><text x="22" y="36" fill="#E9F1FF" font-size="13" font-family="Consolas,monospace">CH₃</text><text x="178" y="30" fill="#E9F1FF" font-size="13" font-family="Consolas,monospace">CH₃</text><text x="228" y="76" fill="#E9F1FF" font-size="13" font-family="Consolas,monospace">CH₃</text></svg>
+        <div class="m-formula">C₈H₁₀N₄O₂</div>
+        <h3 class="m-name">咖啡因</h3>
+        <p class="m-fact">嘌呤骨架上挂着三个甲基。它是世界上消费最广泛的精神活性物质，存在于咖啡与茶之中。</p>
+        <span class="m-tag">唤醒因子</span>
+      </article>
+    </div>
+    <p class="legend-line">原子配色：<b>白 · 氢</b> ／ <b>青 · 碳</b> ／ <b>玫红 · 氧</b> ／ <b>紫 · 氮</b>（结构为简化示意）</p>
+  </div>
+</section>
+
+<!-- ===================== 第三章 · 化学年表 ===================== -->
+<section class="section" id="timeline" style="background:linear-gradient(180deg,#070D1A,#081120 55%,#070D1A)">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">第三章 · 年表</span>
+      <h2>化学年表</h2>
+      <p class="section-lead">从第一簇火焰，到一张完整的周期表——化学如何一步步成为一门科学。</p>
+    </div>
+
+    <div class="tl">
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>古代</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">火与技艺</h3><p class="tl-desc">制陶、冶金、酿造、染色——化学在实用技艺中萌芽，先民在火焰中驯服物质。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>1661</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">波义耳 · 《怀疑派化学家》</h3><p class="tl-desc">首次提出科学的「元素」概念，近代化学由此发端。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>1777</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">拉瓦锡 · 燃烧的氧化学说</h3><p class="tl-desc">推翻燃素说；1789 年《化学基础论》奠定质量守恒定律。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>1803</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">道尔顿 · 原子论</h3><p class="tl-desc">物质由不可再分的原子构成，化学第一次有了统一的理论基石。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>1869</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">门捷列夫 · 元素周期表</h3><p class="tl-desc">按原子量编排周期表，为未知元素预留空位，并成功预言镓、钪、锗。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>1898</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">居里夫妇 · 钋与镭</h3><p class="tl-desc">发现放射性元素钋与镭，开辟放射化学与核科学的新纪元。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>1926</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">薛定谔 · 波动力学</h3><p class="tl-desc">量子力学为化学键与分子结构提供理论根基，化学进入「电子时代」。</p></div></div>
+      </div>
+      <div class="tl-row reveal">
+        <div class="tl-time"><b>当代</b></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card"><div><h3 class="tl-title">绿色化学</h3><p class="tl-desc">原子经济性与可持续发展成为化学的新命题，让科技与自然和谐共生。</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 第四章 · 化学与生活 ===================== -->
+<section class="section" id="life">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="kicker">第四章 · 生活</span>
+      <h2>化学与生活</h2>
+      <p class="section-lead">化学不在试管里，而在每一餐、每一片药、每一束光中。</p>
+    </div>
+
+    <div class="life-grid">
+      <article class="l-card l-c1 reveal">
+        <div class="l-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+        <h3 class="l-title">烟火与风味</h3>
+        <p class="l-text">氨基酸与还原糖在高温下相遇，生成数百种风味分子——这就是烤肉与面包香气的秘密：美拉德反应。</p>
+        <div class="l-tag">饮食</div>
+      </article>
+
+      <article class="l-card l-c2 reveal" style="--d:.08s">
+        <div class="l-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8.5" width="18" height="7" rx="3.5"/><line x1="11" y1="8.5" x2="11" y2="15.5"/></svg></div>
+        <h3 class="l-title">从柳树皮到药箱</h3>
+        <p class="l-text">阿司匹林的母体水杨酸最早来自柳树皮。一个化学修饰，让古老止痛智慧变成现代经典药物。</p>
+        <div class="l-tag">医药</div>
+      </article>
+
+      <article class="l-card l-c3 reveal" style="--d:.16s">
+        <div class="l-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h3.5M9.5 12h5M17.5 12H21"/><circle cx="6.5" cy="12" r="3"/><circle cx="12" cy="12" r="3"/><circle cx="17.5" cy="12" r="3"/></svg></div>
+        <h3 class="l-title">改变世界的链</h3>
+        <p class="l-text">从天然橡胶到合成纤维，成千上万的重复单元连成高分子长链，编织出现代生活的材料底色。</p>
+        <div class="l-tag">材料</div>
+      </article>
+
+      <article class="l-card l-c4 reveal">
+        <div class="l-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2.5"/><line x1="22" y1="10" x2="22" y2="14"/><line x1="6" y1="11" x2="6" y2="13"/><line x1="9" y1="10.5" x2="9" y2="13.5"/><line x1="12" y1="11" x2="12" y2="13"/></svg></div>
+        <h3 class="l-title">会呼吸的电池</h3>
+        <p class="l-text">充电与放电之间，锂离子在正负极往返嵌入、脱出——锂电池因此被称为「摇椅电池」。</p>
+        <div class="l-tag">能源</div>
+      </article>
+
+      <article class="l-card l-c5 reveal" style="--d:.08s">
+        <div class="l-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+        <h3 class="l-title">尾气的净化师</h3>
+        <p class="l-text">三元催化器内，铂、钯、铑让一氧化碳、碳氢化合物与氮氧化物转化为无害气体。</p>
+        <div class="l-tag">环境</div>
+      </article>
+
+      <article class="l-card l-c6 reveal" style="--d:.16s">
+        <div class="l-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-7"/><path d="M12 15c0-4 3-6 8-6 0 4-3 6-8 6Z"/><path d="M12 11C12 7 9 5 4 5c0 4 3 6 8 6Z"/></svg></div>
+        <h3 class="l-title">养活半个地球</h3>
+        <p class="l-text">哈伯—博施法将空气中的氮气转化为氨肥，支撑着全球约半数人口的食物生产。</p>
+        <div class="l-tag">农业</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 尾声 · 关于作品 ===================== -->
+<section class="section" id="about" style="background:linear-gradient(180deg,#081120,#070D1A)">
+  <div class="container">
+    <div class="finale reveal">
+      <p class="quote">化学之美，在于它解释了世界的「为什么」——<br>叶绿素如何捕捉阳光，钢铁如何经受锤炼，<br>药物如何与生命<em>轻声对话</em>。</p>
+      <p>愿你保持好奇，在元素与分子的世界里，继续发现美。</p>
+    </div>
+
+    <div class="about-card reveal" style="--d:.1s">
+      <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v5.5L4.5 18a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14h9"/></svg>关于本作品</h3>
+      <dl class="about-grid">
+        <dt>作品名称</dt><dd><b>《化学之美》</b> · The Beauty of Chemistry</dd>
+        <dt>选题立意</dt><dd>以化学专业之美为主题，用代码重构元素世界，践行「专业知识学以致用」。</dd>
+        <dt>技术实现</dt><dd>HTML5 语义化结构 · CSS3 变量 / Grid / Flex · 原生 JavaScript · 响应式设计</dd>
+        <dt>资源依赖</dt><dd>单文件自包含，无第三方框架、无外部图片，离线亦可完整打开</dd>
+        <dt>交互功能</dt><dd>交互式元素周期表 · 分子动画 · 滚动揭示 · 平滑导航 · 键盘可达</dd>
+      </dl>
+    </div>
+
+    <details class="reveal" style="--d:.18s">
+      <summary>查看作品说明 · 提交材料参考</summary>
+      <div class="inner">
+        <ul>
+          <li><b>提交清单</b>：网页源文件（本 HTML 单文件）· 页面截图（桌面端与移动端）· 作品说明文档</li>
+          <li><b>页面结构</b>：序章 Hero → 元素之境（交互周期表）→ 分子之美 → 化学年表 → 化学与生活 → 尾声</li>
+          <li><b>设计理念</b>：以「实验室星空」为视觉基调——深蓝夜空中的元素如星子排列，分子如星座发光；铜盐之青与硫焰之金构成主辅色，传达化学既理性又浪漫的双重气质。</li>
+          <li><b>适配说明</b>：桌面 / 平板 / 手机自适应；支持键盘操作与「减弱动态效果」系统偏好。</li>
+          <li><b>内容出处</b>：元素数据、分子信息与化学史实均依据通行教材与公开资料整理。</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>© 2026 <b>《化学之美》</b> · 网页设计大赛参赛作品</p>
+  <p class="ft-line">提交内容：网页源文件 · 页面截图 · 作品说明</p>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="返回顶部">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+
+<script>
+/* ===================== 元素数据 ===================== */
+const CATEGORY_INFO = {
+  alkali:     { zh: '碱金属',   desc: '银白色活泼金属，化学性质活泼，易与水反应，常需保存在煤油中' },
+  alkaline:   { zh: '碱土金属', desc: '较硬的银白色金属，广泛分布于地壳矿物之中' },
+  transition: { zh: '过渡金属', desc: '多为硬质金属，常呈现绚丽色彩，是现代工业与科技的脊梁' },
+  post:       { zh: '后过渡金属', desc: '质地较软、延展性好，是日常生活常见的金属材料' },
+  metalloid:  { zh: '类金属',   desc: '性质介于金属与非金属之间，是半导体产业的基础材料' },
+  nonmetal:   { zh: '非金属',   desc: '构成生命、大气与水的主体，种类丰富' },
+  halogen:    { zh: '卤素',     desc: '化学性质活泼，自然界中以化合物形式广泛存在' },
+  noble:      { zh: '稀有气体', desc: '性质稳定，曾被称为惰性气体，用于照明与保护气氛' },
+  lanthanide: { zh: '镧系',     desc: '稀土元素，被誉为工业维生素，是发光与永磁材料的关键' },
+  actinide:   { zh: '锕系',     desc: '多为放射性元素，是核能利用与放射化学的研究对象' }
+};
+const CAT_ORDER = ['alkali','alkaline','transition','post','metalloid','nonmetal','halogen','noble','lanthanide','actinide'];
+
+/* [原子序数, 符号, 中文名, 相对原子质量, 类别, 周期行, 族列] */
+const ELEMENTS = [
+[1,'H','氢','1.008','nonmetal',1,1],[2,'He','氦','4.0026','noble',1,18],
+[3,'Li','锂','6.94','alkali',2,1],[4,'Be','铍','9.0122','alkaline',2,2],[5,'B','硼','10.81','metalloid',2,13],[6,'C','碳','12.011','nonmetal',2,14],[7,'N','氮','14.007','nonmetal',2,15],[8,'O','氧','15.999','nonmetal',2,16],[9,'F','氟','18.998','halogen',2,17],[10,'Ne','氖','20.180','noble',2,18],
+[11,'Na','钠','22.990','alkali',3,1],[12,'Mg','镁','24.305','alkaline',3,2],[13,'Al','铝','26.982','post',3,13],[14,'Si','硅','28.085','metalloid',3,14],[15,'P','磷','30.974','nonmetal',3,15],[16,'S','硫','32.06','nonmetal',3,16],[17,'Cl','氯','35.45','halogen',3,17],[18,'Ar','氩','39.948','noble',3,18],
+[19,'K','钾','39.098','alkali',4,1],[20,'Ca','钙','40.078','alkaline',4,2],[21,'Sc','钪','44.956','transition',4,3],[22,'Ti','钛','47.867','transition',4,4],[23,'V','钒','50.942','transition',4,5],[24,'Cr','铬','51.996','transition',4,6],[25,'Mn','锰','54.938','transition',4,7],[26,'Fe','铁','55.845','transition',4,8],[27,'Co','钴','58.933','transition',4,9],[28,'Ni','镍','58.693','transition',4,10],[29,'Cu','铜','63.546','transition',4,11],[30,'Zn','锌','65.38','transition',4,12],[31,'Ga','镓','69.723','post',4,13],[32,'Ge','锗','72.630','metalloid',4,14],[33,'As','砷','74.922','metalloid',4,15],[34,'Se','硒','78.971','nonmetal',4,16],[35,'Br','溴','79.904','halogen',4,17],[36,'Kr','氪','83.798','noble',4,18],
+[37,'Rb','铷','85.468','alkali',5,1],[38,'Sr','锶','87.62','alkaline',5,2],[39,'Y','钇','88.906','transition',5,3],[40,'Zr','锆','91.224','transition',5,4],[41,'Nb','铌','92.906','transition',5,5],[42,'Mo','钼','95.95','transition',5,6],[43,'Tc','锝','[98]','transition',5,7],[44,'Ru','钌','101.07','transition',5,8],[45,'Rh','铑','102.91','transition',5,9],[46,'Pd','钯','106.42','transition',5,10],[47,'Ag','银','107.87','transition',5,11],[48,'Cd','镉','112.41','transition',5,12],[49,'In','铟','114.82','post',5,13],[50,'Sn','锡','118.71','post',5,14],[51,'Sb','锑','121.76','metalloid',5,15],[52,'Te','碲','127.60','metalloid',5,16],[53,'I','碘','126.90','halogen',5,17],[54,'Xe','氙','131.29','noble',5,18],
+[55,'Cs','铯','132.91','alkali',6,1],[56,'Ba','钡','137.33','alkaline',6,2],
+[72,'Hf','铪','178.49','transition',6,4],[73,'Ta','钽','180.95','transition',6,5],[74,'W','钨','183.84','transition',6,6],[75,'Re','铼','186.21','transition',6,7],[76,'Os','锇','190.23','transition',6,8],[77,'Ir','铱','192.22','transition',6,9],[78,'Pt','铂','195.08','transition',6,10],[79,'Au','金','196.97','transition',6,11],[80,'Hg','汞','200.59','transition',6,12],[81,'Tl','铊','204.38','post',6,13],[82,'Pb','铅','207.2','post',6,14],[83,'Bi','铋','208.98','post',6,15],[84,'Po','钋','[209]','metalloid',6,16],[85,'At','砹','[210]','metalloid',6,17],[86,'Rn','氡','[222]','noble',6,18],
+[87,'Fr','钫','[223]','alkali',7,1],[88,'Ra','镭','[226]','alkaline',7,2],
+[104,'Rf','鑪','[267]','transition',7,4],[105,'Db','𨧀','[268]','transition',7,5],[106,'Sg','𨭎','[269]','transition',7,6],[107,'Bh','𨨏','[270]','transition',7,7],[108,'Hs','𨭆','[269]','transition',7,8],[109,'Mt','鿏','[278]','transition',7,9],[110,'Ds','鐽','[281]','transition',7,10],[111,'Rg','錀','[282]','transition',7,11],[112,'Cn','鎶','[285]','transition',7,12],[113,'Nh','鉨','[286]','post',7,13],[114,'Fl','鈇','[289]','post',7,14],[115,'Mc','镆','[290]','post',7,15],[116,'Lv','鉝','[293]','post',7,16],[117,'Ts','鿬','[294]','halogen',7,17],[118,'Og','鿫','[294]','noble',7,18],
+[57,'La','镧','138.91','lanthanide',9,3],[58,'Ce','铈','140.12','lanthanide',9,4],[59,'Pr','镨','140.91','lanthanide',9,5],[60,'Nd','钕','144.24','lanthanide',9,6],[61,'Pm','钷','[145]','lanthanide',9,7],[62,'Sm','钐','150.36','lanthanide',9,8],[63,'Eu','铕','151.96','lanthanide',9,9],[64,'Gd','钆','157.25','lanthanide',9,10],[65,'Tb','铽','158.93','lanthanide',9,11],[66,'Dy','镝','162.50','lanthanide',9,12],[67,'Ho','钬','164.93','lanthanide',9,13],[68,'Er','铒','167.26','lanthanide',9,14],[69,'Tm','铥','168.93','lanthanide',9,15],[70,'Yb','镱','173.05','lanthanide',9,16],[71,'Lu','镥','174.97','lanthanide',9,17],
+[89,'Ac','锕','[227]','actinide',10,3],[90,'Th','钍','232.04','actinide',10,4],[91,'Pa','镤','231.04','actinide',10,5],[92,'U','铀','238.03','actinide',10,6],[93,'Np','镎','[237]','actinide',10,7],[94,'Pu','钚','[244]','actinide',10,8],[95,'Am','镅','[243]','actinide',10,9],[96,'Cm','锔','[247]','actinide',10,10],[97,'Bk','锫','[247]','actinide',10,11],[98,'Cf','锎','[251]','actinide',10,12],[99,'Es','锿','[252]','actinide',10,13],[100,'Fm','镄','[257]','actinide',10,14],[101,'Md','钔','[258]','actinide',10,15],[102,'No','锘','[259]','actinide',10,16],[103,'Lr','铹','[266]','actinide',10,17]
+];
+</script>
+<script>
+/* ===================== 交互逻辑 ===================== */
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 移动端菜单 ---------- */
+  var burger = document.getElementById('burger');
+  var mMenu = document.getElementById('mobileMenu');
+  function closeMenu() {
+    mMenu.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }
+  burger.addEventListener('click', function () {
+    var open = mMenu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  /* ---------- 滚动揭示 ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function (el) { ro.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- 导航高亮 + 返回顶部 ---------- */
+  var spyLinks = document.querySelectorAll('.nav-links a[data-spy]');
+  var secs = {};
+  spyLinks.forEach(function (a) { secs[a.dataset.spy] = document.getElementById(a.dataset.spy); });
+  var toTop = document.getElementById('toTop');
+  var ticking = false;
+  function onScroll() {
+    var y = window.scrollY || document.documentElement.scrollTop;
+    toTop.classList.toggle('show', y > 640);
+    var current = null;
+    for (var key in secs) {
+      var s = secs[key];
+      if (s && s.offsetTop - 160 <= y) current = key;
+    }
+    spyLinks.forEach(function (a) { a.classList.toggle('active', a.dataset.spy === current); });
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { window.requestAnimationFrame(onScroll); ticking = true; }
+  }, { passive: true });
+  onScroll();
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  /* ---------- Hero 分子视差 ---------- */
+  var stage = document.getElementById('molStage');
+  var floats = Array.prototype.slice.call(document.querySelectorAll('.float'));
+  if (stage && floats.length && !reduce && window.matchMedia('(pointer:fine)').matches) {
+    var raf = null;
+    stage.addEventListener('pointermove', function (e) {
+      if (raf) return;
+      raf = window.requestAnimationFrame(function () {
+        var r = stage.getBoundingClientRect();
+        var mx = (e.clientX - r.left) / r.width - 0.5;
+        var my = (e.clientY - r.top) / r.height - 0.5;
+        floats.forEach(function (f) {
+          var d = parseFloat(f.dataset.depth || '0.5');
+          f.style.transform = 'translate3d(' + (-mx * 36 * d).toFixed(1) + 'px,' + (-my * 28 * d).toFixed(1) + 'px,0)';
+        });
+        raf = null;
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- 交互式元素周期表 ---------- */
+  var grid = document.getElementById('ptGrid');
+  var legend = document.getElementById('ptLegend');
+  var empty = document.getElementById('ptEmpty');
+  var detail = document.getElementById('ptDetail');
+  var dCat = document.getElementById('dCat');
+  var dNum = document.getElementById('dNum');
+  var dSym = document.getElementById('dSym');
+  var dName = document.getElementById('dName');
+  var dMass = document.getElementById('dMass');
+  var dDesc = document.getElementById('dDesc');
+  var closeBtn = document.getElementById('ptClose');
+  var locked = null;
+
+  function renderInfo(e) {
+    var cat = CATEGORY_INFO[e[4]];
+    dCat.className = 'pt-info-cat cat-' + e[4];
+    dCat.querySelector('i').style.background = 'var(--c)';
+    dCat.querySelector('em').textContent = cat.zh;
+    dNum.textContent = '原子序数 Z = ' + e[0];
+    dSym.textContent = e[1];
+    dName.textContent = e[2];
+    dMass.textContent = '相对原子质量 ' + e[3];
+    dDesc.textContent = cat.desc;
+    empty.hidden = true;
+    detail.hidden = false;
+  }
+  function showEmpty() {
+    empty.hidden = false;
+    detail.hidden = true;
+  }
+  function unlockCell() {
+    if (locked) {
+      var cur = grid.querySelector('.pt-cell.locked');
+      if (cur) cur.classList.remove('locked');
+      locked = null;
+    }
+  }
+
+  /* 图例 */
+  CAT_ORDER.forEach(function (k) {
+    var s = document.createElement('span');
+    s.className = 'cat-' + k;
+    s.innerHTML = '<i></i>' + CATEGORY_INFO[k].zh;
+    legend.appendChild(s);
+  });
+
+  /* 组号（1-18）与周期号（1-7,9,10） */
+  for (var g = 1; g <= 18; g++) {
+    var hd = document.createElement('div');
+    hd.className = 'pt-hd';
+    hd.style.gridRow = '1';
+    hd.style.gridColumn = String(g + 1);
+    hd.textContent = g;
+    grid.appendChild(hd);
+  }
+  [1, 2, 3, 4, 5, 6, 7, 9, 10].forEach(function (r) {
+    var lb = document.createElement('div');
+    lb.className = 'pt-rowlab';
+    lb.style.gridRow = String(r + 1);
+    lb.style.gridColumn = '1';
+    lb.textContent = r;
+    grid.appendChild(lb);
+  });
+  /* 镧系 / 锕系 跳转标记 */
+  var mk1 = document.createElement('div');
+  mk1.className = 'pt-mark'; mk1.style.gridRow = '7'; mk1.style.gridColumn = '4';
+  mk1.innerHTML = '57–71'; grid.appendChild(mk1);
+  var mk2 = document.createElement('div');
+  mk2.className = 'pt-mark'; mk2.style.gridRow = '8'; mk2.style.gridColumn = '4';
+  mk2.innerHTML = '89–103'; grid.appendChild(mk2);
+
+  /* 元素格 */
+  ELEMENTS.forEach(function (e) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pt-cell cat-' + e[4];
+    b.style.gridRow = String(e[5] + 1);
+    b.style.gridColumn = String(e[6] + 1);
+    b.setAttribute('data-z', e[0]);
+    b.setAttribute('aria-label', e[2] + '，原子序数 ' + e[0] + '，符号 ' + e[1]);
+    b.innerHTML = '<span class="pt-num">' + e[0] + '</span><span class="pt-sym">' + e[1] + '</span><span class="pt-name">' + e[2] + '</span>';
+    b.addEventListener('mouseenter', function () { if (!locked) renderInfo(e); });
+    b.addEventListener('click', function () {
+      if (locked === e) { unlockCell(); showEmpty(); }
+      else { unlockCell(); locked = e; b.classList.add('locked'); renderInfo(e); }
+    });
+    b.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); b.click(); }
+      if (ev.key === 'Escape' && locked === e) { unlockCell(); showEmpty(); }
+    });
+    grid.appendChild(b);
+  });
+
+  closeBtn.addEventListener('click', function () { unlockCell(); showEmpty(); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && locked) { unlockCell(); showEmpty(); }
+  });
+})();
+</script>
+</body>
+</html>

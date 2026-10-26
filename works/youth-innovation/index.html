@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青春逐梦，智创未来</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
+        html{scroll-behavior:smooth}
+        body{
+            cursor: default;
+        }
+        /* 鼠标跟随光晕 */
+        .cursor-glow{
+            position:fixed;
+            width:300px;height:300px;
+            border-radius:50%;
+            background: radial-gradient(circle, rgba(41, 98, 255, 0.15), transparent 70%);
+            pointer-events:none;
+            transform:translate(-50%,-50%);
+            z-index:-1;
+        }
+        header{
+            height:100vh;
+            background:linear-gradient(135deg,#2962ff,#00acc1);
+            color:white;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:20px;
+            position:relative;
+            overflow:hidden;
+        }
+        /* 背景浮动装饰 */
+        header::before{
+            content:"";
+            position:absolute;
+            width:400px;height:400px;
+            background:rgba(255,255,255,0.08);
+            border-radius:50%;
+            top:-100px;left:-100px;
+            animation: float 8s ease-in-out infinite;
+        }
+        header::after{
+            content:"";
+            position:absolute;
+            width:300px;height:300px;
+            background:rgba(255,255,255,0.06);
+            border-radius:50%;
+            bottom:-80px;right:-80px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+        @keyframes float{
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(30px)}
+        }
+        header h1{
+            font-size:48px;
+            margin-bottom:16px;
+            text-shadow:0 4px 12px rgba(0,0,0,0.15);
+        }
+        header p{font-size:20px;opacity:0.95;margin-bottom:30px;max-width:600px}
+        .btn{
+            border:1px solid white;
+            padding:14px 32px;
+            color:white;
+            text-decoration:none;
+            border-radius:999px;
+            transition:0.4s ease;
+            font-size:17px;
+            backdrop-filter: blur(4px);
+        }
+        .btn:hover{
+            background:white;
+            color:#2962ff;
+            box-shadow:0 8px 24px rgba(255,255,255,0.35);
+            transform: translateY(-3px);
+        }
+        nav{
+            position:sticky;top:0;
+            background:rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            box-shadow:0 2px 8px #00000015;
+            z-index:10;
+        }
+        nav ul{display:flex;justify-content:center;list-style:none}
+        nav a{
+            display:block;
+            padding:16px 28px;
+            text-decoration:none;
+            color:#333;
+            transition:0.3s;
+        }
+        nav a:hover{color:#2962ff}
+        section{
+            padding:70px 20px;
+            max-width:1100px;
+            margin:0 auto;
+        }
+        section h2{
+            text-align:center;
+            color:#2962ff;
+            font-size:32px;
+            margin-bottom:40px;
+            position:relative;
+        }
+        section h2::after{
+            content:"";
+            width:60px;height:4px;
+            background:linear-gradient(90deg,#2962ff,#00acc1);
+            display:block;
+            margin:12px auto 0;
+            border-radius:4px;
+        }
+        .card-wrap{
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+            gap:28px;
+        }
+        .card{
+            border:1px solid #eee;
+            border-radius:16px;
+            padding:32px;
+            transition:0.4s ease;
+            background:#fff;
+        }
+        .card:hover{
+            box-shadow:0 12px 32px #0000001c;
+            transform:translateY(-8px);
+            border-color:#2962ff44;
+        }
+        .card h3{margin-bottom:14px;color:#222;font-size:22px}
+        .card p{color:#666;line-height:1.8;font-size:16px}
+        footer{
+            background:#1a237e;
+            color:white;
+            text-align:center;
+            padding:40px 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随光晕 -->
+    <div class="cursor-glow"></div>
+
+    <!-- 首屏 -->
+    <header>
+        <h1>青春逐梦 · 智创未来</h1>
+        <p>以代码书写理想，用设计展现青年风采</p>
+        <!-- 修改href，点击跳转到intro板块 -->
+        <a href="#intro" class="btn">开始浏览</a>
+    </header>
+
+    <!-- 导航 -->
+    <nav>
+        <ul>
+            <li><a href="#intro">主题介绍</a></li>
+            <li><a href="#idea">设计理念</a></li>
+            <li><a href="#feature">页面特色</a></li>
+        </ul>
+    </nav>
+
+    <section id="intro">
+        <h2>主题介绍</h2>
+        <div class="card-wrap">
+            <div class="card">
+                <h3>青年担当</h3>
+                <p>新时代大学生应当勇于探索科技创新，将所学知识转化为创意作品，展现当代学子积极进取的精神面貌。</p>
+            </div>
+            <div class="card">
+                <h3>智创青春</h3>
+                <p>网页作为数字展示窗口，融合设计美感与前端技术，用简洁现代的视觉语言传递向上的价值。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="idea">
+        <h2>设计理念</h2>
+        <div class="card-wrap">
+            <div class="card">
+                <h3>配色方案</h3>
+                <p>主色调选用蓝色系，代表科技、理性与希望，搭配清新渐变，视觉清爽，符合科技类网页气质。</p>
+            </div>
+            <div class="card">
+                <h3>布局思路</h3>
+                <p>单页纵向滚动布局，搭配锚点导航，无需跳转页面，浏览流畅，适配电脑与手机。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="feature">
+        <h2>页面特色</h2>
+        <div class="card-wrap">
+            <div class="card">
+                <h3>平滑滚动</h3>
+                <p>导航点击可平滑跳转至对应板块，提升交互体验。卡片增加悬浮动画，增强页面生动感。</p>
+            </div>
+            <div class="card">
+                <h3>响应式布局</h3>
+                <p>自动适配不同屏幕，在手机上也可以正常显示，保证多终端访问效果。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>计算机学院网页设计大赛参赛作品 | 青春逐梦，智创未来</p>
+    </footer>
+
+    <script>
+        // 鼠标跟随光晕效果
+        const glow = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', (e)=>{
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        })
+    </script>
+</body>
+</html>
