@@ -269,5 +269,20 @@
     "description": "",
     "tags": [],
     "award": null
+  },
+  {
+    "id": "weifang",
+    "title": "鸢都风物记——我的家乡潍坊",
+    "author": "刘博文",
+    "college": "计算机科学与技术学院",
+    "className": "计科2604",
+    "category": "文化探索",
+    "color": "#508c7a",
+    "description": "以景点、非遗和美食介绍家乡潍坊。",
+    "tags": [
+      "家乡潍坊",
+      "文化介绍"
+    ],
+    "award": null
   }
 ]
