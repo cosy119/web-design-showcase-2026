@@ -308,5 +308,17 @@
     "description": "",
     "tags": [],
     "award": null
+  },
+  {
+    "id": "pixel-ledger",
+    "title": "像素账本",
+    "author": "肖雅琪",
+    "college": "电气与电子工程学院",
+    "className": "自动2402",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
   }
 ]

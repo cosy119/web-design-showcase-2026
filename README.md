@@ -35,6 +35,8 @@
 |字里山河 · 汉字美的解剖学|孔丰雪|数学与统计学院|统计2401|[查看](works/characters-landscape/)|
 |青春校园，逐梦前行|孙越|计算机科学与技术学院|数据2501|[查看](works/youth-campus/)|
 
+|像素账本|肖雅琪|电气与电子工程学院|自动2402|[查看](works/pixel-ledger/)|
+
 ## 部署
 
 GitHub Pages 采用 main 分支根目录发布，.nojekyll 禁用 Jekyll 处理。所有作品位于 works 下，引用资源使用相对路径。入口为 index.html，无需构建和后端服务。
@@ -84,3 +86,7 @@ GitHub Pages 采用 main 分支根目录发布，.nojekyll 禁用 Jekyll 处理�
 ## 字里山河与青春校园整理记录
 
 两份作品均为单个HTML，按原稿发布，入口统一为index.html。孔丰雪班级取自包内文件名统计2401；不发布文件名中的学号及原投稿文档。
+
+## 像素账本整理记录
+
+原网页 web-page.html 按原稿发布，入口统一为 index.html，不发布原投稿文档和压缩包。

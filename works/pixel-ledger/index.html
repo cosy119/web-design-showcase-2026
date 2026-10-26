@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>像素账本 · Pixel Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF3E4;
+    --panel:#EED9B8;
+    --panel-2:#F7EAD3;
+    --ink:#4A3728;
+    --ink-soft:#6B5442;
+    --muted:#8C7562;
+    --line:#5A4433;
+    --accent:#F2A33C;
+    --accent-2:#F58B6B;
+    --accent-ink:#4A2E14;
+    --locked:#C9C3B8;
+    --locked-edge:#8F877A;
+    --food:#F6C6A8;
+    --fun:#C9B8E0;
+    --cloth:#F2B6C1;
+    --traffic:#A8C6D8;
+    --daily:#B8D9C0;
+    --other:#F2D98C;
+    --shadow: 4px 4px 0 #B99C74;
+    --shadow-sm: 3px 3px 0 #B99C74;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 12% 0%, #FFF6E2 0%, transparent 45%),
+      radial-gradient(circle at 88% 100%, #FDEBD0 0%, transparent 45%),
+      var(--bg);
+    color:var(--ink);
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    min-height:100vh;
+    padding:26px 16px 64px;
+  }
+  .wrap{max-width:980px;margin:0 auto;}
+
+  .title{
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(16px,3.4vw,26px);
+    color:var(--accent);
+    text-shadow:3px 3px 0 var(--line), 5px 5px 0 rgba(185,156,116,.55);
+    letter-spacing:1px;
+    margin:0 0 8px;
+    line-height:1.4;
+  }
+  .subtitle{color:var(--ink-soft);font-size:13px;margin:0 0 20px;letter-spacing:.5px;}
+
+  .panel{
+    background:var(--panel);
+    border:3px solid var(--line);
+    box-shadow:var(--shadow);
+    padding:18px;
+    margin-bottom:20px;
+    position:relative;
+  }
+  .panel.light{
+    background:var(--panel-2);
+    box-shadow:var(--shadow-sm);
+    padding:14px 16px;
+  }
+  .panel.light::after,.panel::after{
+    content:"";
+    position:absolute;inset:6px;
+    border:2px dashed rgba(90,68,51,.11);
+    pointer-events:none;
+  }
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .stat{
+    background:#FFFBF2;
+    border:3px solid var(--line);
+    box-shadow:var(--shadow-sm);
+    padding:16px 12px;
+    text-align:center;
+  }
+  .stat .num{
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(12px,2.2vw,16px);
+    color:var(--accent-2);
+    text-shadow:1px 1px 0 rgba(74,55,40,.18);
+    display:block;margin-bottom:8px;
+    word-break:break-all;
+  }
+  .stat .label{font-size:12px;color:var(--muted);}
+
+  .form-title{
+    font-family:'Press Start 2P', monospace;
+    font-size:11px;color:var(--accent-2);
+    text-shadow:1px 1px 0 rgba(74,55,40,.16);
+    margin:0 0 14px;letter-spacing:1px;
+  }
+  .form-grid{
+    display:grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1.6fr auto;
+    gap:10px;align-items:end;
+  }
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-size:11px;color:var(--muted);letter-spacing:.5px;}
+  input,select{
+    font-family:inherit;font-size:14px;
+    background:#FFFBF2;color:var(--ink);
+    border:3px solid var(--line);
+    box-shadow:inset 2px 2px 0 rgba(185,156,116,.35);
+    padding:9px 10px;
+    outline:none;border-radius:0;width:100%;
+  }
+  input::placeholder{color:#B5A490;}
+  input:focus,select:focus{border-color:var(--accent-2);}
+  select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--line) 50%),linear-gradient(135deg,var(--line) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%;background-size:6px 6px,6px 6px;background-repeat:no-repeat;padding-right:30px;}
+
+  .btn{
+    font-family:'Press Start 2P', monospace;
+    font-size:10px;
+    background:var(--accent);
+    color:var(--accent-ink);
+    border:3px solid var(--line);
+    box-shadow:var(--shadow);
+    padding:12px 14px;
+    cursor:pointer;
+    transition:transform .05s, box-shadow .05s, background .1s;
+    white-space:nowrap;
+    letter-spacing:.5px;
+  }
+  .btn:hover{background:#F7B25A;}
+  .btn:active{transform:translate(4px,4px);box-shadow:0 0 0 #B99C74;}
+  .btn.ghost{background:var(--panel-2);color:var(--ink);}
+  .btn.ghost:hover{background:#FFF6E2;}
+  .btn.small{font-size:9px;padding:9px 10px;}
+
+  .flash-tip{
+    font-size:12px;color:#3E7A4A;background:#E4F2E5;
+    border:2px solid #6FA878;padding:6px 10px;
+    margin-bottom:12px;display:none;
+  }
+  .flash-tip.show{display:block;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+  .legend .item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-soft);}
+  .swatch{width:14px;height:14px;border:2px solid var(--line);box-shadow:2px 2px 0 #B99C74;}
+
+  .cal-wrap{max-width:700px;margin:0 auto;}
+  .cal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;gap:10px;flex-wrap:wrap;
+    padding:0 6px;
+  }
+  .cal-head h2{
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(13px,2.6vw,17px);
+    color:var(--accent-2);
+    text-shadow:1px 1px 0 rgba(74,55,40,.16);
+    margin:0;letter-spacing:1px;
+    line-height:1.5;
+  }
+  .cal-tools{display:flex;gap:8px;flex-wrap:wrap;}
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:7px;}
+  .week div{text-align:center;font-size:10px;color:var(--muted);letter-spacing:1px;}
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;}
+
+  .day{
+    aspect-ratio:1/1;
+    border:3px solid var(--locked-edge);
+    position:relative;
+    overflow:hidden;
+    box-shadow:2px 2px 0 #B99C74;
+    background:
+      repeating-linear-gradient(45deg, #C9C3B8 0 5px, #C2BCB0 5px 10px);
+  }
+  .day.empty{border-color:transparent;background:transparent;box-shadow:none;}
+  .day .pixgrid{
+    position:absolute;inset:0;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:repeat(3,1fr);
+    opacity:.09;
+    transition:opacity .45s ease;
+    pointer-events:none;
+  }
+  .day.lit .pixgrid{opacity:1;}
+  .day .pixgrid span{display:block;}
+  .day .label{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;color:#6E665A;
+    transition:opacity .3s ease;
+    pointer-events:none;
+  }
+  .day.lit.art .label{opacity:0;}
+  .day.lit.cat .label{opacity:1;}
+  .day.lit{border-color:var(--line);box-shadow:2px 2px 0 var(--line);}
+  .day.today{outline:2px solid var(--accent-2);outline-offset:1px;}
+  .day.flash{animation:flash .55s ease-out;}
+  @keyframes flash{
+    0%{filter:brightness(1.8);transform:scale(1.06);}
+    100%{filter:brightness(1);transform:scale(1);}
+  }
+  .day.catmode .pixgrid{display:none;}
+  .day.catmode .catfill{position:absolute;inset:0;display:block;}
+  .day.catmode .label{opacity:1;}
+  .day .catfill{display:none;}
+  .day .catamt{
+    position:absolute;bottom:3px;left:0;right:0;
+    text-align:center;font-size:10px;line-height:1;
+  }
+
+  .puzzle-done{
+    margin-top:14px;text-align:center;
+    font-family:'Press Start 2P', monospace;
+    font-size:10px;color:var(--accent-2);
+    letter-spacing:1px;display:none;
+  }
+  .puzzle-done.show{display:block;animation:pop .4s ease-out;}
+  .cal-panel.done .days{animation:glow 1.2s ease-in-out;}
+  @keyframes glow{
+    0%,100%{filter:brightness(1);}
+    50%{filter:brightness(1.12);}
+  }
+  @keyframes pop{from{transform:scale(.94);}to{transform:scale(1);}}
+
+  .section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:0;}
+  .section-head h2{
+    font-family:'Press Start 2P', monospace;
+    font-size:11px;color:var(--accent-2);
+    text-shadow:1px 1px 0 rgba(74,55,40,.16);
+    margin:0;letter-spacing:1px;
+  }
+  .section-head .tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .collapsible{margin-top:12px;display:none;}
+  .collapsible.open{display:block;}
+
+  .bar-row{display:grid;grid-template-columns:64px 1fr 64px;gap:10px;align-items:center;margin-bottom:9px;font-size:12px;}
+  .bar-row .cat{color:var(--ink-soft);}
+  .bar-track{background:#FFFBF2;border:2px solid var(--line);height:18px;position:relative;box-shadow:2px 2px 0 #B99C74;}
+  .bar-fill{height:100%;border-right:2px solid rgba(90,68,51,.25);}
+  .bar-row .val{text-align:right;color:var(--muted);font-size:11px;}
+
+  .list{display:flex;flex-direction:column;gap:8px;}
+  .row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto auto;
+    gap:10px;align-items:center;
+    background:#FFFBF2;
+    border:3px solid var(--line);
+    box-shadow:var(--shadow-sm);
+    padding:10px 12px;
+    font-size:13px;
+  }
+  .row .tag{
+    font-size:11px;padding:3px 8px;color:#3A2716;font-weight:700;
+    border:2px solid var(--line);
+    box-shadow:2px 2px 0 #B99C74;
+    white-space:nowrap;
+  }
+  .row .note{color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .row .date{color:var(--muted);font-size:11px;white-space:nowrap;}
+  .row .money{font-family:'Press Start 2P', monospace;font-size:10px;color:var(--accent-2);white-space:nowrap;}
+  .row .del{
+    background:transparent;border:none;color:#C4574F;cursor:pointer;
+    font-size:16px;padding:2px 6px;line-height:1;
+  }
+  .row .del:hover{color:#9E3A33;}
+  .empty-tip{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
+
+  .backup{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .backup .hint{font-size:12px;color:var(--muted);}
+
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
+    background:var(--line);color:#FFF6E2;
+    border:3px solid #2E2013;
+    box-shadow:4px 4px 0 rgba(0,0,0,.25);
+    padding:12px 16px;
+    display:none;align-items:center;gap:14px;
+    font-size:13px;z-index:1000;max-width:92vw;
+  }
+  .toast.show{display:flex;animation:toastIn .18s ease-out forwards;}
+  @keyframes toastIn{to{transform:translateX(-50%) translateY(0);}}
+  .toast button{
+    font-family:'Press Start 2P', monospace;font-size:9px;
+    background:var(--accent);color:var(--accent-ink);
+    border:2px solid #2E2013;padding:7px 9px;cursor:pointer;
+  }
+
+  @media (max-width:760px){
+    .form-grid{grid-template-columns:1fr 1fr;}
+    .form-grid .field-full{grid-column:1/-1;}
+    .form-grid .btn{grid-column:1/-1;}
+    .stats{grid-template-columns:1fr;gap:14px;}
+    .row{
+      grid-template-columns:auto 1fr auto;
+      grid-template-areas:"tag note money" "tag date money";
+      position:relative;padding-right:34px;
+    }
+    .row .tag{grid-area:tag;}
+    .row .note{grid-area:note;}
+    .row .date{grid-area:date;}
+    .row .money{grid-area:money;}
+    .row .del{position:absolute;right:8px;top:6px;}
+    .bar-row{grid-template-columns:52px 1fr 54px;}
+    .cal-wrap{max-width:100%;}
+    .cal-head{padding:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="title">PIXEL LEDGER</h1>
+  <p class="subtitle">每天记一笔，拼出一幅属于这个月的像素画</p>
+
+  <section class="panel light">
+    <div class="stats">
+      <div class="stat"><span class="num" id="sumTotal">¥0</span><span class="label">本月总支出</span></div>
+      <div class="stat"><span class="num" id="sumDays">0</span><span class="label">记账天数</span></div>
+      <div class="stat"><span class="num" id="sumLit">0/0</span><span class="label">拼图完成度</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2 class="form-title">＋ 记 一 笔</h2>
+    <div class="flash-tip" id="flashTip">已记录 · 格子已点亮</div>
+    <form id="entryForm" class="form-grid" autocomplete="off">
+      <div class="field">
+        <label for="amount">金额（¥）</label>
+        <input type="number" id="amount" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00" required />
+      </div>
+      <div class="field">
+        <label for="category">分类</label>
+        <select id="category" required></select>
+      </div>
+      <div class="field">
+        <label for="date">日期</label>
+        <input type="date" id="date" required />
+      </div>
+      <div class="field field-full">
+        <label for="note">备注（可选）</label>
+        <input type="text" id="note" maxlength="40" placeholder="比如：午饭、电影票…" />
+      </div>
+      <button class="btn" type="submit">记 账</button>
+    </form>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="panel cal-panel" id="calPanel">
+    <div class="cal-wrap">
+      <div class="cal-head">
+        <h2 id="calTitle">2026 / 10</h2>
+        <div class="cal-tools">
+          <button class="btn ghost small" id="prevBtn" type="button">◀</button>
+          <button class="btn ghost small" id="nextBtn" type="button">▶</button>
+          <button class="btn small" id="modeBtn" type="button">分 类 视 图</button>
+        </div>
+      </div>
+      <div class="week">
+        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+      </div>
+      <div class="days" id="days"></div>
+      <div class="puzzle-done" id="puzzleDone">✦ 本月拼图完成 ✦</div>
+    </div>
+  </section>
+
+  <section class="panel light">
+    <div class="section-head">
+      <h2>本月分类占比</h2>
+      <div class="tools">
+        <button class="btn ghost small" id="ratioBtn" type="button">展 开</button>
+      </div>
+    </div>
+    <div class="collapsible" id="ratio"></div>
+  </section>
+
+  <section class="panel light">
+    <div class="section-head">
+      <h2 id="listTitle">本月账目</h2>
+      <div class="tools">
+        <button class="btn ghost small" id="scopeBtn" type="button">查 看 全 部</button>
+        <button class="btn ghost small" id="listToggle" type="button">展 开</button>
+      </div>
+    </div>
+    <div class="collapsible" id="listWrap">
+      <div class="list" id="list"></div>
+    </div>
+  </section>
+
+  <section class="panel light">
+    <div class="section-head">
+      <h2>数据备份</h2>
+      <div class="tools">
+        <button class="btn ghost small" id="backupBtn" type="button">展 开</button>
+      </div>
+    </div>
+    <div class="collapsible" id="backupWrap">
+      <div class="backup" style="margin-top:12px;">
+        <button class="btn ghost small" id="exportJson" type="button">导出 JSON</button>
+        <button class="btn ghost small" id="importJson" type="button">导入 JSON</button>
+        <button class="btn ghost small" id="exportCsv" type="button">导出 CSV</button>
+        <span class="hint">数据保存在本机浏览器，换设备请用导出/导入。</span>
+      </div>
+      <input type="file" id="fileInput" accept="application/json,.json" style="display:none" />
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastText">已删除</span>
+  <button id="undoBtn" type="button">撤 销</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const CATEGORIES = [
+    { key:"food",    name:"饮食", color:"#F6C6A8" },
+    { key:"fun",     name:"娱乐", color:"#C9B8E0" },
+    { key:"cloth",   name:"服饰", color:"#F2B6C1" },
+    { key:"traffic", name:"交通", color:"#A8C6D8" },
+    { key:"daily",   name:"日用", color:"#B8D9C0" },
+    { key:"other",   name:"其他", color:"#F2D98C" },
+  ];
+  const CAT_MAP = Object.fromEntries(CATEGORIES.map(function(c){ return [c.key,c]; }));
+  const STORAGE_KEY = "pixel_ledger_v6";
+
+  /* =========================================================
+     9 幅意境像素画：21 列 × 15 行
+     一个日历格 = 3×3 像素
+     ========================================================= */
+  const SCENES = [
+    // 1. 海浪岛屿
+    { name:"海浪岛屿",
+      palette:["#5FB4E8","#8FD4F2","#C8ECF8","#9FD98A","#7FC47F","#F7E6B8"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 5 5 5 5 5 5 5 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 5 3 3 3 3 3 3 3 5 1 1 1 1 1 1 1 1",
+        "1 1 1 5 3 3 4 3 3 3 3 3 3 5 1 1 1 1 1 1 1",
+        "1 1 5 3 3 3 3 3 4 3 3 3 3 3 5 1 1 1 1 1 1",
+        "1 5 3 3 3 3 3 3 3 3 3 3 3 3 3 5 1 1 1 1 1",
+        "1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1",
+        "1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"
+      ]
+    },
+    // 2. 雪山
+    { name:"雪山",
+      palette:["#8FC4E8","#B7DCF2","#FFFFFF","#E0F0FA"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 2 2 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 2 2 2 2 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 2 2 2 2 2 2 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 2 2 3 2 2 2 2 2 0 0 0 0 0 0 0",
+        "0 0 0 0 0 2 2 3 3 3 2 2 2 2 2 0 0 0 0 0 0",
+        "0 0 0 0 2 2 2 2 3 2 2 2 2 2 2 2 0 0 0 0 0",
+        "0 0 0 2 2 1 1 2 2 2 2 2 1 1 2 2 2 0 0 0 0",
+        "0 0 2 2 1 1 1 1 2 2 2 1 1 1 1 2 2 2 0 0 0",
+        "0 2 2 1 1 1 1 1 1 2 2 1 1 1 1 1 1 2 2 2 0",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+      ]
+    },
+    // 3. 松树与月亮
+    { name:"松树与月亮",
+      palette:["#2E4468","#3E5C8A","#F7E6B8","#5A8F5A","#3E6B4A"],
+      rows:[
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 3 3 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 3 3 3 3 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 3 3 3 3 3 3 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 3 3 3 3 3 3 3 3 1 1 1 1 1 1 1",
+        "1 1 1 1 1 4 3 3 3 3 3 3 3 3 4 1 1 1 1 1 1",
+        "1 1 1 1 1 4 4 4 4 4 4 4 4 4 4 1 1 1 1 1 1",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+      ]
+    },
+    // 4. 草原羊群
+    { name:"草原羊群",
+      palette:["#A8DCF0","#C8ECF8","#FFFFFF","#9FD98A","#7FC47F"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 2 2 0 0 0 0 0 0 0 0 2 2 2 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3",
+        "3 3 3 2 2 2 3 3 3 3 3 2 2 2 3 3 3 3 3 3 3",
+        "3 3 2 2 2 2 2 3 3 3 2 2 2 2 2 3 3 3 3 3 3",
+        "3 3 2 2 2 2 2 3 3 3 2 2 2 2 2 3 3 3 3 3 3",
+        "3 3 3 2 2 2 3 3 3 3 3 2 2 2 3 3 3 3 3 3 3",
+        "3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3",
+        "3 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 4 3 3",
+        "3 3 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3 4 3 3 3",
+        "3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3"
+      ]
+    },
+    // 5. 小屋
+    { name:"小屋",
+      palette:["#A8DCF0","#9FD98A","#F2D36A","#F2A0A0","#F7E6B8","#8C7562"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 2 2 2 2 2 2 2 2 2 0 0 0 0 0",
+        "0 0 0 0 0 0 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0",
+        "0 0 0 0 0 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0",
+        "0 0 0 0 0 3 3 3 3 3 3 3 3 3 3 3 3 3 0 0 0",
+        "0 0 0 0 0 3 3 4 4 3 3 3 3 3 4 4 3 3 0 0 0",
+        "0 0 0 0 0 3 3 4 4 3 3 3 3 3 4 4 3 3 0 0 0",
+        "1 1 1 1 1 3 3 3 3 3 5 5 5 3 3 3 3 3 1 1 1",
+        "1 1 1 1 1 3 3 3 3 3 5 5 5 3 3 3 3 3 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"
+      ]
+    },
+    // 6. 热气球
+    { name:"热气球",
+      palette:["#A8DCF0","#C8ECF8","#F58B6B","#F2C14E","#8C7562","#FFFFFF"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 5 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 2 2 3 3 2 2 2 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 2 3 3 3 3 3 2 2 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 2 3 3 3 3 3 2 2 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 2 2 3 3 3 2 2 2 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 4 4 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+      ]
+    },
+    // 7. 仙人掌（不对称）
+    { name:"仙人掌",
+      palette:["#A8DCF0","#F7D77A","#7FC47F","#9FD98A","#E8A93C"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 2 2 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 2 2 1 1 2 2 2 2 1 1 1 1 1 1 1 1",
+        "1 1 1 1 2 2 2 2 1 2 2 2 2 1 1 1 1 1 1 1 1",
+        "1 1 1 1 2 2 2 2 1 2 2 2 2 1 2 2 1 1 1 1 1",
+        "1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1",
+        "1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1",
+        "1 1 1 4 1 1 1 2 2 2 2 2 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 4 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"
+      ]
+    },
+    // 8. 田野风车（含云）
+    { name:"田野风车",
+      palette:["#A8DCF0","#9FD98A","#FFFFFF","#B99C74"],
+      rows:[
+        "0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0",
+        "0 0 2 2 0 0 0 0 0 0 2 0 0 0 2 2 2 0 0 0 0",
+        "0 2 2 2 2 0 0 2 2 2 2 2 2 0 2 2 2 2 0 0 0",
+        "0 0 2 2 0 0 0 0 0 0 2 0 0 0 0 2 2 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 0 3 3 0 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 3 3 3 3 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 3 3 3 3 0 0 0 0 0 0 0 0 0",
+        "0 0 0 0 0 0 0 0 3 3 3 3 0 0 0 0 0 0 0 0 0",
+        "1 1 1 1 1 1 1 1 3 3 3 3 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 3 3 3 3 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"
+      ]
+    },
+    // 9. 云端飞鸟
+    { name:"云端飞鸟",
+      palette:["#A8DCF0","#C8ECF8","#FFFFFF","#5A7FA8"],
+      rows:[
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 3 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 3 3 3 3 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 3 3 1 1 1 1 1 1 3 3 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 3 3 3 3 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2",
+        "2 2 2 3 3 2 2 2 2 2 3 3 3 2 2 2 2 2 2 2 2",
+        "2 2 3 3 3 3 2 2 2 3 3 3 3 3 2 2 2 2 2 2 2",
+        "2 2 3 3 3 3 2 2 2 3 3 3 3 3 2 2 2 2 2 2 2",
+        "2 2 2 3 3 2 2 2 2 2 3 3 3 2 2 2 2 2 2 2 2",
+        "2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2"
+      ]
+    }
+  ];
+
+  let entries = load();
+  let viewYear  = new Date().getFullYear();
+  let viewMonth = new Date().getMonth();
+  let viewMode  = "art";
+  let listScope = "month";
+  let ratioOpen = false;
+  let listOpen  = false;
+  let backupOpen = false;
+  let pendingUndo = null;
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY)
+        || localStorage.getItem("pixel_ledger_v5")
+        || localStorage.getItem("pixel_ledger_v4")
+        || localStorage.getItem("pixel_ledger_v3")
+        || localStorage.getItem("pixel_ledger_v2")
+        || localStorage.getItem("pixel_ledger_v1");
+      if(!raw) return [];
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr.filter(function(e){ return e && e.amount>0 && e.date; }) : [];
+    }catch(e){ return []; }
+  }
+  function save(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }catch(e){}
+  }
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function ymd(y,m,d){ return y + "-" + pad(m) + "-" + pad(d); }
+  function monthKey(y,m){ return y + "-" + pad(m); }
+  function fmtMoney(n){
+    return "¥" + (Math.round(n*100)/100).toLocaleString("zh-CN",{minimumFractionDigits:0, maximumFractionDigits:2});
+  }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+  function daysInMonth(y,m){ return new Date(y, m, 0).getDate(); }
+
+  function sceneFor(year, month){
+    const seed = year*100 + month;
+    let x = Math.sin(seed) * 10000;
+    x = Math.abs(x - Math.floor(x));
+    return SCENES[Math.floor(x * SCENES.length) % SCENES.length];
+  }
+
+  const catSelect = document.getElementById("category");
+  const legend = document.getElementById("legend");
+  CATEGORIES.forEach(function(c){
+    const opt = document.createElement("option");
+    opt.value = c.key; opt.textContent = c.name;
+    catSelect.appendChild(opt);
+
+    const item = document.createElement("div");
+    item.className = "item";
+    const sw = document.createElement("span");
+    sw.className = "swatch"; sw.style.background = c.color;
+    const tx = document.createElement("span");
+    tx.textContent = c.name;
+    item.appendChild(sw); item.appendChild(tx);
+    legend.appendChild(item);
+  });
+
+  const form     = document.getElementById("entryForm");
+  const amountEl = document.getElementById("amount");
+  const dateEl   = document.getElementById("date");
+  const noteEl   = document.getElementById("note");
+  const flashTip = document.getElementById("flashTip");
+
+  function setDefaultDate(){
+    const t = new Date();
+    dateEl.value = ymd(t.getFullYear(), t.getMonth()+1, t.getDate());
+  }
+  setDefaultDate();
+
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    const amount = parseFloat(amountEl.value);
+    if(!(amount > 0)){ amountEl.focus(); return; }
+    const date = dateEl.value;
+    if(!date){ dateEl.focus(); return; }
+    const category = catSelect.value;
+    const note = noteEl.value.trim();
+
+    entries.push({ id: uid(), amount: Math.round(amount*100)/100, category: category, date: date, note: note });
+    save();
+
+    const parts = date.split("-");
+    viewYear = parseInt(parts[0],10);
+    viewMonth = parseInt(parts[1],10) - 1;
+
+    form.reset();
+    setDefaultDate();
+    catSelect.value = category;
+    amountEl.focus();
+
+    flashTip.classList.add("show");
+    setTimeout(function(){ flashTip.classList.remove("show"); }, 1800);
+    render(date);
+  });
+
+  const daysEl   = document.getElementById("days");
+  const calTitle = document.getElementById("calTitle");
+  const modeBtn  = document.getElementById("modeBtn");
+  const calPanel = document.getElementById("calPanel");
+  const puzzleDoneEl = document.getElementById("puzzleDone");
+
+  modeBtn.addEventListener("click", function(){
+    viewMode = viewMode === "art" ? "cat" : "art";
+    render();
+  });
+
+  function buildDayMap(year, month){
+    const mk = monthKey(year, month);
+    const map = {};
+    entries.forEach(function(e){
+      if(!e.date.startsWith(mk)) return;
+      if(!map[e.date]) map[e.date] = { total:0, byCat:{} };
+      map[e.date].total += e.amount;
+      map[e.date].byCat[e.category] = (map[e.date].byCat[e.category] || 0) + e.amount;
+    });
+    return map;
+  }
+  function dominantCat(byCat){
+    let best = null, bestVal = -1;
+    for(const k in byCat){
+      if(byCat[k] > bestVal){ bestVal = byCat[k]; best = k; }
+    }
+    return best;
+  }
+
+  function cellPixels(scene, cellRow, cellCol){
+    const pixels = [];
+    for(let r=0;r<3;r++){
+      const rowIdx = cellRow*3 + r;
+      const rowStr = scene.rows[rowIdx] || "";
+      const codes = rowStr.split(" ");
+      for(let c=0;c<3;c++){
+        const code = codes[cellCol*3 + c];
+        if(code === undefined || code === "" || code === " "){
+          pixels.push(null);
+        }else{
+          const idx = parseInt(code,10);
+          pixels.push(scene.palette[idx] || null);
+        }
+      }
+    }
+    return pixels;
+  }
+
+  function renderCalendar(flashDate){
+    const month = viewMonth + 1;
+    calTitle.textContent = viewYear + " / " + pad(month);
+    daysEl.innerHTML = "";
+
+    const dayMap = buildDayMap(viewYear, month);
+    const first = new Date(viewYear, viewMonth, 1);
+    const startWeekday = first.getDay();
+    const dim = daysInMonth(viewYear, month);
+
+    const now = new Date();
+    const isCurMonth = (now.getFullYear()===viewYear && now.getMonth()===viewMonth);
+    const todayStr = ymd(now.getFullYear(), now.getMonth()+1, now.getDate());
+
+    const scene = sceneFor(viewYear, month);
+    const totalRows = Math.ceil((startWeekday + dim) / 7);
+    const totalCells = totalRows * 7;
+
+    const daySet = {};
+    for(const ds in dayMap){ daySet[ds] = true; }
+    const recordedDays = Object.keys(daySet).length;
+    const decoUnlocked = Math.min(totalCells - dim, Math.floor(recordedDays / 7));
+
+    for(let i=0;i<startWeekday;i++){
+      const d = document.createElement("div");
+      d.className = "day empty";
+      daysEl.appendChild(d);
+    }
+
+    for(let d=1; d<=dim; d++){
+      const dateStr = ymd(viewYear, month, d);
+      const slot = startWeekday + d - 1;
+      const cellRow = Math.floor(slot / 7);
+      const cellCol = slot % 7;
+
+      const cell = document.createElement("div");
+      cell.className = "day";
+
+      const pix = document.createElement("div");
+      pix.className = "pixgrid";
+      const pixels = cellPixels(scene, cellRow, cellCol);
+      pixels.forEach(function(color){
+        const s = document.createElement("span");
+        if(color) s.style.background = color;
+        pix.appendChild(s);
+      });
+      cell.appendChild(pix);
+
+      const catfill = document.createElement("div");
+      catfill.className = "catfill";
+      cell.appendChild(catfill);
+
+      const label = document.createElement("div");
+      label.className = "label";
+      const info = dayMap[dateStr];
+      if(info && info.total > 0){
+        cell.classList.add("lit");
+        const key = dominantCat(info.byCat);
+        const cat = CAT_MAP[key] || CAT_MAP.other;
+        catfill.style.background = cat.color;
+        label.textContent = d;
+        const amt = document.createElement("div");
+        amt.className = "catamt";
+        amt.textContent = "¥" + (Math.round(info.total*10)/10);
+        cell.appendChild(amt);
+      }else{
+        label.textContent = d;
+      }
+      cell.appendChild(label);
+
+      if(isCurMonth && dateStr === todayStr) cell.classList.add("today");
+      if(dateStr === flashDate){
+        cell.classList.add("flash");
+        setTimeout(function(){ cell.classList.remove("flash"); }, 600);
+      }
+      daysEl.appendChild(cell);
+    }
+
+    const filled = startWeekday + dim;
+    let decoIndex = 0;
+    for(let slot = filled; slot < totalCells; slot++){
+      const cellRow = Math.floor(slot / 7);
+      const cellCol = slot % 7;
+
+      const cell = document.createElement("div");
+      cell.className = "day deco";
+
+      const pix = document.createElement("div");
+      pix.className = "pixgrid";
+      const pixels = cellPixels(scene, cellRow, cellCol);
+      pixels.forEach(function(color){
+        const s = document.createElement("span");
+        if(color) s.style.background = color;
+        pix.appendChild(s);
+      });
+      cell.appendChild(pix);
+
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = "";
+      cell.appendChild(label);
+
+      if(decoIndex < decoUnlocked){
+        cell.classList.add("lit");
+      }
+      decoIndex++;
+      daysEl.appendChild(cell);
+    }
+
+    Array.prototype.forEach.call(daysEl.children, function(cell){
+      if(cell.classList.contains("empty")) return;
+      if(viewMode === "art") cell.classList.add("art");
+      else cell.classList.add("cat");
+    });
+    if(viewMode === "cat"){
+      Array.prototype.forEach.call(daysEl.children, function(cell){
+        if(!cell.classList.contains("empty")) cell.classList.add("catmode");
+      });
+    }
+    modeBtn.textContent = viewMode === "art" ? "分 类 视 图" : "拼 图 视 图";
+
+    const allLit =
+      Object.keys(daySet).length >= dim &&
+      decoUnlocked >= (totalCells - dim);
+    if(allLit){
+      puzzleDoneEl.classList.add("show");
+      calPanel.classList.add("done");
+      setTimeout(function(){ calPanel.classList.remove("done"); }, 1300);
+    }else{
+      puzzleDoneEl.classList.remove("show");
+    }
+  }
+
+  const sumTotal = document.getElementById("sumTotal");
+  const sumDays  = document.getElementById("sumDays");
+  const sumLit   = document.getElementById("sumLit");
+
+  function renderStats(){
+    const month = viewMonth + 1;
+    const mk = monthKey(viewYear, month);
+    const monthEntries = entries.filter(function(e){ return e.date.startsWith(mk); });
+
+    let total = 0;
+    const daySet = {};
+    monthEntries.forEach(function(e){
+      total += e.amount;
+      daySet[e.date] = true;
+    });
+
+    const dim = daysInMonth(viewYear, month);
+    const startWeekday = new Date(viewYear, viewMonth, 1).getDay();
+    const totalRows = Math.ceil((startWeekday + dim) / 7);
+    const totalCells = totalRows * 7;
+    const decoCount = totalCells - dim;
+    const recordedDays = Object.keys(daySet).length;
+    const decoUnlocked = Math.min(decoCount, Math.floor(recordedDays / 7));
+    const litCount = recordedDays + decoUnlocked;
+
+    sumTotal.textContent = fmtMoney(total);
+    sumDays.textContent  = String(recordedDays);
+    sumLit.textContent   = litCount + "/" + totalCells;
+  }
+
+  const listEl   = document.getElementById("list");
+  const listTitle = document.getElementById("listTitle");
+  const scopeBtn = document.getElementById("scopeBtn");
+  const listWrap = document.getElementById("listWrap");
+  const listToggle = document.getElementById("listToggle");
+
+  scopeBtn.addEventListener("click", function(){
+    listScope = listScope === "month" ? "all" : "month";
+    render();
+  });
+  listToggle.addEventListener("click", function(){
+    listOpen = !listOpen;
+    listWrap.classList.toggle("open", listOpen);
+    listToggle.textContent = listOpen ? "收 起" : "展 开";
+    if(listOpen) renderList();
+  });
+
+  function renderList(){
+    const month = viewMonth + 1;
+    const mk = monthKey(viewYear, month);
+    let list = entries.slice();
+    if(listScope === "month"){
+      list = list.filter(function(e){ return e.date.startsWith(mk); });
+      listTitle.textContent = "本月账目";
+      scopeBtn.textContent = "查 看 全 部";
+    }else{
+      listTitle.textContent = "全部账目";
+      scopeBtn.textContent = "只 看 本 月";
+    }
+    list.sort(function(a,b){ return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+
+    listEl.innerHTML = "";
+    if(list.length === 0){
+      const tip = document.createElement("div");
+      tip.className = "empty-tip";
+      tip.textContent = listScope === "month"
+        ? "本月还没有账目，记下第一笔点亮格子吧 ✦"
+        : "还没有任何账目记录 ✦";
+      listEl.appendChild(tip);
+      return;
+    }
+
+    list.forEach(function(e){
+      const cat = CAT_MAP[e.category] || CAT_MAP.other;
+      const row = document.createElement("div");
+      row.className = "row";
+
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = cat.name;
+      tag.style.background = cat.color;
+
+      const note = document.createElement("span");
+      note.className = "note";
+      note.textContent = e.note || "—";
+
+      const date = document.createElement("span");
+      date.className = "date";
+      date.textContent = e.date;
+
+      const money = document.createElement("span");
+      money.className = "money";
+      money.textContent = fmtMoney(e.amount);
+
+      const del = document.createElement("button");
+      del.className = "del";
+      del.type = "button";
+      del.title = "删除这条记录";
+      del.textContent = "×";
+      del.addEventListener("click", function(){ removeEntry(e); });
+
+      row.appendChild(tag);
+      row.appendChild(note);
+      row.appendChild(date);
+      row.appendChild(money);
+      row.appendChild(del);
+      listEl.appendChild(row);
+    });
+  }
+
+  const ratioBtn = document.getElementById("ratioBtn");
+  const ratioEl  = document.getElementById("ratio");
+
+  ratioBtn.addEventListener("click", function(){
+    ratioOpen = !ratioOpen;
+    ratioEl.classList.toggle("open", ratioOpen);
+    ratioBtn.textContent = ratioOpen ? "收 起" : "展 开";
+    if(ratioOpen) renderRatio();
+  });
+
+  function renderRatio(){
+    const month = viewMonth + 1;
+    const mk = monthKey(viewYear, month);
+    const sums = {};
+    let total = 0;
+    entries.forEach(function(e){
+      if(!e.date.startsWith(mk)) return;
+      sums[e.category] = (sums[e.category] || 0) + e.amount;
+      total += e.amount;
+    });
+
+    ratioEl.innerHTML = "";
+    if(total <= 0){
+      const tip = document.createElement("div");
+      tip.className = "empty-tip";
+      tip.textContent = "本月还没有支出，暂无占比数据。";
+      ratioEl.appendChild(tip);
+      return;
+    }
+
+    CATEGORIES.forEach(function(c){
+      const val = sums[c.key] || 0;
+      if(val <= 0) return;
+      const pct = Math.round(val / total * 100);
+      const row = document.createElement("div");
+      row.className = "bar-row";
+
+      const name = document.createElement("span");
+      name.className = "cat";
+      name.textContent = c.name;
+
+      const track = document.createElement("div");
+      track.className = "bar-track";
+      const fill = document.createElement("div");
+      fill.className = "bar-fill";
+      fill.style.width = Math.max(4, pct) + "%";
+      fill.style.background = c.color;
+      track.appendChild(fill);
+
+      const v = document.createElement("span");
+      v.className = "val";
+      v.textContent = pct + "%";
+
+      row.appendChild(name);
+      row.appendChild(track);
+      row.appendChild(v);
+      ratioEl.appendChild(row);
+    });
+  }
+
+  const backupBtn = document.getElementById("backupBtn");
+  const backupWrap = document.getElementById("backupWrap");
+  backupBtn.addEventListener("click", function(){
+    backupOpen = !backupOpen;
+    backupWrap.classList.toggle("open", backupOpen);
+    backupBtn.textContent = backupOpen ? "收 起" : "展 开";
+  });
+
+  const toast     = document.getElementById("toast");
+  const toastText = document.getElementById("toastText");
+  const undoBtn   = document.getElementById("undoBtn");
+  let undoTimer   = null;
+
+  function removeEntry(entry){
+    const idx = entries.findIndex(function(x){ return x.id === entry.id; });
+    if(idx < 0) return;
+    entries.splice(idx,1);
+    save();
+    render();
+
+    pendingUndo = { entry: entry, idx: idx };
+    const catName = CAT_MAP[entry.category] ? CAT_MAP[entry.category].name : "";
+    toastText.textContent = "已删除 " + catName + " " + fmtMoney(entry.amount);
+    toast.classList.add("show");
+
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(function(){
+      toast.classList.remove("show");
+      pendingUndo = null;
+    }, 5000);
+  }
+
+  undoBtn.addEventListener("click", function(){
+    if(!pendingUndo) return;
+    entries.splice(Math.min(pendingUndo.idx, entries.length), 0, pendingUndo.entry);
+    save();
+    pendingUndo = null;
+    toast.classList.remove("show");
+    clearTimeout(undoTimer);
+    render();
+  });
+
+  document.getElementById("prevBtn").addEventListener("click", function(){
+    viewMonth--;
+    if(viewMonth < 0){ viewMonth = 11; viewYear--; }
+    render();
+  });
+  document.getElementById("nextBtn").addEventListener("click", function(){
+    viewMonth++;
+    if(viewMonth > 11){ viewMonth = 0; viewYear++; }
+    render();
+  });
+
+  document.getElementById("exportJson").addEventListener("click", function(){
+    const t = new Date();
+    const blob = new Blob([JSON.stringify(entries, null, 2)], {type:"application/json"});
+    downloadBlob(blob, "pixel-ledger-" + ymd(t.getFullYear(), t.getMonth()+1, t.getDate()) + ".json");
+  });
+
+  document.getElementById("exportCsv").addEventListener("click", function(){
+    const rows = [["日期","分类","金额","备注"]];
+    entries.slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; }).forEach(function(e){
+      const cat = CAT_MAP[e.category] ? CAT_MAP[e.category].name : e.category;
+      rows.push([e.date, cat, e.amount, (e.note||"").replace(/"/g,'""')]);
+    });
+    const csv = rows.map(function(r){
+      return r.map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(",");
+    }).join("\r\n");
+    const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"});
+    const t = new Date();
+    downloadBlob(blob, "pixel-ledger-" + ymd(t.getFullYear(), t.getMonth()+1, t.getDate()) + ".csv");
+  });
+
+  const fileInput = document.getElementById("fileInput");
+  document.getElementById("importJson").addEventListener("click", function(){
+    fileInput.click();
+  });
+  fileInput.addEventListener("change", function(){
+    const file = fileInput.files && fileInput.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(){
+      try{
+        const arr = JSON.parse(String(reader.result));
+        if(!Array.isArray(arr)) throw new Error("格式错误");
+        const clean = arr.filter(function(e){
+          return e && typeof e.amount === "number" && isFinite(e.amount) && e.amount > 0 &&
+                 typeof e.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(e.date);
+        });
+        if(clean.length === 0){ alert("没有可导入的有效记录。"); return; }
+        if(!confirm("将导入 " + clean.length + " 条记录，并与现有数据合并。继续？")) return;
+        const existingIds = new Set(entries.map(function(e){ return e.id; }));
+        clean.forEach(function(e){
+          if(!e.id || existingIds.has(e.id)) e.id = uid();
+          if(!CAT_MAP[e.category]) e.category = "other";
+          entries.push(e);
+        });
+        save();
+        render();
+        alert("导入完成。");
+      }catch(err){
+        alert("导入失败：文件不是有效的 JSON 数据。");
+      }finally{
+        fileInput.value = "";
+      }
+    };
+    reader.readAsText(file, "utf-8");
+  });
+
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  function render(flashDate){
+    renderCalendar(flashDate || null);
+    renderStats();
+    if(listOpen) renderList();
+    if(ratioOpen) renderRatio();
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
