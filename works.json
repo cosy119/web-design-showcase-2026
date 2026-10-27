@@ -320,5 +320,17 @@
     "description": "",
     "tags": [],
     "award": null
+  },
+  {
+    "id": "chase-dream",
+    "title": "追逐梦想",
+    "author": "王安鑫",
+    "college": "计算机科学与技术学院",
+    "className": "计科2603",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
   }
 ]

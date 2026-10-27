@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梦想 | Dream</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* 星空光点 */
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%,100% {opacity: 0.2;}
+            50% {opacity: 1;}
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom:16px;
+            background: linear-gradient(90deg,#87cefa,#f0bfff);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: fadeIn 1.2s ease;
+        }
+        .en-title {
+            font-size:20px;
+            letter-spacing:6px;
+            color:#c7d8ff;
+            margin-bottom:40px;
+        }
+        .desc {
+            font-size:18px;
+            line-height: 2;
+            max-width:750px;
+            margin:0 auto 50px;
+            color:#e4ecff;
+        }
+        .slogan {
+            font-size:24px;
+            color:#ffd782;
+            margin-bottom:60px;
+            font-weight:bold;
+        }
+        .card-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap:24px;
+        }
+        .card {
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.15);
+            border-radius:16px;
+            padding:30px 16px;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            background:rgba(255,255,255,0.14);
+        }
+        .card h3 {
+            font-size:22px;
+            margin-bottom:12px;
+            color:#bfe0ff;
+        }
+        .card p {
+            font-size:15px;
+            color:#d8e5ff;
+        }
+        footer {
+            margin-top:80px;
+            color:#99a9cc;
+            font-size:14px;
+        }
+        @keyframes fadeIn {
+            from {opacity:0; transform: translateY(20px);}
+            to {opacity:1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+    <!-- 自动生成星星 -->
+    <script>
+        // 生成80个星星
+        for(let i=0;i<80;i++){
+            const star = document.createElement("div");
+            star.className = "star";
+            star.style.left = Math.random()*100 + "%";
+            star.style.top = Math.random()*100 + "%";
+            star.style.animationDelay = Math.random()*4 + "s";
+            document.body.appendChild(star);
+        }
+    </script>
+    <div class="container">
+        <h1>追逐梦想</h1>
+        <div class="en-title">CHASE YOUR DREAM</div>
+        <p class="desc">
+            梦想不是遥不可及的星光，是藏在每一次坚持里的力量。不必害怕路途漫长，不必纠结暂时的迷茫。一步一步往前走，时光会看见你的努力，汗水会托举你的远方。
+        </p>
+        <div class="slogan">心有山海，静而无边</div>
+        <div class="card-wrap">
+            <div class="card">
+                <h3>热爱</h3>
+                <p>保持心底热爱，奔赴下一场山海</p>
+            </div>
+            <div class="card">
+                <h3>坚持</h3>
+                <p>慢慢来，谁不是翻山越岭去成长</p>
+            </div>
+            <div class="card">
+                <h3>勇气</h3>
+                <p>勇敢出发，本身就是一件很酷的事</p>
+            </div>
+            <div class="card">
+                <h3>奔赴</h3>
+                <p>以梦为马，不负韶华</p>
+            </div>
+        </div>
+        <footer>
+            Dream · 以梦为马，逐光而行
+        </footer>
+    </div>
+</body>
+</html>
+

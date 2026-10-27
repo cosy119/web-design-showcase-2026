@@ -37,6 +37,8 @@
 
 |像素账本|肖雅琪|电气与电子工程学院|自动2402|[查看](works/pixel-ledger/)|
 
+|追逐梦想|王安鑫|计算机科学与技术学院|计科2603|[查看](works/chase-dream/)|
+
 ## 部署
 
 GitHub Pages 采用 main 分支根目录发布，.nojekyll 禁用 Jekyll 处理。所有作品位于 works 下，引用资源使用相对路径。入口为 index.html，无需构建和后端服务。
@@ -90,3 +92,7 @@ GitHub Pages 采用 main 分支根目录发布，.nojekyll 禁用 Jekyll 处理�
 ## 像素账本整理记录
 
 原网页 web-page.html 按原稿发布，入口统一为 index.html，不发布原投稿文档和压缩包。
+
+## 追逐梦想整理记录
+
+王安鑫提交的 dream.html 按原稿发布，入口统一为 index.html。
