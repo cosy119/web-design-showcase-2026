@@ -332,5 +332,53 @@
     "description": "",
     "tags": [],
     "award": null
+  },
+  {
+    "id": "day-calculator",
+    "title": "天数计算器",
+    "author": "朱文博",
+    "college": "计算机科学与技术学院",
+    "className": "计科2607",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "glass-radiance",
+    "title": "琉璃流光",
+    "author": "崔骞",
+    "college": "计算机科学与技术学院",
+    "className": "计科2504",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "coffee-time",
+    "title": "拾光咖啡",
+    "author": "杨晔茹",
+    "college": "计算机科学与技术学院",
+    "className": "智能2401",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
+  },
+  {
+    "id": "ocean-letter",
+    "title": "深海来信",
+    "author": "栾汶颖",
+    "college": "数学与统计学院",
+    "className": "数教2402",
+    "category": "作品展示",
+    "color": "#537c76",
+    "description": "",
+    "tags": [],
+    "award": null
   }
 ]

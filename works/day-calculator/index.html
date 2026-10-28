@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日期天数计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "PingFang SC", "Microsoft Yahei", serif;
+            background: linear-gradient(150deg, #dbeafe 0%, #e0cfff 40%, #ffe8d6 100%);
+            color: #2c3e50;
+            overflow: hidden;
+            position: relative;
+            padding: 24px;
+            transition: background 0.7s ease, color 0.4s ease;
+        }
+        body.dark {
+            background: linear-gradient(150deg, #0f1730 0%, #221b44 40%, #3b2038 100%);
+            color: #e8edf7;
+        }
+
+        /* 背景装饰层：光晕 + 星星 */
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glow-ball {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.45;
+            animation: float 20s ease-in-out infinite;
+        }
+        .g1 {
+            width: 360px;
+            height: 360px;
+            background: #86bfff;
+            top: -120px;
+            left: -120px;
+        }
+        .g2 {
+            width: 420px;
+            height: 420px;
+            background: #ffbd80;
+            bottom: -140px;
+            right: -150px;
+            animation-delay: -7s;
+        }
+        .g3 {
+            width: 240px;
+            height: 240px;
+            background: #ff899c;
+            top: 25%;
+            right: 28%;
+            animation-delay: -13s;
+        }
+        body.dark .g1 { background: #2384ff; opacity: 0.3; }
+        body.dark .g2 { background: #ffa642; opacity: 0.27; }
+        body.dark .g3 { background: #ff4f78; opacity: 0.22; }
+
+        .star {
+            position: absolute;
+            color: #ffd166;
+            font-size: 18px;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        .s1 { top:12%; left:10%; animation-delay:0s; }
+        .s2 { top:75%; left:16%; animation-delay:0.7s; }
+        .s3 { top:20%; right:12%; animation-delay:1.2s; }
+        .s4 { top:65%; right:18%; animation-delay:1.8s; }
+        .s5 { top:45%; left:6%; animation-delay:2.1s; }
+        .s6 { top:32%; right:8%; animation-delay:2.5s; }
+        body.dark .star { color: #ffe680; }
+
+        /* 外装饰框 */
+        .outer-frame {
+            position: relative;
+            z-index: 2;
+            padding: 6px;
+            background: linear-gradient(135deg, #60a5fa, #fbbf24, #f472b6);
+            border-radius: 34px;
+            box-shadow: 0 30px 90px rgba(40, 70, 150, 0.22);
+            animation: framePulse 5s ease-in-out infinite;
+        }
+        body.dark .outer-frame {
+            background: linear-gradient(135deg, #2563eb, #d97706, #db2777);
+        }
+        .main-card {
+            width: 100%;
+            max-width: 660px;
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(26px);
+            border-radius: 28px;
+            padding: 54px 44px;
+            position: relative;
+            overflow: hidden;
+        }
+        body.dark .main-card {
+            background: rgba(18, 28, 48, 0.80);
+        }
+        /* 四角花纹装饰 */
+        .corner {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0.65;
+            color: #3478e8;
+        }
+        .tl { top:18px; left:22px; }
+        .tr { top:18px; right:22px; transform:scaleX(-1); }
+        .bl { bottom:18px; left:22px; transform:scaleY(-1); }
+        .br { bottom:18px; right:22px; transform:scale(-1,-1); }
+        body.dark .corner { color:#7ab3ff; }
+
+        .title-wrap {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .title-wrap h1 {
+            font-size: 32px;
+            letter-spacing: 4px;
+            color: #1d61d1;
+            margin-bottom:12px;
+        }
+        body.dark .title-wrap h1 { color:#7ab3ff; }
+        .subtitle {
+            font-size:14px;
+            opacity:0.7;
+            letter-spacing:2px;
+        }
+        .divider {
+            width: 120px;
+            height:4px;
+            margin:16px auto 0;
+            background: linear-gradient(90deg,#3478e8,#f59e0b,#ec4899);
+            border-radius:99px;
+        }
+
+        .form-item {
+            margin-bottom: 28px;
+        }
+        .form-item label {
+            display:block;
+            font-size:16px;
+            margin-bottom:12px;
+            padding-left:4px;
+        }
+        .date-input-box {
+            position:relative;
+        }
+        .date-input-box::before {
+            content:"🗓️";
+            position:absolute;
+            left:18px;
+            top:50%;
+            transform:translateY(-50%);
+            font-size:22px;
+            z-index:2;
+        }
+        input[type="date"] {
+            width:100%;
+            padding:16px 20px 16px 58px;
+            border-radius:18px;
+            border: 2px solid #c5d5ec;
+            font-size:18px;
+            background:rgba(255,255,255,0.75);
+            transition:0.35s ease;
+        }
+        body.dark input[type="date"] {
+            background:rgba(30,42,65,0.7);
+            border-color:#415474;
+            color:#fff;
+        }
+        input[type="date"]:focus {
+            outline:none;
+            border-color:#3478e8;
+            box-shadow:0 0 0 6px rgba(52,120,232,0.2);
+        }
+
+        .btn-row {
+            display:flex;
+            gap:16px;
+            margin:38px 0;
+            flex-wrap:wrap;
+        }
+        button {
+            flex:1;
+            min-width:125px;
+            border:none;
+            border-radius:999px;
+            padding:15px 12px;
+            font-size:16px;
+            cursor:pointer;
+            color:#fff;
+            position:relative;
+            overflow:hidden;
+            transition:0.28s ease;
+        }
+        #calcBtn {
+            background:linear-gradient(135deg,#2b71dd,#4f94ff);
+            box-shadow:0 12px 28px rgba(43,113,221,0.34);
+        }
+        #clearBtn {
+            background:linear-gradient(135deg,#8897b0,#59677c);
+            box-shadow:0 12px 28px rgba(89,103,124,0.24);
+        }
+        #themeBtn {
+            background:linear-gradient(135deg,#f7a330,#f1405a);
+            box-shadow:0 12px 28px rgba(247,163,48,0.32);
+        }
+        button:hover {
+            transform: translateY(-5px) scale(1.03);
+            filter:brightness(1.08);
+        }
+
+        .result-wrap {
+            padding:34px 24px;
+            border-radius:22px;
+            background: linear-gradient(120deg, rgba(255,255,255,0.6), rgba(230,240,255,0.6));
+            border:1px solid rgba(255,255,255,0.75);
+            text-align:center;
+            min-height:120px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        body.dark .result-wrap {
+            background: linear-gradient(120deg, rgba(20,30,50,0.55), rgba(35,25,55,0.55));
+            border-color:rgba(255,255,255,0.12);
+        }
+        #result {
+            font-size:21px;
+            line-height:2;
+        }
+        .day-huge {
+            font-size:42px;
+            font-weight:700;
+            color:#1d61d1;
+            display:inline-block;
+        }
+        body.dark .day-huge { color:#7ab3ff; }
+        .shake-pop {
+            animation: popAnim 0.7s ease;
+        }
+
+        @keyframes float {
+            0%,100% { transform: translateY(0) translateX(0) scale(1); }
+            50% { transform: translateY(-40px) translateX(28px) scale(1.06); }
+        }
+        @keyframes twinkle {
+            0%,100% { opacity:0.35; transform:scale(0.85); }
+            50% { opacity:1; transform:scale(1.15); }
+        }
+        @keyframes framePulse {
+            0%,100% { opacity:1; }
+            50% { opacity:0.9; }
+        }
+        @keyframes popAnim {
+            0% { transform: scale(0.92); opacity:0.6; }
+            50% { transform: scale(1.14); }
+            100% { transform: scale(1); opacity:1; }
+        }
+        @media (max-width:480px) {
+            .main-card { padding:40px 26px; }
+            .title-wrap h1 { font-size:26px; }
+            #result { font-size:18px; }
+            .day-huge { font-size:34px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer">
+        <div class="glow-ball g1"></div>
+        <div class="glow-ball g2"></div>
+        <div class="glow-ball g3"></div>
+        <div class="star s1">✦</div>
+        <div class="star s2">✧</div>
+        <div class="star s3">✦</div>
+        <div class="star s4">✧</div>
+        <div class="star s5">✦</div>
+        <div class="star s6">✧</div>
+    </div>
+
+    <div class="outer-frame">
+        <div class="main-card">
+            <div class="corner tl">❧</div>
+            <div class="corner tr">❧</div>
+            <div class="corner bl">❧</div>
+            <div class="corner br">❧</div>
+
+            <div class="title-wrap">
+                <h1>📅 日期天数计算器</h1>
+                <p class="subtitle">计算两个日期之间相隔的天数</p>
+                <div class="divider"></div>
+            </div>
+
+            <div class="form-item">
+                <label>起始日期</label>
+                <div class="date-input-box">
+                    <input type="date" id="startDate">
+                </div>
+            </div>
+            <div class="form-item">
+                <label>结束日期</label>
+                <div class="date-input-box">
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button id="calcBtn">✨ 计算天数</button>
+                <button id="clearBtn">🔄 重置</button>
+                <button id="themeBtn">🌙 深色模式</button>
+            </div>
+
+            <div class="result-wrap">
+                <div id="result">请选择起止日期，点击按钮开始计算</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("endDate");
+    const calcBtn = document.getElementById("calcBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const themeBtn = document.getElementById("themeBtn");
+    const resultDom = document.getElementById("result");
+
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    startInput.value = todayStr;
+
+    calcBtn.onclick = function(){
+        const s = startInput.value;
+        const e = endInput.value;
+        if(!s || !e){
+            resultDom.innerText = "⚠️ 起始和结束日期都要选择哦！";
+            return;
+        }
+        const d1 = new Date(s);
+        const d2 = new Date(e);
+        const diff = Math.abs(d2 - d1);
+        const days = Math.round(diff / (1000*60*60*24));
+
+        resultDom.classList.remove("shake-pop");
+        setTimeout(()=>{
+            if(d2 > d1){
+                resultDom.innerHTML = `从 <b>${s}</b> 到 <b>${e}</b><br>相隔 <span class="day-huge">${days}</span> 天`;
+            }else if(d2 < d1){
+                resultDom.innerHTML = `从 <b>${e}</b> 到 <b>${s}</b><br>相隔 <span class="day-huge">${days}</span> 天`;
+            }else{
+                resultDom.innerText = "🎉 两个日期是同一天！";
+            }
+            resultDom.classList.add("shake-pop");
+        },60)
+    }
+
+    clearBtn.onclick = function(){
+        startInput.value = todayStr;
+        endInput.value = "";
+        resultDom.innerText = "请选择起止日期，点击按钮开始计算";
+        resultDom.classList.remove("shake-pop");
+    }
+    themeBtn.onclick = ()=>{
+        document.body.classList.toggle("dark");
+    }
+</script>
+</body>
+</html>

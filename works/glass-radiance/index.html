@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>琉璃流光 · 淄博非遗文化</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23d4a853'/><circle cx='40' cy='40' r='15' fill='%233a9e8f' opacity='0.7'/></svg>">
+<style>
+  /* ===== 设计令牌 ===== */
+  :root {
+    --bg: #0b0b12;
+    --bg-soft: #14141d;
+    --bg-card: #1a1a26;
+    --ink: #ece7dd;
+    --ink-dim: #9a958c;
+    --gold: #d4a853;
+    --jade: #3a9e8f;
+    --sapphire: #4a8fd4;
+    --rose: #c86a8a;
+    --line: rgba(236, 231, 221, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    line-height: 1.75;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+  .serif { font-family: "Songti SC", "STSong", "Noto Serif SC", "SimSun", serif; }
+
+  /* ===== 顶部导航 ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(11,11,18,0.9), rgba(11,11,18,0));
+    backdrop-filter: blur(8px);
+  }
+  nav .brand { font-size: 15px; letter-spacing: 4px; color: var(--gold); font-weight: 600; }
+  nav .links a {
+    color: var(--ink-dim); text-decoration: none; margin-left: 28px;
+    font-size: 13px; letter-spacing: 2px; transition: color .2s;
+  }
+  nav .links a:hover { color: var(--gold); }
+
+  /* ===== Hero ===== */
+  .hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 100px 8vw 60px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 75% 50%, rgba(212,168,83,0.15), transparent 55%),
+                radial-gradient(circle at 20% 80%, rgba(58,158,143,0.1), transparent 50%);
+    pointer-events: none;
+  }
+  .hero-text { position: relative; z-index: 2; max-width: 560px; }
+  .hero .eyebrow {
+    color: var(--jade); font-size: 13px; letter-spacing: 6px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 1.05; font-weight: 700;
+    letter-spacing: 8px; margin-bottom: 32px;
+  }
+  .hero h1 .gold { color: var(--gold); }
+  .hero .sub {
+    font-size: 17px; color: var(--ink-dim); max-width: 440px;
+    line-height: 1.9;
+  }
+  .hero-img {
+    position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
+    width: 46vw; min-width: 420px; max-width: 720px;
+    z-index: 1;
+    mask-image: radial-gradient(ellipse at center, black 55%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 55%, transparent 78%);
+  }
+  .hero-img img { width: 100%; display: block; }
+
+  /* ===== 通用 section ===== */
+  section { padding: 100px 8vw; position: relative; }
+  .sec-head { margin-bottom: 60px; }
+  .sec-head .num {
+    font-family: "Times New Roman", serif; font-style: italic;
+    color: var(--gold); font-size: 14px; letter-spacing: 3px;
+  }
+  .sec-head h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    margin-top: 12px; letter-spacing: 4px; font-weight: 600;
+  }
+  .sec-head .lead {
+    color: var(--ink-dim); margin-top: 20px; max-width: 620px;
+    font-size: 15px;
+  }
+
+  /* ===== 简介数字条 ===== */
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .fact { background: var(--bg); padding: 36px 24px; text-align: center; }
+  .fact .v { font-size: 32px; color: var(--gold); font-family: "Songti SC", serif; font-weight: 700; }
+  .fact .k { font-size: 12px; color: var(--ink-dim); margin-top: 8px; letter-spacing: 2px; }
+
+  /* ===== 时间轴 ===== */
+  .timeline {
+    display: grid;
+    grid-template-columns: 90px 2px 1fr;
+    gap: 0 28px;
+  }
+  .t-node {
+    display: contents;
+  }
+  .t-year {
+    text-align: right; padding-top: 4px;
+    font-family: "Songti SC", serif; font-size: 22px; color: var(--gold);
+  }
+  .t-dot {
+    justify-self: center; align-self: start;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--gold); margin-top: 10px;
+    box-shadow: 0 0 0 4px rgba(212,168,83,0.15);
+  }
+  .t-body { padding-bottom: 48px; }
+  .t-body h3 { font-size: 19px; letter-spacing: 2px; margin-bottom: 8px; }
+  .t-body p { color: var(--ink-dim); font-size: 14px; max-width: 560px; }
+
+  /* ===== 工艺特色 ===== */
+  .crafts {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .craft {
+    background: var(--bg-card); padding: 32px 26px;
+    border-top: 2px solid var(--jade);
+    transition: transform .3s, border-color .3s;
+  }
+  .craft:nth-child(2) { border-top-color: var(--gold); }
+  .craft:nth-child(3) { border-top-color: var(--sapphire); }
+  .craft:nth-child(4) { border-top-color: var(--rose); }
+  .craft:hover { transform: translateY(-4px); }
+  .craft .icon { width: 36px; height: 36px; margin-bottom: 18px; }
+  .craft h4 { font-size: 17px; letter-spacing: 2px; margin-bottom: 10px; }
+  .craft p { font-size: 13.5px; color: var(--ink-dim); line-height: 1.8; }
+
+  /* ===== 作品展示：双图叙事 ===== */
+  .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .showcase.reverse .sc-text { order: 2; }
+  .sc-img { overflow: hidden; }
+  .sc-img img { width: 100%; display: block; transition: transform 6s; }
+  .sc-img:hover img { transform: scale(1.05); }
+  .sc-text h3 { font-size: 26px; letter-spacing: 3px; margin-bottom: 18px; }
+  .sc-text p { color: var(--ink-dim); font-size: 15px; margin-bottom: 14px; }
+  .sc-text .tag {
+    display: inline-block; padding: 4px 12px; margin-right: 8px; margin-top: 8px;
+    border: 1px solid var(--line); font-size: 12px; color: var(--jade);
+    letter-spacing: 1px;
+  }
+
+  /* ===== 结语 ===== */
+  .closing {
+    text-align: center; padding: 120px 8vw;
+    background:
+      radial-gradient(circle at 50% 100%, rgba(212,168,83,0.12), transparent 60%);
+  }
+  .closing blockquote {
+    font-family: "Songti SC", serif;
+    font-size: clamp(22px, 3.5vw, 36px);
+    line-height: 1.8; letter-spacing: 4px; max-width: 800px;
+    margin: 0 auto 24px;
+  }
+  .closing .sig { color: var(--ink-dim); font-size: 13px; letter-spacing: 4px; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 30px 8vw; text-align: center;
+    color: var(--ink-dim); font-size: 12px; letter-spacing: 2px;
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 860px) {
+    nav { padding: 14px 20px; }
+    nav .links { display: none; }
+    .hero { padding: 100px 6vw 40px; flex-direction: column; }
+    .hero-img { position: relative; right: auto; top: auto; transform: none;
+      width: 100%; min-width: 0; margin-top: 40px; }
+    .facts { grid-template-columns: repeat(2, 1fr); }
+    .crafts { grid-template-columns: repeat(2, 1fr); }
+    .showcase { grid-template-columns: 1fr; }
+    .showcase.reverse .sc-text { order: 0; }
+    section { padding: 70px 6vw; }
+  }
+  @media (max-width: 480px) {
+    .crafts { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: 60px 2px 1fr; gap: 0 16px; }
+    .t-year { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand serif">琉 璃 流 光</div>
+  <div class="links">
+    <a href="#history">历史</a>
+    <a href="#craft">工艺</a>
+    <a href="#works">作品</a>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">国家级非物质文化遗产 · 山东淄博</div>
+    <h1 class="serif">火与光<br><span class="gold">千年对话</span></h1>
+    <p class="sub">
+      一千五百年炉火不熄，山东淄博博山琉璃以其"料器之精、天下无匹"的盛名，
+      将矿石与火焰淬炼为通透如冰、绚烂如虹的艺术品。
+    </p>
+  </div>
+  <div class="hero-img">
+    <img src="images/glass-1.jpg" alt="淄博琉璃瓶">
+  </div>
+</header>
+
+<!-- ===== 数据条 ===== -->
+<div class="facts">
+  <div class="fact"><div class="v">1500<span style="font-size:16px">+</span></div><div class="k">年传承历史</div></div>
+  <div class="fact"><div class="v">300+</div><div class="k">传统色料配方</div></div>
+  <div class="fact"><div class="v">1300℃</div><div class="k">炉火熔融温度</div></div>
+  <div class="fact"><div class="v">2008</div><div class="k">入选国家级非遗</div></div>
+</div>
+
+<!-- ===== 历史时间轴 ===== -->
+<section id="history">
+  <div class="sec-head">
+    <div class="num">01 / HISTORY</div>
+    <h2 class="serif">千年炉火</h2>
+    <p class="lead">从西周鸟形琉璃珠到今日博山琉璃艺术馆，一颗火种在鲁中大地绵延不绝。</p>
+  </div>
+  <div class="timeline">
+    <div class="t-node">
+      <div class="t-year">西周</div><div class="t-dot"></div>
+      <div class="t-body">
+        <h3>琉璃初现</h3>
+        <p>山东境内出土的西周琉璃珠，证明齐鲁大地早在两千年前已掌握原始玻璃烧制技艺。</p>
+      </div>
+    </div>
+    <div class="t-node">
+      <div class="t-year">隋唐</div><div class="t-dot"></div>
+      <div class="t-body">
+        <h3>丝路交融</h3>
+        <p>西域料器工艺沿丝绸之路传入，与本地炼丹术融合，"博山炉"名闻天下。</p>
+      </div>
+    </div>
+    <div class="t-node">
+      <div class="t-year">明代</div><div class="t-dot"></div>
+      <div class="t-body">
+        <h3>颜神鼎盛</h3>
+        <p>明洪武年间，博山颜神镇设琉璃作坊，产品进贡宫廷，"料器"自此成行业专称。</p>
+      </div>
+    </div>
+    <div class="t-node">
+      <div class="t-year">清代</div><div class="t-dot"></div>
+      <div class="t-body">
+        <h3>宫廷御料</h3>
+        <p>康熙造办处玻璃厂特聘博山工匠，琉璃鼻烟壶、朝珠成为皇家珍品，行销海外。</p>
+      </div>
+    </div>
+    <div class="t-node">
+      <div class="t-year">当代</div><div class="t-dot"></div>
+      <div class="t-body">
+        <h3>非遗新生</h3>
+        <p>2008年"淄博琉璃烧制技艺"入选国家级非物质文化遗产名录，老技艺走进美术馆与世界舞台。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 工艺特色 ===== -->
+<section id="craft" style="background: var(--bg-soft)">
+  <div class="sec-head">
+    <div class="num">02 / CRAFT</div>
+    <h2 class="serif">四艺成器</h2>
+    <p class="lead">一件琉璃作品，须经配料、熔化、吹制、雕刻、退火数十道工序，无一不考校工匠的呼吸与火候。</p>
+  </div>
+  <div class="crafts">
+    <div class="craft">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#3a9e8f" stroke-width="1.5">
+        <path d="M12 2C8 7 5 10 5 14a7 7 0 0014 0c0-4-3-7-7-12z"/>
+      </svg>
+      <h4>灯工吹制</h4>
+      <p>取熔融料珠于灯焰间，以气为笔、以火为墨，徒手吹出瓶、盂、鸟兽，器型随心而生。</p>
+    </div>
+    <div class="craft">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#d4a853" stroke-width="1.5">
+        <circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>
+      </svg>
+      <h4>立体雕刻</h4>
+      <p>在通透料胎上反向内雕山水花鸟，刀工入料三分，光一照则画在器中浮起。</p>
+    </div>
+    <div class="craft">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#4a8fd4" stroke-width="1.5">
+        <path d="M3 12h4l3-8 4 16 3-8h4"/>
+      </svg>
+      <h4>料色熔炼</h4>
+      <p>金、银、铜、铁入炉，幻化出鸡油黄、翡翠绿、霁蓝、玫瑰紫等三百余种独特色料。</p>
+    </div>
+    <div class="craft">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#c86a8a" stroke-width="1.5">
+        <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/>
+      </svg>
+      <h4>窑变流淌</h4>
+      <p>多色料在高温下自然交融、旋绕、沉淀，入窑一色，出窑万彩，无一器相同。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 作品展示 ===== -->
+<section id="works">
+  <div class="sec-head">
+    <div class="num">03 / WORKS</div>
+    <h2 class="serif">器以载道</h2>
+  </div>
+
+  <div class="showcase" style="margin-bottom:80px">
+    <div class="sc-img">
+      <img src="images/glass-2.jpg" alt="琉璃内雕作品">
+    </div>
+    <div class="sc-text">
+      <h3 class="serif">内雕·山鸟秋意</h3>
+      <p>透明琉璃胎体内，以微型刻刀反向雕出山峦、古木与栖鸟。光线自器后透入，花鸟仿佛悬浮于虚空之中，随观者视角流转。</p>
+      <p>这是博山琉璃独有的"内画"与"内雕"技艺，与鼻烟壶内画一脉相承，却将尺度放大至案头陈设。</p>
+      <span class="tag">国家级非遗代表技艺</span>
+      <span class="tag">光随人动</span>
+    </div>
+  </div>
+
+  <div class="showcase reverse">
+    <div class="sc-img">
+      <img src="images/glass-3.jpg" alt="工匠吹制琉璃">
+    </div>
+    <div class="sc-text">
+      <h3 class="serif">炉火·呼吸之间</h3>
+      <p>一千三百度的坩埚中，矿石化为通红的浆液。工匠以长铁棍挑料，口吹气匀，凭借数十年经验判断料性的软硬与火候的进退。</p>
+      <p>一呼一吸之间，器型初成；再经退火窑七日缓冷，方能避免炸裂，凝定成器。</p>
+      <span class="tag">手工吹制</span>
+      <span class="tag">七日退火</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 结语 ===== -->
+<section class="closing">
+  <blockquote class="serif">
+    "一寸琉璃火，千年鲁地春。"<br>
+    愿这束光，继续照亮年轻人的案头与远方。
+  </blockquote>
+  <div class="sig">— 淄博琉璃 · 非遗青年推广计划</div>
+</section>
+
+<footer>
+  © 2026 琉璃流光 · 单页网页参赛作品 &nbsp;|&nbsp; 素材：AI 生成示意图
+</footer>
+
+</body>
+</html>
