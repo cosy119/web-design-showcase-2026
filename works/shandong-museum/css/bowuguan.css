@@ -1,0 +1,295 @@
+#zhanlan {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+#title{
+    box-sizing: border-box;
+    width: 262px;
+    height: 74px;
+    font-size: 36px;
+    background-color: #393E46;
+    border: 6px solid #fff;
+    margin: 40px auto;
+    border-radius: 37px;
+    text-align: center;
+    color: #fff;
+    line-height:62px;
+    font-weight: bold;
+}
+#title:hover{
+    box-shadow: 5px 5px 5px rgba(49, 141, 171, 0.5);
+    transform: scale(1.1);
+    transition: all 0.5s;
+}
+
+
+/* flex布局+2D变形 */
+
+
+#bowuguan{
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 5px;
+    gap: 10px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+#bowuguan .bowuguan_item{
+    width:23%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid #ccc;
+}
+.bowuguan_item img{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.bowuguan_item .hover{
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    height: 0px;
+    overflow: hidden;
+    position: absolute;
+    top: 70px;
+    color: #fff;
+    text-align: center;
+    transform: rotate(90deg);
+    z-index: 100;
+}
+.bowuguan_item:hover .hover{
+    transform: rotate(0deg);
+    transition: 0.5s;
+    height: 120px;
+}
+
+
+.bowuguan_item .hover h3{
+    border-bottom: 2px solid rgba(181, 222, 245, 0.5);
+    padding: 10px 0;
+}
+/* 尾元素是行内元素，如果上面没有文本，则不具备宽高属性，需要转换到块级元素 */
+.bowuguan_item::before{
+    content: "";
+    height: 360px;
+    width: 360px;
+    background-color: rgba(142, 163, 151, 0.3);
+    /* 转化为块级元素*/
+    display: block;
+    position: absolute;
+    top: -240px;
+    right: 0;
+    transform-origin: 100% 0;
+    transform: rotate(55deg) translate(60px);
+}
+.bowuguan_item:hover::before{
+    top: 0;
+    transition: 0.5s;
+}
+.bowuguan_item::after{
+    content: "";
+    height: 360px;
+    width: 360px;
+    background-color: rgba(84, 107, 86, 0.3);
+    /* 转化为块级元素*/
+    display: block;
+    position: absolute;
+    bottom: -240px;
+    left: 0;
+    transform-origin: 0 100%;
+    transform: rotate(55deg) translate(-60px);
+}
+.bowuguan_item:hover::after{
+    bottom: 0;
+    transition: 0.5s;
+}
+
+
+
+
+
+
+
+#text{
+    background: rgba(250, 250, 250, 0.75);
+    font-family: "微软雅黑", SimSun;
+    font-size: 18px;
+    color: #11140a;
+    line-height: 1.8;
+    margin: 35px auto;
+    padding: 35px 45px;
+    text-align: justify;
+    max-width: 1150px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(80,70,50,0.12);
+    border: 1px solid rgba(139,125,98,0.25);
+}
+#text p {
+    text-indent: 2em;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+
+#daolan_main{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* display: grid; */
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(2,1fr);
+    gap: 10px;
+    /* height: 532px; */
+    margin: 5px;
+    padding: 10px;
+}
+
+
+#daolan_main .item1{
+    grid-row: 1/3;
+    grid-column: 1/3;
+}
+#daolan_main .item2{
+    grid-row: 1/2;
+    grid-column: 3/4;
+}
+#daolan_main .item3{
+    grid-row: 2/3;
+    grid-column: 3/4;
+}
+.item1,.item2,.item3 {
+    border-radius: 5px;
+    overflow: hidden;
+}
+#daolan_main .sca{
+    overflow: hidden;
+}
+#daolan_main .sca:hover img{
+    border-radius: 5px;
+    transform: scale(1.2);
+    transition: all 0.5s;
+}
+
+
+
+#daolan_main-1{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(2,1fr);
+    gap: 10px;
+    /* height: 532px; */
+    margin: 5px;
+    padding: 10px;
+}
+
+
+#daolan_main-1 .item1{
+    grid-row: 1/3;
+    grid-column: 1/3;
+}
+#daolan_main-1 .item2{
+    grid-row: 1/2;
+    grid-column: 3/4;
+}
+#daolan_main-1 .item3{
+    grid-row: 2/3;
+    grid-column: 3/4;
+}
+.item1,.item2,.item3 {
+    border-radius: 5px;
+    overflow: hidden;
+}
+#daolan_main-1 .sca{
+    overflow: hidden;
+}
+#daolan_main-1 .sca:hover img{
+    border-radius: 5px;
+    transform: scale(1.2);
+    transition: all 0.5s;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 导览轮播样式 单图全屏一屏 */
+.carousel-box {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 12px;
+}
+.carousel-wrap {
+    width: 100%;
+    overflow: hidden;
+}
+.carousel-list {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+.carousel-slide {
+    flex: 0 0 100%;
+    height: auto;
+}
+.carousel-slide img {
+    width: 100%;
+    height: auto;
+    /* 原图等比例完整缩小，整张图容纳进盒子，无任何裁切 */
+    object-fit: contain;
+    display: block;
+    border-radius: 12px;
+}
+/* 左右按钮 */
+.prev-btn,.next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index:9;
+  font-size:18px;
+}
+.prev-btn {left:15px;}
+.next-btn {right:15px;}
+.prev-btn:hover,.next-btn:hover {background:rgba(0,0,0,0.7);}
+/* 底部圆点 */
+.carousel-dots {
+  position:absolute;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+}
+.carousel-dots span {
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#ccc;
+  cursor:pointer;
+}
+.carousel-dots span.active {
+  background:#fff;
+}

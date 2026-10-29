@@ -1,0 +1,99 @@
+.guide-wrap {
+  padding: 40px 20px;
+}
+
+/* 主容器 */
+.guide {
+  list-style: none;
+  position: relative;
+  padding-left: 0;
+}
+
+/* 中间的竖线 */
+.guide__line {
+  position: absolute;
+  left: 60px; /* 调整竖线位置，和文字+图标对齐 */
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(255,255,255,0.5);
+  transform: translateX(-50%);
+}
+
+.guide__line::before,
+.guide__line::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 50%;
+}
+.guide__line::before { top: 0; }
+.guide__line::after { bottom: 0; }
+
+/* 每个导航项 */
+.guide__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 32px 0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.guide__item p {
+  font-size: 28px;
+  color: #fff;
+  text-shadow: 0 0 4px rgba(0,0,0,0.4);
+  margin-right: 20px;
+  white-space: nowrap;
+}
+
+/* 圆点图标 */
+.guide__icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #fff;
+  z-index: 1;
+}
+
+/* 激活态的菱形图标 */
+.guide__icon--active {
+  width: 36px;
+  height: 36px;
+  background-color: #fff;
+  transform: rotate(45deg);
+  border: 2px solid #888;
+}
+.guide__icon--active::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background-color: #222;
+}
+
+/* 激活态的文字背景 */
+.guide__item--active p {
+  background-color: #fff;
+  color: #222;
+  padding: 8px 32px;
+  border-radius: 4px;
+  text-shadow: none;
+}
+
+/* 禁用项（敬请期待） */
+.guide__item--disable p {
+  color: rgba(255,255,255,0.4);
+}
+.guide__item--disable .guide__icon {
+  opacity: 0.4;
+}

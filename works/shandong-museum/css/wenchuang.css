@@ -1,0 +1,98 @@
+/* 模块容器：加宽上下边距，整体居中收拢，解决上下单薄问题 */
+.wenchuang-section {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 0 30px;
+}
+
+/* 标题：左右结构改成整体左对齐，消除左右分散留白 */
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    font-size: 32px;
+    font-weight: 500;
+    color: #222;
+    font-family: "思源宋体", "方正仿宋", SimSun, serif;
+}
+.section-title::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 38px;
+    background-color: #2e645a;
+    margin-right: 18px;
+    border-radius: 3px;
+}
+
+/* 卡片容器：缩小间隙，三卡紧密聚拢，消除中间大面积空白 */
+.wenchuang-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* 原28px缩小，减少中间空白 */
+    width: 100%;
+}
+
+/* 卡片加高、文字垂直居中，填充卡片内部空间，不空洞 */
+.wenchuang-item {
+    /* background: linear-gradient(135deg, #b8985a 0%, #8c733c 100%); */
+    background-image: url(../images/9589f6de174f4de69a93f0f6763438b6.jpg);
+    border-radius: 16px;
+    padding: 40px 32px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(120, 95, 40, 0.22);
+    cursor: pointer;
+    transform: scale(1);
+    border: 1px solid #222;
+}
+.wenchuang-item:hover {
+    transform: scale(1.04);
+    box-shadow: 0 12px 28px rgba(120, 95, 40, 0.35);
+}
+
+/* 标题字号放大，填充视觉空间 */
+.wenchuang-title {
+    font-size: 22px;
+    line-height: 1.7;
+    margin-bottom: 22px;
+    font-weight: 500;
+}
+.wenchuang-title a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+.wenchuang-title a:hover {
+    color: #ffe8b8;
+}
+
+/* 日期弱化，底部摆放，层级清晰 */
+.wenchuang-date {
+    font-size: 14px;
+    color: #f0e9d8;
+    letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 992px) {
+    .wenchuang-list {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .wenchuang-item {
+        min-height: 220px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .section-title {
+        font-size: 26px;
+    }
+    .wenchuang-section {
+        margin: 60px auto;
+    }
+}

@@ -392,5 +392,20 @@
     "description": "",
     "tags": [],
     "award": null
+  },
+  {
+    "id": "shandong-museum",
+    "title": "山东博物馆",
+    "author": "曹茂鑫",
+    "college": "计算机科学与技术学院",
+    "className": "智能2501",
+    "category": "文化探索",
+    "color": "#916b48",
+    "description": "山东博物馆主题多页面作品。",
+    "tags": [
+      "博物馆",
+      "文化展示"
+    ],
+    "award": null
   }
 ]

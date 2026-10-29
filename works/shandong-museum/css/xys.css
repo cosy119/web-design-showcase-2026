@@ -1,0 +1,287 @@
+
+#nav>.logo{
+    display: block;
+}
+#nav input[type="checkbox"],.logo{
+    position: absolute;
+    left: 2%;
+    top: 10px;
+    display: none;
+}
+@media(max-width:1024px){
+    .logo{
+        display: block;
+        cursor: pointer;
+    }
+    #nav ul{
+        display: none;
+    }
+    #nav input[type="checkbox"]:checked~ul{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        /* background-color: url(123,223,255,0.5); */
+        gap:10px;
+        background-color:rgba(6, 9, 197, 0.5);
+    }
+}
+
+
+
+:root {
+            --bg-beige: #F6F2E9;
+            --main-brown: #703A28;
+            --text-dark: #2D241E;
+            --text-sub: #5C4F45;
+            --text-light: #917F70;
+            --card-white: #FFFCF7;
+            --line-warm: #DCD3C6;
+            --warn-bg: #F9E9E3;
+            --accent-red: #943E2C;
+        }
+        body {
+            background-color: var(--bg-beige);
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .daolan-banner{
+            width: 100%;
+            height: 340px;
+            background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("../images/导览-山东博物馆.jpg") center/cover no-repeat;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#fff;
+            text-align:center;
+        }
+        .daolan-banner h2{
+            font-size:40px;
+            font-weight:700;
+            margin-bottom:14px;
+            letter-spacing: 3px;
+        }
+        .daolan-banner p{
+            font-size:17px;
+            opacity: 0.95;
+        }
+        .daolan-wrap{
+            padding:70px 0;
+        }
+        /* 板块标题 左侧粗竖线 */
+        .block-title{
+            font-size:24px;
+            font-weight:700;
+            color: var(--main-brown);
+            border-left:5px solid var(--accent-red);
+            padding-left:14px;
+            margin:0 0 24px;
+        }
+        /* 左右分栏：左66% 右34%，自动等高 */
+        .info-row{
+            display:flex;
+            gap:36px;
+            margin:32px 0;
+            align-items: stretch;
+        }
+        .info-left{
+            width: 66%;
+            display: flex;
+            flex-direction: column;
+        }
+        .info-right{
+            width: 34%;
+            display: flex;
+            flex-direction: column;
+        }
+        /* 轮播容器撑满高度，和右侧卡片等高 */
+        
+        
+       #daolan_main.carousel-box {
+            flex: 1;
+            /* 直接设定固定高度，左右卡片统一等高 */
+            height: 420px;
+        }
+        .carousel-wrap {
+            width:100%;
+            height:100%;
+            border-radius:12px;
+            overflow:hidden;
+            border:1px solid var(--line-warm);
+            box-shadow: 0 3px 12px rgba(112, 58, 40, 0.07);
+            position: relative;
+        }
+        .carousel-list {
+            display:flex;
+            height:100%;
+        }
+        .carousel-slide {
+            min-width:100%;
+            height:100%;
+        }
+        .carousel-slide img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+        /* 左右切换按钮样式 */
+        .prev-btn, .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.7);
+            font-size: 18px;
+            color: var(--main-brown);
+            cursor: pointer;
+            z-index: 9;
+        }
+        .prev-btn { left: 12px; }
+        .next-btn { right: 12px; }
+        .carousel-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        .carousel-dots span {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+        }
+        .carousel-dots span.active {
+            background: #fff;
+        }
+        .time-card-full{
+            flex:1;
+            background: var(--card-white);
+            padding:28px;
+            border-radius:12px;
+            border:1px solid var(--line-warm);
+            box-shadow: 0 3px 12px rgba(112, 58, 40, 0.06);
+            display:flex;
+            flex-direction:column;
+            justify-content: space-between;
+        }
+        .time-card-full .time-item{
+            display:flex;
+            justify-content: space-between;
+            padding:14px 0;
+            border-bottom:1px solid var(--line-warm);
+        }
+        .time-card-full .time-item:last-child{
+            border-bottom: none;
+        }
+        .time-card-full .label{
+            font-weight:700;
+            color: var(--accent-red);
+            font-size:17px;
+        }
+        .time-card-full .text{
+            color: var(--text-sub);
+        }
+        .time-tip{
+            margin-top:18px;
+            font-size:14px;
+            color: var(--text-sub);
+            padding-top:14px;
+            border-top:1px dashed var(--line-warm);
+            line-height:1.7;
+        }
+        .floor-grid{
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap:24px;
+            margin-top:24px;
+        }
+        .floor-card{
+            padding:28px;
+            background:var(--card-white);
+            border:1px solid var(--line-warm);
+            border-radius:12px;
+            transition: all 0.3s ease;
+        }
+        .floor-card:hover{
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(112, 58, 40, 0.09);
+        }
+        .floor-card h4{
+            font-size:19px;
+            font-weight:700;
+            color: var(--main-brown);
+            margin-bottom:12px;
+        }
+        .floor-card p{
+            color: var(--text-sub);
+        }
+        .flow-list li{
+            line-height:2.4;
+            font-size:16px;
+            padding-left:10px;
+            color: var(--text-sub);
+        }
+        .transport-item{
+            padding:24px 28px;
+            background:var(--card-white);
+            border-radius:12px;
+            margin-bottom:18px;
+            border:1px solid var(--line-warm);
+        }
+        .transport-item h4{
+            font-weight:700;
+            font-size:18px;
+            margin-bottom:10px;
+            color: var(--main-brown);
+        }
+        .transport-item p{
+            color: var(--text-sub);
+        }
+        .notice-box{
+            background: var(--warn-bg);
+            padding:26px;
+            border-left:5px solid var(--accent-red);
+            border-radius:0 10px 10px 0;
+        }
+        .notice-box p{
+            margin:8px 0;
+            color: var(--text-dark);
+        }
+        .intro-text{
+            font-size:17px;
+            color: var(--text-sub);
+            line-height: 1.9;
+        }
+        .map-box{
+            background:var(--card-white);
+            padding:14px;
+            border:1px solid var(--line-warm);
+            border-radius:12px;
+            box-shadow:0 3px 12px rgba(112,58,40,0.07);
+        }
+        .map-box img{
+            width:100%;
+            display:block;
+            border-radius:8px;
+        }
+        /* 预约模块左侧 浅白色卡片背景+内边距 */
+#reserve .info-left {
+    background-color: var(--card-white);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--line-warm);
+    box-shadow: 0 3px 12px rgba(112, 58, 40, 0.06);
+}
+/* 左侧流程文字 增加上下间距 */
+#reserve .flow-list li {
+    margin-bottom: 12px;
+    line-height: 2.6;
+}

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>场馆导览 - 山东博物馆</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/banner.css">
+    <link rel="stylesheet" href="../css/xys.css">
+    <link rel="stylesheet" href="../css/box.css">
+    <link rel="stylesheet" href="../css/bowuguan.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/wenchuang.css">
+    <link rel="stylesheet" href="../css/boxnew.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div id="banner" class="fluid">
+        <div id="nav" class="container">
+            <input type="checkbox" id="togglebox">
+            <label for="togglebox" class="logo"><img src="../images/logo.png" alt=""></label>
+            <ul>
+                <li class="nav-item">
+                    <a href="../html/bwg.html">首页</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="daolan.html#openTime">场馆导览</a>
+                            <a href="../html/bowuguan.html#bowuguan">精品展览</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/daolan.html" style="color:var(--accent-red);font-weight:bold;">导览</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#openTime">开放时间</a>
+                            <a href="#map">场馆路线</a>
+                            <a href="#reserve">预约须知</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/zhanlan.html">展览</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">常设展览</a>
+                            <a href="#">临时特展</a>
+                            <a href="#">往期回顾</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/cangpin.html">藏品</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">青铜文物</a>
+                            <a href="#">陶瓷玉器</a>
+                            <a href="#">书画珍品</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/wenchuang.html">文创</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">新品上市</a>
+                            <a href="#">摆件饰品</a>
+                            <a href="#">文具周边</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/guanyu.html">关于</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">馆所简介</a>
+                            <a href="#">联系地址</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container daolan-wrap">
+        <!-- 场馆简介 -->
+        <h3 class="block-title">场馆简介</h3>
+        <div class="intro-text">
+            山东博物馆坐落于济南历下区，是新中国成立后首座省级综合性地志博物馆。馆史溯源至1909年山东金石保存所，1954年正式建馆，2010年全新馆舍落成对外开放。整体建筑融合“天圆地方”传统设计理念，穹顶取济南泉水意象，方形基座仿青铜古鼎造型，将泉城地域特色与厚重齐鲁文脉融为一体。全馆共设23个专业展厅，馆藏文物四十余万件，完整串联起海岱大地五千年文明发展脉络。
+        </div>
+
+        <!-- 核心分栏：左66%实景，右34%开放时间，等高 -->
+        <div class="info-row" id="openTime">
+            <div class="info-left">
+                <h3 class="block-title">场馆实景展示</h3>
+                <div id="daolan_main" class="carousel-box">
+                    <div class="carousel-wrap">
+                        <div class="carousel-list">
+                            <div class="carousel-slide">
+                                <img src="../images/导览-山东博物馆.jpg" alt="山东博物馆新馆外景实拍">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="../images/预约须知-1.jpg" alt="入馆预约须知说明">
+                            </div>
+                        </div>
+                        <button class="prev-btn">&lt;</button>
+                        <button class="next-btn">&gt;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-right">
+                <h3 class="block-title">开放时间</h3>
+                <div class="time-card-full open-time-card">
+                    <div class="time-item">
+                        <span class="label">常规开放</span>
+                        <span class="text">周二至周日 9:00—17:00</span>
+                    </div>
+                    <div class="time-item">
+                        <span class="label">停止入馆</span>
+                        <span class="text">16:00</span>
+                    </div>
+                    <div class="time-item">
+                        <span class="label">展厅清场</span>
+                        <span class="text">16:30</span>
+                    </div>
+                    <div class="time-item">
+                        <span class="label">固定闭馆</span>
+                        <span class="text">每周一（法定节假日除外）</span>
+                    </div>
+                    <div class="time-tip">
+                        春节、国庆等法定节假日正常对外开放，节假日延时、临时闭馆通知请以官方公众号公告为准。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 场馆平面图 -->
+        <h3 class="block-title" id="map">场馆平面导览图</h3>
+        <div class="map-box">
+            <img src="../images/场馆平面分布图.jpg" alt="山东博物馆场馆平面分布图">
+        </div>
+
+        <!-- 楼层展厅分布 -->
+        <h3 class="block-title">楼层展厅分布</h3>
+        <div class="floor-grid">
+            <div class="floor-card">
+                <h4>一层大厅</h4>
+                <p>游客服务中心、文创商店、临时特展厅、多功能报告厅、母婴室、无障碍通道</p>
+            </div>
+            <div class="floor-card">
+                <h4>二层展厅</h4>
+                <p>海岱日新通史主展厅、汉代画像石专题展厅、青少年互动体验区</p>
+            </div>
+            <div class="floor-card">
+                <h4>三层展厅</h4>
+                <p>商周青铜展厅、陶瓷玉器展厅、历代书画珍品展厅、佛教造像展厅</p>
+            </div>
+        </div>
+
+<div class="info-row" id="reserve">
+    <div class="info-left">
+        <h3 class="block-title">线上预约流程</h3>
+        <ul class="flow-list">
+            <li>1.微信搜索并关注「山东博物馆」官方公众号</li>
+            <li>2.点击底部菜单栏【参观服务】→【在线预约】</li>
+            <li>3.选择计划参观日期，填写全部参观人员实名身份证信息</li>
+            <li>4.提交预约表单，系统生成专属电子预约二维码</li>
+            <li>5.参观当日携带本人身份证原件，配合二维码核验入馆</li>
+        </ul>
+    </div>
+    <div class="info-right">
+        <h3 class="block-title">预约规范须知</h3>
+        <div class="notice-box">
+            <p>• 展馆免费对外开放，实行全员实名预约，不接待无预约现场访客</p>
+            <p>• 每日参观名额有限，建议提前1至3天完成预约</p>
+            <p>• 14周岁以下未成年人不可单独预约，需绑定监护人信息一同登记</p>
+            <p>• 无法按时到访请提前取消预约，多次失约将限制后续预约权限</p>
+        </div>
+    </div>
+</div>
+
+        <!-- 交通指南 -->
+        <h3 class="block-title">交通出行指南</h3>
+        <div class="transport-list">
+            <div class="transport-item">
+                <h4>公交出行</h4>
+                <p>搭乘K139、K160、K187、510路公交，至「山东博物馆」站点下车直达馆前广场。</p>
+            </div>
+            <div class="transport-item">
+                <h4>地铁出行</h4>
+                <p>地铁3号线乘坐至龙洞站出站，步行800米即可抵达；4号线可换乘公交短途接驳。</p>
+            </div>
+            <div class="transport-item">
+                <h4>自驾停车</h4>
+                <p>馆内配套地下免费停车场，车位数量有限，节假日高峰期优先推荐公共交通出行。</p>
+            </div>
+        </div>
+
+        <!-- 参观提示 -->
+        <h3 class="block-title">参观温馨提示</h3>
+        <div class="notice-box">
+            <p>✅ 可使用手机拍摄文物，禁止开启闪光灯、携带三脚架进行拍摄</p>
+            <p>❌ 严禁携带食品、饮料、打火机、易燃易爆管制物品入馆</p>
+            <p>❌ 请勿触摸文物、展柜玻璃，馆内禁止大声喧哗、追逐打闹</p>
+            <p>✅ 一层服务台可免费租借婴儿推车、轮椅，供行动不便游客使用</p>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>关于我们</h3>
+                <p>山东博物馆文创中心</p>
+                <p>传承齐鲁历史文化</p>
+            </div>
+            <div class="footer-col">
+                <h3>服务导航</h3>
+                <p>线下门店</p>
+                <p>文创定制</p>
+                <p>售后咨询</p>
+            </div>
+            <div class="footer-col">
+                <h3>联系地址</h3>
+                <p>济南市历下区经X路XXXXX号</p>
+                <p>咨询电话:0531-XXXXXXX</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 山东博物馆文创商城
+        </div>
+    </footer>
+
+    <!-- 轮播JS -->
+    <script>
+        const list = document.querySelector('.carousel-list');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prev = document.querySelector('.prev-btn');
+        const next = document.querySelector('.next-btn');
+        const box = document.querySelector('.carousel-box');
+        const dotWrap = document.querySelector('.carousel-dots');
+
+        let index = 0;
+        const len = slides.length;
+
+        for (let i = 0; i < len; i++) {
+            let span = document.createElement('span');
+            i === 0 && span.classList.add('active');
+            span.onclick = () => {
+                index = i;
+                change();
+            }
+            dotWrap.appendChild(span);
+        }
+        const dots = document.querySelectorAll('.carousel-dots span');
+
+        function change() {
+            list.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        prev.onclick = () => {
+            index = index <= 0 ? len - 1 : index - 1;
+            change();
+        }
+        next.onclick = () => {
+            index = index >= len - 1 ? 0 : index + 1;
+            change();
+        }
+
+        let timer = setInterval(() => next.click(), 5000);
+        box.onmouseenter = () => clearInterval(timer);
+        box.onmouseleave = () => timer = setInterval(() => next.click(), 5000);
+    </script>
+</body>
+</html>

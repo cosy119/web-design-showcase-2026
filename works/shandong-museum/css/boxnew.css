@@ -1,0 +1,81 @@
+#cangpin {
+    padding-bottom: 40px;
+}
+.section-title {
+    font-size: 28px;
+    font-weight: bold;
+    padding: 40px 0 20px;
+    border-left: 4px #307b4937 solid;
+    padding-left: 12px;
+}
+
+/* 1. 透视舞台：必须写在最外层，控制全局3D透视 */
+.hexagon-stage {
+    width: 360px;
+    height: 340px;
+    margin: 60px auto;
+    /* 透视景深，产生3D远近感 */
+    perspective: 1600px;
+    perspective-origin: center center;
+}
+/* 2. 六棱柱父容器：开启3D空间，所有子元素保留3D层级 */
+.hexagon {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    /* 持续自动旋转 */
+    animation: hexAutoRotate 20s linear infinite;
+}
+
+/* 3. 六棱柱单一面基础样式 */
+.hex-face {
+    position: absolute;
+    width: 240px;
+    height: 300px;
+    left: 50%;
+    top: 50%;
+    margin-left: -120px;
+    margin-top: -150px;
+    background: #fff;
+    border: 1px solid #eee;
+    overflow: hidden;
+    /* 统一过渡动画 */
+    transition: transform 0.4s ease, box-shadow 0.4s ease, z-index 0s;
+    --rotateY: 0deg;
+    --baseZ: 210px; /* 控制图片离中心距离，改这里数值即可 */
+    /* 基础缩放固定为1，无自动放大 */
+    transform: rotateY(var(--rotateY)) translateZ(var(--baseZ)) scale(1);
+}
+.hex-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 给6个面分配各自环绕角度 */
+.hex-face:nth-child(1) { --rotateY: 0deg; }
+.hex-face:nth-child(2) { --rotateY: 60deg; }
+.hex-face:nth-child(3) { --rotateY: 120deg; }
+.hex-face:nth-child(4) { --rotateY: 180deg; }
+.hex-face:nth-child(5) { --rotateY: 240deg; }
+.hex-face:nth-child(6) { --rotateY: 300deg; }
+
+/* 六棱柱整体旋转动画 */
+@keyframes hexAutoRotate {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(-360deg); }
+}
+
+/* ========== 移除原本自动路过放大的所有动画，只保留hover放大 ========== */
+/* 鼠标悬浮：仅此时放大外移 */
+.hex-face:hover {
+    transform: rotateY(var(--rotateY)) translateZ(calc(var(--baseZ) + 40px)) scale(1.25) !important;
+    box-shadow: 0 0 50px rgba(40, 159, 81, 0.35) !important;
+    z-index: 9999 !important;
+}
+/* 鼠标悬浮任意一个面时，整个六棱柱暂停旋转 */
+.hexagon-stage:hover .hexagon {
+    animation-play-state: paused;
+}

@@ -1,0 +1,162 @@
+        /* 藏品主体容器 肉色古风底色+上下黑色扇形波浪 */
+        .collection-box {
+            background: #f8f3e9;
+            position: relative;
+            padding: 90px 20px;
+            overflow: hidden;
+        }
+
+        .collection-inner {
+            max-width: 1260px;
+            margin: 0 auto;
+        }
+
+        /* 顶部黑色扇形波浪边 */
+        .collection-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 65'><path fill='%23111111' d='M0,32 C200,65 320,5 480,32 C640,60 760,0 960,32 C1120,65 1300,8 1440,32 L1440,0 L0,0 Z'/></svg>") repeat-x;
+            background-size: 100% 65px;
+        }
+
+        /* 底部黑色扇形波浪边 */
+        .collection-box::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 65'><path fill='%23111111' d='M0,32 C200,0 320,60 480,32 C640,5 760,65 960,32 C1120,0 1300,58 1440,32 L1440,65 L0,65 Z'/></svg>") repeat-x;
+            background-size: 100% 65px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            color: #222;
+            margin-bottom: 50px;
+        }
+
+        .page-title span {
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #922626;
+        }
+
+        /* 分区小标题 */
+        .part-title {
+            font-size: 26px;
+            color: #922626;
+            margin: 30px 0 20px;
+            padding-left: 12px;
+            border-left: 5px solid #922626;
+        }
+
+        /* 黑色波浪分割线 */
+        .wave-divide {
+            width: 100%;
+            height: 60px;
+            margin: 45px 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'><path fill='%23111' d='M0,30 C180,60 300,5 480,30 C660,55 780,0 960,30 C1140,60 1260,8 1440,30 L1440,60 L0,60 Z'/></svg>");
+            background-repeat: repeat-x;
+        }
+
+        /* 4列网格，卡片高低波浪错落 */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-bottom: 10px;
+        }
+
+        .collect-card {
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 16px rgba(80, 50, 30, 0.1);
+            transition: all 0.35s ease;
+        }
+
+        /* 波浪上下起伏 */
+        .collect-card:nth-child(4n+1) {
+            transform: translateY(0);
+        }
+
+        .collect-card:nth-child(4n+2) {
+            transform: translateY(40px);
+        }
+
+        .collect-card:nth-child(4n+3) {
+            transform: translateY(15px);
+        }
+
+        .collect-card:nth-child(4n) {
+            transform: translateY(45px);
+        }
+
+        .collect-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 12px 26px rgba(80, 50, 0.16);
+        }
+
+        .collect-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-text-area {
+            padding: 16px 18px;
+        }
+
+        .card-text-area h3 {
+            margin: 0 0 6px;
+            font-size: 18px;
+            color: #1a1a1a;
+        }
+
+        .card-text-area p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* 底部总介绍文字 */
+        .total-desc {
+            max-width: 960px;
+            margin: 60px auto 0;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.9;
+            color: #333;
+        }
+
+        /* 适配移动端 */
+        @media (max-width: 1200px) {
+            .collection-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 840px) {
+            .collection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .collect-card, .collect-text-block {
+                transform: translateY(0) !important;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .collection-grid {
+                grid-template-columns: 1fr;
+            }
+        }

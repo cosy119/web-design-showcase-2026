@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博物馆</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/banner.css">
+    <link rel="stylesheet" href="../css/xys.css">
+    <link rel="stylesheet" href="../css/box.css">
+    <link rel="stylesheet" href="../css/bowuguan.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/wenchuang.css">
+    <link rel="stylesheet" href="../css/boxnew.css">
+
+</head>
+
+
+
+<body>
+    <!-- banner部分 -->
+    <div id="banner" class="fluid">
+        <!-- 导航条 -->
+        <div id="nav" class="container">
+            <input type="checkbox" id="togglebox">
+            <label for="togglebox" class="logo"><img src="../images/logo.png" alt=""></label>
+            <ul>
+                <li class="nav-item">
+                    <a href="../html/bwg.html">首页</a>
+                    <!-- 通栏下拉容器 -->
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#daolan">场馆导览</a>
+                            <a href="#bowuguan">精品展览</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/daolan.html">导览</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">开放时间</a>
+                            <a href="#">场馆路线</a>
+                            <a href="#">预约须知</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/zhanlan.html">展览</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">常设展览</a>
+                            <a href="#">临时特展</a>
+                            <a href="#">往期回顾</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/cangpin.html">藏品</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">青铜文物</a>
+                            <a href="#">陶瓷玉器</a>
+                            <a href="#">书画珍品</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/wenchuang.html">文创</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">新品上市</a>
+                            <a href="#">摆件饰品</a>
+                            <a href="#">文具周边</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="../html/guanyu.html">关于</a>
+                    <div class="dropdown-wrap">
+                        <div class="dropdown-content">
+                            <a href="#">馆所简介</a>
+                            <a href="#">联系地址</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- banner中间文字部分 -->
+        <div id="banner_content" class="container">
+            <p class="find">搜索想要了解的文物</p>
+            <h3>中国拥有众多文物，博物馆网让你轻松了解更多文物</h3>
+        </div>
+    </div>
+
+
+
+
+    <!-- 导览 -->
+
+    <section id="daolan" class="container">
+        <div class="section-title-1">
+            场馆导览
+            <a href="../html/daolan.html" class="more-link">查看完整导览 ></a>
+        </div>
+        <!-- 1. 将场馆介绍文字移到最前方 -->
+        <div class="intro-text">
+            山东博物馆坐落于济南，是新中国首座省级综合性地志博物馆，前身可追溯至 1909 年的山东金石保存所，1954 年正式建馆，2010 年新馆落成开放。建筑融合天圆地方理念，穹顶如泉，方座似鼎，彰显泉城特色与齐鲁气度。
+        </div>
+        <!-- 2. 轮播+开放时间分栏容器 -->
+        <div class="daolan-row">
+            <!-- 左侧轮播区域 -->
+            <div id="daolan_main" class="carousel-box">
+                <div class="carousel-wrap">
+                    <div class="carousel-list">
+                        <div class="carousel-slide">
+                            <img src="../images/导览1.png" alt="山东博物馆新馆外景实拍">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="../images/导览2.png" alt="山东博物馆新馆景实拍">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="../images/预约须知-1.jpg" alt="入馆预约须知说明">
+                        </div>
+                    </div>
+                    <button class="prev-btn">&lt;</button>
+                    <button class="next-btn">&gt;</button>
+                    <div class="carousel-dots"></div>
+                </div>
+            </div>
+            <!-- 右侧独立开放时间卡片 -->
+            <div class="open-time-card">
+                <h3 class="card-subtitle">开放时间</h3>
+                <div class="time-item">
+                    <span class="label">常规开放</span>
+                    <span class="text">周二至周日 9:00—17:00</span>
+                </div>
+                <div class="time-item">
+                    <span class="label">停止入馆</span>
+                    <span class="text">16:00</span>
+                </div>
+                <div class="time-item">
+                    <span class="label">闭馆休整</span>
+                    <span class="text">每周一（法定节假日除外）</span>
+                </div>
+                <div class="time-tip">
+                    节假日开放时间请提前查看官网公告
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <div id="bowuguan-wrap" class="container">
+        <div class="section-title">
+            <span class="title-text">展览</span>
+        </div>
+        <div id="bowuguan">
+            <div class="bowuguan_item">
+                <img src="../images/展览1-1.png" alt="">
+                <div class="hover">
+                    <h3>磁山文化红陶小口瓶</h3>
+                    <p>新石器时代早期的储水器具</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展2.png" alt="">
+                <div class="hover">
+                    <h3>祖辛方鼎</h3>
+                    <p>晚商青铜礼器，纹饰精美</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展3.png" alt="">
+                <div class="hover">
+                    <h3>商代亚醜钺</h3>
+                    <p>商代青铜兵器，带人面纹饰</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展4.jpg" alt="">
+                <div class="hover">
+                    <h3>明洪武釉里红缠枝花卉碗</h3>
+                    <p>明代釉里红瓷器，工艺精湛</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展5.png" alt="">
+                <div class="hover">
+                    <h3>西周颂簋</h3>
+                    <p>西周青铜食器，带铭文</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展6.png" alt="">
+                <div class="hover">
+                    <h3>商代妇好鸮尊</h3>
+                    <p>商代青铜酒器，鸮鸟造型</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展7.png" alt="">
+                <div class="hover">
+                    <h3>春秋青铜神兽</h3>
+                    <p>春秋楚文化，造型神秘华丽。</p>
+                </div>
+            </div>
+            <div class="bowuguan_item">
+                <img src="../images/展8.png" alt="">
+                <div class="hover">
+                    <h3>战国鲁国大玉璧</h3>
+                    <p>战国最大玉璧，纹饰繁复</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="text" class="fluid">
+      <p>馆藏40 余万件文物，一级文物超千件，数量居全国前列。</p>
+      <p>以史前陶器、商周青铜、甲骨文、汉画像石、明代服饰为五大特色。</p>
+      <p>红陶兽形器、蛋壳黑陶杯、亚醜钺、颂簋、银雀山汉简等十大镇馆之宝，串联起海岱文明五千年脉络。</p>
+    </div>
+
+
+
+
+
+    <div id="cangpin" class="container">
+        <div class="section-title">藏品</div>
+
+        <!-- 六棱柱3D透视舞台 -->
+        <div class="hexagon-stage">
+            <div class="hexagon">
+                <div class="hex-face">
+                    <img src="../images/藏品1.jpg" alt="商周青铜鼎">
+                </div>
+                <div class="hex-face">
+                    <img src="../images/藏品2.jpg" alt="明代瓷器">
+                </div>
+                <div class="hex-face">
+                    <img src="../images/藏品3.jpg" alt="馆藏青铜文物">
+                </div>
+                <div class="hex-face">
+                    <img src="../images/藏品4.jpg" alt="高古玉器">
+                </div>
+                <div class="hex-face">
+                    <img src="../images/藏品5.jpg" alt="史前彩陶">
+                </div>
+                <div class="hex-face">
+                    <img src="../images/藏品6.jpg" alt="汉代画像石">
+                </div>
+            </div>
+        </div>
+
+
+        
+        <!-- 书画藏品板块 -->
+        <div class="paint-gallery">
+            <div class="paint-main">
+                <img src="../images/清明上河图.png" alt="清明上河图 北宋张择端">
+                <div class="paint-desc">
+                    <h4>清明上河图</h4>
+                    <p>北宋 · 张择端 | 风俗长卷</p>
+                </div>
+            </div>
+            <div class="paint-side-group">
+                <div class="paint-side">
+                    <img src="../images/富春山居图.jpg" alt="富春山居图 元代黄公望">
+                    <div class="paint-desc">
+                        <h4>富春山居图</h4>
+                        <p>元代 · 黄公望 | 水墨山水</p>
+                    </div>
+                </div>
+                <div class="paint-side">
+                    <img src="../images/千里江山图.jpg" alt="千里江山图 北宋王希孟">
+                    <div class="paint-desc">
+                        <h4>千里江山图</h4>
+                        <p>北宋 · 王希孟 | 青绿山水</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div id="text" class="fluid">
+        拥有23 个展厅、2.5 万㎡展陈面积，以 “海岱日新”
+        通史展为核心，搭配佛教造像、汉画像石、山东龙等七大专题展，体系完备。作为国家一级博物馆、中央地方共建国家级重点博物馆，它是齐鲁文化的核心窗口，实证中华文明多元一体格局。
+    </div>
+    <!-- 文创 -->
+    <!-- 文创 -->
+    <!-- 外层统一加 container，和其他板块定宽居中一致 -->
+<div class="wenchuang-section container">
+    <!-- 标题统一套 title-text，全局绿色竖线生效 -->
+    <div class="section-title">
+        <span class="title-text">最新文创</span>
+    </div>
+    <div class="wenchuang-list">
+        <div class="wenchuang-item">
+            <div class="wenchuang-title"><a href="./wenchuang.html">古韵承珍，文创新生</a></div>
+            <div class="wenchuang-date">2026-07-05</div>
+        </div>
+        <div class="wenchuang-item">
+            <div class="wenchuang-title"><a href="./wenchuang.html">藏千年文脉，造方寸雅物</a></div>
+            <div class="wenchuang-date">2026-07-08</div>
+        </div>
+        <div class="wenchuang-item">
+            <div class="wenchuang-title"><a href="./wenchuang.html">撷文物风华，融日常烟火</a></div>
+            <div class="wenchuang-date">2026-07-10</div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>关于我们</h3>
+                <p>山东博物馆文创中心</p>
+                <p>传承齐鲁历史文化</p>
+            </div>
+            <div class="footer-col">
+                <h3>服务导航</h3>
+                <p>线下门店</p>
+                <p>文创定制</p>
+                <p>售后咨询</p>
+            </div>
+            <div class="footer-col">
+                <h3>联系地址</h3>
+                <p>济南市历下区经X路XXXXX号</p>
+                <p>咨询电话:0531-XXXXXXX</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 山东博物馆文创商城
+        </div>
+    </footer>
+    <script>
+
+
+
+
+        const list = document.querySelector('.carousel-list');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prev = document.querySelector('.prev-btn');
+        const next = document.querySelector('.next-btn');
+        const box = document.querySelector('.carousel-box');
+        const dotWrap = document.querySelector('.carousel-dots');
+
+        let index = 0;
+        const len = slides.length;
+
+        //动态生成圆点
+        for (let i = 0; i < len; i++) {
+            let span = document.createElement('span');
+            i === 0 && span.classList.add('active');
+            span.onclick = () => {
+                index = i;
+                change();
+            }
+            dotWrap.appendChild(span);
+        }
+        const dots = document.querySelectorAll('.carousel-dots span');
+
+        //切换函数
+        function change() {
+            list.style.transform = `translateX(-${index * 100}%)`;
+            //圆点同步激活
+            dots.forEach(d => d.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        //上一张
+        prev.onclick = () => {
+            index = index <= 0 ? len - 1 : index - 1;
+            change();
+        }
+        //下一张
+        next.onclick = () => {
+            index = index >= len - 1 ? 0 : index + 1;
+            change();
+        }
+
+        //自动轮播5秒
+        let timer = setInterval(() => next.click(), 5000);
+        box.onmouseenter = () => clearInterval(timer);
+        box.onmouseleave = () => timer = setInterval(() => next.click(), 5000);
+    </script>
+</body>
+
+</html>

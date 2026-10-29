@@ -1,0 +1,30 @@
+/* 清样式 */
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    background: url(../images/背景3.webp);
+    color: #fff;
+    overflow-x: hidden;
+        /* 透视距离 */
+    perspective: 550px;
+}
+
+/* 版心 */
+.container {
+    width: 945px;
+    margin: 0 auto;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.fluid {
+    width: 100%;
+}
